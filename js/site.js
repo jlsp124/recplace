@@ -1,4 +1,8 @@
 (() => {
+  // #region agent log
+  fetch('http://127.0.0.1:7244/ingest/534c09b8-32b5-4124-8653-4754fb50f135',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'site.js:1',message:'Script loaded - URL info',data:{href:location.href,pathname:location.pathname,origin:location.origin,baseURI:document.baseURI,baseTag:document.querySelector('base')?.href||'none'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+  // #endregion
+
   const config = Object.freeze({
     siteName: "Recplace Professional Centre",
     listingUrl:
@@ -188,6 +192,12 @@
   }
 
   function initLayout() {
+    // #region agent log
+    const stylesheets = Array.from(document.querySelectorAll('link[rel="stylesheet"]')).map(l => ({href:l.href,resolved:new URL(l.href,location.href).href}));
+    const scripts = Array.from(document.querySelectorAll('script[src]')).map(s => ({src:s.src,resolved:new URL(s.src,location.href).href}));
+    const images = Array.from(document.querySelectorAll('img[src]')).slice(0,3).map(i => ({src:i.src,resolved:new URL(i.src,location.href).href}));
+    fetch('http://127.0.0.1:7244/ingest/534c09b8-32b5-4124-8653-4754fb50f135',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'site.js:190',message:'Resource paths check',data:{stylesheets,scripts,images,basePath:location.pathname.split('/').slice(0,-1).join('/')||'/'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+    // #endregion
     const header = document.getElementById("site-header");
     if (header) {
       header.classList.add("site-header");
@@ -219,12 +229,23 @@
   }
 
   async function loadUpdatesData() {
+    // #region agent log
+    const fetchUrl = "data/updates.json";
+    const resolvedUrl = new URL(fetchUrl, location.href).href;
+    fetch('http://127.0.0.1:7244/ingest/534c09b8-32b5-4124-8653-4754fb50f135',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'site.js:221',message:'Fetch attempt - updates.json',data:{relativeUrl:fetchUrl,resolvedUrl:resolvedUrl,currentPath:location.pathname},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
+    // #endregion
     try {
       const res = await fetch("data/updates.json", { cache: "no-store" });
+      // #region agent log
+      fetch('http://127.0.0.1:7244/ingest/534c09b8-32b5-4124-8653-4754fb50f135',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'site.js:224',message:'Fetch response - updates.json',data:{ok:res.ok,status:res.status,statusText:res.statusText,url:res.url},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
+      // #endregion
       if (!res.ok) return [];
       const parsed = await res.json();
       return Array.isArray(parsed) ? parsed : [];
-    } catch {
+    } catch (err) {
+      // #region agent log
+      fetch('http://127.0.0.1:7244/ingest/534c09b8-32b5-4124-8653-4754fb50f135',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'site.js:227',message:'Fetch error - updates.json',data:{error:err?.message||String(err),fallbackToEmbedded:true},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
+      // #endregion
       const embedded = document.getElementById("updates-data");
       if (embedded?.textContent) {
         const parsed = safeParseJson(embedded.textContent);

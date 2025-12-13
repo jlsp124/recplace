@@ -150,5 +150,29 @@
     <div id="site-cta"></div>
 
     <script src="js/site.js" defer></script>
+    <script>
+      // #region agent log
+      (function() {
+        const log = (msg, data) => {
+          fetch('http://127.0.0.1:7244/ingest/534c09b8-32b5-4124-8653-4754fb50f135',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'index.html:inline',message:msg,data:data,timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
+        };
+        window.addEventListener('error', (e) => {
+          if (e.target && (e.target.tagName === 'IMG' || e.target.tagName === 'LINK' || e.target.tagName === 'SCRIPT')) {
+            log('Resource load error', {tag:e.target.tagName,src:e.target.src||e.target.href,error:e.message});
+          }
+        }, true);
+        document.querySelectorAll('img').forEach(img => {
+          img.addEventListener('error', () => {
+            log('Image failed to load', {src:img.src,resolved:new URL(img.src,location.href).href});
+          });
+        });
+        document.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
+          link.addEventListener('error', () => {
+            log('CSS failed to load', {href:link.href,resolved:new URL(link.href,location.href).href});
+          });
+        });
+      })();
+      // #endregion
+    </script>
   </body>
 </html>
