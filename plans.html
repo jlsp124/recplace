@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Plans - Recplace Professional Centre</title>
+    <meta name="description" content="Access-code gated plan viewer and download." />
+    <link rel="stylesheet" href="css/site.css" />
+  </head>
+  <body>
+    <header id="site-header"></header>
+
+    <main>
+      <section class="section">
+        <div class="container">
+          <div class="card" data-gate="plans">
+            <div class="card-body">
+              <h1 class="section-title" style="margin: 0 0 8px">Building Plans</h1>
+              <p class="section-subtitle" style="margin: 0 0 14px">Enter your access code to continue.</p>
+              <form class="form">
+                <div>
+                  <label class="sr-only" for="plans-password">Access code</label>
+                  <input id="plans-password" type="password" autocomplete="current-password" required />
+                </div>
+                <button class="btn btn--primary btn-block" type="submit">Continue</button>
+                <div class="error" data-gate-error hidden></div>
+              </form>
+            </div>
+          </div>
+
+          <div data-gated="plans" hidden>
+            <div class="card">
+              <div class="card-body" style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap">
+                <div>
+                  <h1 class="section-title" style="margin: 0 0 8px">Building Plans</h1>
+                  <p class="section-subtitle" style="margin: 0">Plan set viewer and download.</p>
+                </div>
+                <button class="btn btn--danger" type="button" data-gate-lock>Lock</button>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <h2 class="section-title">Sheet index</h2>
+            <div class="card">
+              <div class="card-body">
+                <div class="columns-2">
+                  <ul class="list" style="margin: 0">
+                    <li>A0.1 - Bylaw, Code, &amp; Building Information</li>
+                    <li>A0.2 - Architectural Specifications</li>
+                    <li>A1.1 - Site Plan</li>
+                    <li>A1.2 - Landscape Plan</li>
+                    <li>A1.3 - Site Details</li>
+                    <li>A2.1 - Main Floor Plan</li>
+                    <li>A2.2 - Second Floor Plan</li>
+                    <li>A2.3 - Third Floor Plan</li>
+                    <li>A2.4 - Roof Plan</li>
+                    <li>A3.1 - Enlarged Floor Plans</li>
+                    <li>A3.2 - Enlarged Stair Plans</li>
+                    <li>A4.1 - Exterior Elevations</li>
+                    <li>A5.1 - Building Section</li>
+                    <li>A6.1 - Stair Sections</li>
+                    <li>A6.2 - Stair &amp; Elevator Sections</li>
+                    <li>A7.1 - Building Details</li>
+                    <li>A7.2 - Building Details</li>
+                    <li>A7.3 - Building Details</li>
+                    <li>A8.1 - Door &amp; Window Schedule &amp; Elevations</li>
+                    <li>A8.2 - Door &amp; Window Details</li>
+                    <li>A8.3 - Window Elevations</li>
+                    <li>A8.4 - Window Elevations</li>
+                    <li>A9.1 - Main &amp; Second Floor Ceiling Plan</li>
+                    <li>A9.2 - Third Floor &amp; Roof Ceiling Plan</li>
+                    <li>M1 - Main &amp; Second Floor Gas &amp; Storm Plan</li>
+                    <li>M2 - Third Floor &amp; Roof Gas &amp; Storm Plan</li>
+                    <li>M3 - Main &amp; Second Floor Plumbing Plan</li>
+                    <li>M4 - Third Floor Plumbing Plan</li>
+                    <li>M5 - Main &amp; Second Floor HVAC Plan</li>
+                    <li>M6 - Third Floor HVAC Plan</li>
+                    <li>E1 - Electrical Site Plan</li>
+                    <li>E2 - Main Floor Electrical Plan</li>
+                    <li>E3 - Second Floor Electrical Plan</li>
+                    <li>E4 - Third Floor Electrical Plan</li>
+                    <li>E5 - Electrical Specifications</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <h2 class="section-title">Plan viewer</h2>
+            <div class="card">
+              <div class="card-body">
+                <div class="btn-row">
+                  <a class="btn btn--primary" href="Assets/Recplace_Architectural_Rev%20L.pdf" download>
+                    Download full PDF
+                  </a>
+                  <a class="btn" href="Assets/Recplace_Architectural_Rev%20L.pdf" target="_blank" rel="noopener">
+                    Open in new tab
+                  </a>
+                </div>
+                <div style="height: 12px"></div>
+                <object
+                  data="Assets/Recplace_Architectural_Rev%20L.pdf"
+                  type="application/pdf"
+                  width="100%"
+                  height="720"
+                >
+                  <p class="card-text">
+                    PDF viewer not available.
+                    <a href="Assets/Recplace_Architectural_Rev%20L.pdf" target="_blank" rel="noopener">Open the PDF</a>.
+                  </p>
+                </object>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <h2 class="section-title">Selected previews</h2>
+            <p class="section-subtitle">Click an image to open it larger.</p>
+
+            <div class="facts-grid">
+              <div class="card fact fact--wide">
+                <img src="Assets/previews/recplace_p01.jpg" alt="Plan preview page 1" loading="lazy" />
+                <div class="card-body">
+                  <button class="btn btn-block" type="button" data-open-image="Assets/recplace_p01.png">Open</button>
+                </div>
+              </div>
+              <div class="card fact fact--wide">
+                <img src="Assets/previews/recplace_p04.jpg" alt="Plan preview page 4" loading="lazy" />
+                <div class="card-body">
+                  <button class="btn btn-block" type="button" data-open-image="Assets/recplace_p04.png">Open</button>
+                </div>
+              </div>
+              <div class="card fact fact--wide">
+                <img src="Assets/previews/recplace_p05.jpg" alt="Plan preview page 5" loading="lazy" />
+                <div class="card-body">
+                  <button class="btn btn-block" type="button" data-open-image="Assets/recplace_p05.png">Open</button>
+                </div>
+              </div>
+              <div class="card fact fact--wide">
+                <img src="Assets/previews/recplace_p07.jpg" alt="Plan preview page 7" loading="lazy" />
+                <div class="card-body">
+                  <button class="btn btn-block" type="button" data-open-image="Assets/recplace_p07.png">Open</button>
+                </div>
+              </div>
+              <div class="card fact fact--wide">
+                <img src="Assets/previews/recplace_p10.jpg" alt="Plan preview page 10" loading="lazy" />
+                <div class="card-body">
+                  <button class="btn btn-block" type="button" data-open-image="Assets/recplace_p10.png">Open</button>
+                </div>
+              </div>
+              <div class="card fact fact--wide">
+                <img src="Assets/previews/recplace_p13.jpg" alt="Plan preview page 13" loading="lazy" />
+                <div class="card-body">
+                  <button class="btn btn-block" type="button" data-open-image="Assets/recplace_p13.png">Open</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="modal" id="image-modal" aria-hidden="true" role="dialog" aria-modal="true">
+        <div class="modal-inner">
+          <div class="modal-bar">
+            <div class="title">Preview</div>
+            <button class="btn btn--ghost" id="image-modal-close" type="button">Close</button>
+          </div>
+          <div class="modal-content">
+            <img id="image-modal-img" alt="" />
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer id="site-footer"></footer>
+    <div id="site-cta"></div>
+
+    <script src="js/site.js" defer></script>
+    <script src="js/plans.js" defer></script>
+  </body>
+</html>
+
