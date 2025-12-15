@@ -1,11 +1,8 @@
 (() => {
-  // #region agent log
-  fetch('http://127.0.0.1:7244/ingest/534c09b8-32b5-4124-8653-4754fb50f135',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'site.js:1',message:'Script loaded - URL info',data:{href:location.href,pathname:location.pathname,origin:location.origin,baseURI:document.baseURI,baseTag:document.querySelector('base')?.href||'none'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-  // #endregion
-
   const config = Object.freeze({
     siteName: "Recplace Professional Centre",
-    listingUrl:
+    listingUrl: "https://www.realtor.ca/real-estate/28883424/2740-recplace-drive-prince-george",
+    mirrorUrl:
       "https://highamwalker.com/mylistings.html/listing.c8072356-2740-recplace-drive-prince-george-v2n-1t7.106896467",
     mapsUrl: "https://maps.app.goo.gl/nV1y135FPTTEjvGS9",
     mlsId: "C8072356",
@@ -84,9 +81,9 @@
   function renderStickyActions() {
     return `
       <div class="sticky-actions" role="region" aria-label="Quick actions">
-        <a class="btn" href="leasing.html">Leasing</a>
         <a class="btn" data-link="listing" href="#" target="_blank" rel="noopener">View MLS Listing</a>
         <a class="btn btn--primary" href="contact.html">Contact Realtors</a>
+        <a class="btn" data-link="maps" href="#" target="_blank" rel="noopener">Google Maps</a>
       </div>
     `;
   }
@@ -96,7 +93,7 @@
 
     const targets = [
       ...document.querySelectorAll(
-        "main .hero-kicker, main .hero-title, main .hero-quote, main .hero .btn, main .section-title, main .section-subtitle, main .card, main .pill, main .tag"
+        "main .hero-kicker, main .hero-title, main .hero-quote, main .hero .btn, main .section-title, main .section-subtitle, main .card, main .logo-tile, main .pill, main .tag, main .list li"
       ),
     ];
 
@@ -104,6 +101,21 @@
       if (el.classList.contains("reveal")) return;
       el.classList.add("reveal");
     });
+
+    function applyStagger(selector, stepMs, maxMs) {
+      document.querySelectorAll(selector).forEach((container) => {
+        const children = Array.from(container.children).filter((el) => el.classList.contains("reveal"));
+        children.forEach((el, idx) => {
+          const delay = Math.min(idx * stepMs, maxMs);
+          el.style.setProperty("--reveal-delay", `${delay}ms`);
+        });
+      });
+    }
+
+    applyStagger(".facts-grid", 38, 220);
+    applyStagger(".pill-grid", 22, 220);
+    applyStagger(".logo-grid", 48, 240);
+    applyStagger(".btn-row", 60, 180);
 
     const observer = new IntersectionObserver(
       (entries, obs) => {
@@ -122,6 +134,7 @@
   function hydrateLinks() {
     const linkTargets = {
       listing: config.listingUrl,
+      mirror: config.mirrorUrl,
       maps: config.mapsUrl,
     };
 
@@ -130,7 +143,7 @@
       const href = linkTargets[key];
       if (!href) return;
       el.setAttribute("href", href);
-      if (key === "listing" || key === "maps") {
+      if (key === "listing" || key === "mirror" || key === "maps") {
         el.setAttribute("target", "_blank");
         el.setAttribute("rel", "noopener");
       }
@@ -192,12 +205,6 @@
   }
 
   function initLayout() {
-    // #region agent log
-    const stylesheets = Array.from(document.querySelectorAll('link[rel="stylesheet"]')).map(l => ({href:l.href,resolved:new URL(l.href,location.href).href}));
-    const scripts = Array.from(document.querySelectorAll('script[src]')).map(s => ({src:s.src,resolved:new URL(s.src,location.href).href}));
-    const images = Array.from(document.querySelectorAll('img[src]')).slice(0,3).map(i => ({src:i.src,resolved:new URL(i.src,location.href).href}));
-    fetch('http://127.0.0.1:7244/ingest/534c09b8-32b5-4124-8653-4754fb50f135',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'site.js:190',message:'Resource paths check',data:{stylesheets,scripts,images,basePath:location.pathname.split('/').slice(0,-1).join('/')||'/'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-    // #endregion
     const header = document.getElementById("site-header");
     if (header) {
       header.classList.add("site-header");
@@ -229,23 +236,12 @@
   }
 
   async function loadUpdatesData() {
-    // #region agent log
-    const fetchUrl = "data/updates.json";
-    const resolvedUrl = new URL(fetchUrl, location.href).href;
-    fetch('http://127.0.0.1:7244/ingest/534c09b8-32b5-4124-8653-4754fb50f135',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'site.js:221',message:'Fetch attempt - updates.json',data:{relativeUrl:fetchUrl,resolvedUrl:resolvedUrl,currentPath:location.pathname},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
-    // #endregion
     try {
       const res = await fetch("data/updates.json", { cache: "no-store" });
-      // #region agent log
-      fetch('http://127.0.0.1:7244/ingest/534c09b8-32b5-4124-8653-4754fb50f135',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'site.js:224',message:'Fetch response - updates.json',data:{ok:res.ok,status:res.status,statusText:res.statusText,url:res.url},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
-      // #endregion
       if (!res.ok) return [];
       const parsed = await res.json();
       return Array.isArray(parsed) ? parsed : [];
     } catch (err) {
-      // #region agent log
-      fetch('http://127.0.0.1:7244/ingest/534c09b8-32b5-4124-8653-4754fb50f135',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'site.js:227',message:'Fetch error - updates.json',data:{error:err?.message||String(err),fallbackToEmbedded:true},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
-      // #endregion
       const embedded = document.getElementById("updates-data");
       if (embedded?.textContent) {
         const parsed = safeParseJson(embedded.textContent);
