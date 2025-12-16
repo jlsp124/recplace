@@ -37,7 +37,7 @@
       .map((i, idx) => {
         const isLast = idx === navItems.length - 1;
         const cls = isLast ? "nav-link nav-link--last" : "nav-link";
-        return `<a class="${cls}" data-nav href="${i.href}">${i.label}</a>`;
+        return `<a class="${cls}" data-nav href="${i.href}"><span class="nav-label">${i.label}</span></a>`;
       })
       .join("");
 
@@ -47,6 +47,7 @@
           <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="site-nav">
             Menu
           </button>
+          <div class="nav-scrim" data-nav-scrim aria-hidden="true"></div>
           <div class="nav-links" id="site-nav">${navLinks}</div>
         </nav>
       </div>
@@ -80,7 +81,7 @@
 
   function renderStickyActions() {
     return `
-      <div class="sticky-actions" role="region" aria-label="Quick actions">
+      <div class="sticky-actions" data-sticky-actions role="region" aria-label="Quick actions">
         <a class="btn" data-link="listing" href="#" target="_blank" rel="noopener">View MLS Listing</a>
         <a class="btn btn--primary" href="contact.html">Contact Realtors</a>
         <a class="btn" data-link="maps" href="#" target="_blank" rel="noopener">Google Maps</a>
@@ -112,10 +113,27 @@
       });
     }
 
+    function applyFlyIn(selector, baseX, stepX, baseRot, stepRot) {
+      document.querySelectorAll(selector).forEach((container) => {
+        const children = Array.from(container.children).filter((el) => el.classList.contains("reveal"));
+        children.forEach((el, idx) => {
+          const sign = idx % 2 === 0 ? -1 : 1;
+          const x = sign * (baseX + (idx % 3) * stepX);
+          const rot = sign * (baseRot + (idx % 3) * stepRot);
+          el.style.setProperty("--reveal-x", `${x}px`);
+          el.style.setProperty("--reveal-rot", `${rot}deg`);
+        });
+      });
+    }
+
     applyStagger(".facts-grid", 38, 220);
     applyStagger(".pill-grid", 22, 220);
     applyStagger(".logo-grid", 48, 240);
     applyStagger(".btn-row", 60, 180);
+
+    applyFlyIn(".facts-grid", 22, 10, 0.6, 0.25);
+    applyFlyIn(".pill-grid", 14, 6, 0.35, 0.18);
+    applyFlyIn(".logo-grid", 18, 10, 0.45, 0.2);
 
     const observer = new IntersectionObserver(
       (entries, obs) => {
@@ -175,11 +193,13 @@
   function initNavToggle() {
     const navRoot = document.querySelector("[data-nav-root]");
     const toggle = document.querySelector("[data-nav-toggle]");
+    const scrim = document.querySelector("[data-nav-scrim]");
     if (!navRoot || !toggle) return;
 
     function setOpen(isOpen) {
       navRoot.classList.toggle("nav--open", isOpen);
       toggle.setAttribute("aria-expanded", String(isOpen));
+      document.body.classList.toggle("nav-open", isOpen);
     }
 
     toggle.addEventListener("click", () => {
@@ -187,9 +207,23 @@
       setOpen(!isOpen);
     });
 
+    scrim?.addEventListener("click", () => setOpen(false));
+
+    navRoot.addEventListener("click", (e) => {
+      if (!navRoot.classList.contains("nav--open")) return;
+      const link = e.target?.closest?.("a[data-nav]");
+      if (link) setOpen(false);
+    });
+
     document.addEventListener("click", (e) => {
       if (!navRoot.classList.contains("nav--open")) return;
       if (navRoot.contains(e.target)) return;
+      setOpen(false);
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape") return;
+      if (!navRoot.classList.contains("nav--open")) return;
       setOpen(false);
     });
   }
@@ -202,6 +236,121 @@
     const setReady = () => heroMedia.classList.add("is-ready");
     if (video.readyState >= 2) setReady();
     else video.addEventListener("canplay", setReady, { once: true });
+  }
+
+  function initStickyActions() {
+    const sticky = document.querySelector("[data-sticky-actions]");
+    if (!sticky) return;
+
+    const minY = 120;
+    let lastY = window.scrollY;
+    let raf = 0;
+
+    function setHidden(hidden) {
+      sticky.classList.toggle("is-hidden", hidden);
+    }
+
+    setHidden(window.scrollY < minY);
+
+    function onScroll() {
+      const y = window.scrollY;
+      const delta = y - lastY;
+      lastY = y;
+
+      if (y < minY) {
+        setHidden(true);
+        return;
+      }
+
+      if (Math.abs(delta) < 6) return;
+      if (delta < 0) setHidden(true);
+      else setHidden(false);
+    }
+
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (raf) return;
+        raf = window.requestAnimationFrame(() => {
+          raf = 0;
+          onScroll();
+        });
+      },
+      { passive: true }
+    );
+  }
+
+  function initParallaxImages() {
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches) return;
+
+    const items = Array.from(document.querySelectorAll(".parallax-img"));
+    if (!items.length) return;
+
+    let raf = 0;
+
+    function update() {
+      const vh = window.innerHeight || 1;
+      const viewMid = vh / 2;
+
+      for (const el of items) {
+        const rect = el.getBoundingClientRect();
+        if (rect.height <= 0) continue;
+        const mid = rect.top + rect.height / 2;
+        const dist = (mid - viewMid) / vh;
+        const y = Math.max(-22, Math.min(22, dist * -26));
+        el.style.setProperty("--parallax-y", `${y.toFixed(2)}px`);
+      }
+    }
+
+    update();
+
+    function schedule() {
+      if (raf) return;
+      raf = window.requestAnimationFrame(() => {
+        raf = 0;
+        update();
+      });
+    }
+
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+  }
+
+  function initPointerGlow() {
+    if (!window.matchMedia?.("(hover: hover) and (pointer: fine)")?.matches) return;
+
+    let raf = 0;
+    let lastEvent = null;
+
+    function update() {
+      raf = 0;
+      const e = lastEvent;
+      if (!e) return;
+
+      const card = e.target?.closest?.(".card");
+      if (!card) return;
+
+      const rect = card.getBoundingClientRect();
+      if (rect.width <= 0 || rect.height <= 0) return;
+
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      const clampedX = Math.max(0, Math.min(100, x));
+      const clampedY = Math.max(0, Math.min(100, y));
+
+      card.style.setProperty("--mx", `${clampedX.toFixed(2)}%`);
+      card.style.setProperty("--my", `${clampedY.toFixed(2)}%`);
+    }
+
+    document.addEventListener(
+      "pointermove",
+      (e) => {
+        lastEvent = e;
+        if (raf) return;
+        raf = window.requestAnimationFrame(update);
+      },
+      { passive: true }
+    );
   }
 
   function initLayout() {
@@ -224,7 +373,10 @@
     hydrateLinks();
     initNavToggle();
     initHeroVideo();
+    initStickyActions();
     initRevealAnimations();
+    initParallaxImages();
+    initPointerGlow();
   }
 
   function safeParseJson(text) {
