@@ -6,7 +6,7 @@
     listingUrl: "https://www.realtor.ca/real-estate/28883424/2740-recplace-drive-prince-george",
     mirrorUrl:
       "https://highamwalker.com/mylistings.html/listing.c8072356-2740-recplace-drive-prince-george-v2n-1t7.106896467",
-    mapsUrl: "https://maps.app.goo.gl/nV1y135FPTTEjvGS9",
+    mapsUrl: "https://www.google.com/maps/search/?api=1&query=53.897384795,-122.771398006",
     mlsId: "C8072356",
     address: "2740 Recplace Drive, Prince George, BC V2N 1T7",
     coords: { lat: 53.897384795, lng: -122.771398006 },
@@ -122,13 +122,27 @@
 
   function renderStickyActions(context) {
     if (context.isNextVersion) {
-      const secondaryHref = context.page === "plans.html" ? "location.html" : "plans.html";
-      const secondaryLabel = context.page === "plans.html" ? "View Location" : "View Plans";
+      if (context.page === "plans.html") {
+        return `
+          <div class="sticky-actions" data-sticky-actions role="region" aria-label="Quick actions">
+            <a class="btn" data-link="architectural" href="${resolveAssetHref(config.architecturalSetPath, context)}" target="_blank" rel="noopener">Architectural Set</a>
+            <a class="btn btn--primary" href="${resolveSiteHref("contact.html", context)}">Contact Leasing</a>
+          </div>
+        `;
+      }
+
+      if (context.page === "contact.html") {
+        return `
+          <div class="sticky-actions" data-sticky-actions role="region" aria-label="Quick actions">
+            <a class="btn" data-link="brochure" href="${resolveAssetHref(config.brochurePath, context)}" target="_blank" rel="noopener">Leasing Package</a>
+            <a class="btn btn--primary" href="${resolveSiteHref("plans.html", context)}">View Plans</a>
+          </div>
+        `;
+      }
 
       return `
         <div class="sticky-actions" data-sticky-actions role="region" aria-label="Quick actions">
-          <a class="btn" data-link="brochure" href="#" target="_blank" rel="noopener">Request Leasing Package</a>
-          <a class="btn" href="${resolveSiteHref(secondaryHref, context)}">${secondaryLabel}</a>
+          <a class="btn" data-link="brochure" href="${resolveAssetHref(config.brochurePath, context)}" target="_blank" rel="noopener">Leasing Package</a>
           <a class="btn btn--primary" href="${resolveSiteHref("contact.html", context)}">Contact Leasing</a>
         </div>
       `;
@@ -136,9 +150,9 @@
 
     return `
       <div class="sticky-actions" data-sticky-actions role="region" aria-label="Quick actions">
-        <a class="btn" data-link="listing" href="#" target="_blank" rel="noopener">MLS Listing</a>
+        <a class="btn" data-link="listing" href="${config.listingUrl}" target="_blank" rel="noopener">MLS Listing</a>
         <a class="btn btn--primary" href="${resolveSiteHref("contact.html", context)}">Contact Realtors</a>
-        <a class="btn" data-link="maps" href="#" target="_blank" rel="noopener">Open Map</a>
+        <a class="btn" data-link="maps" href="${config.mapsUrl}" target="_blank" rel="noopener">Open Map</a>
       </div>
     `;
   }
@@ -147,7 +161,7 @@
     const href = resolveVersionHref(context);
     if (!href) return "";
     const label = context.isNextVersion ? "View Current Live Site" : "View Next Version";
-    return `<a class="version-switch" href="${href}">${label}</a>`;
+    return `<a class="version-switch" href="${href}" aria-label="${label} for this page">${label}</a>`;
   }
 
   function initRevealAnimations() {
@@ -241,8 +255,11 @@
     function setOpen(isOpen) {
       navRoot.classList.toggle("nav--open", isOpen);
       toggle.setAttribute("aria-expanded", String(isOpen));
+      toggle.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
       document.body.classList.toggle("nav-open", isOpen);
     }
+
+    toggle.setAttribute("aria-label", "Open menu");
 
     toggle.addEventListener("click", () => {
       const isOpen = toggle.getAttribute("aria-expanded") === "true";
@@ -286,6 +303,11 @@
   function initStickyActions() {
     const sticky = document.querySelector("[data-sticky-actions]");
     if (!sticky) return;
+
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches) {
+      sticky.classList.remove("is-hidden");
+      return;
+    }
 
     const minY = 120;
     let lastY = window.scrollY;
