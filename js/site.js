@@ -255,19 +255,13 @@
     const scrim = document.querySelector("[data-nav-scrim]");
     if (!navRoot || !toggle) return;
 
-    let lockedScrollY = 0;
-
     function lockBodyScroll() {
-      lockedScrollY = window.scrollY || window.pageYOffset || 0;
-      document.body.style.top = `-${lockedScrollY}px`;
       document.body.classList.add("nav-open");
     }
 
     function unlockBodyScroll() {
       if (!document.body.classList.contains("nav-open")) return;
       document.body.classList.remove("nav-open");
-      document.body.style.top = "";
-      window.scrollTo(0, lockedScrollY);
     }
 
     function setOpen(isOpen) {
@@ -284,7 +278,8 @@
       e.preventDefault();
       e.stopPropagation();
       const isOpen = toggle.getAttribute("aria-expanded") === "true";
-      setOpen(!isOpen);
+      if (isOpen) return;
+      setOpen(true);
     });
 
     scrim?.addEventListener("click", (e) => {
@@ -299,17 +294,6 @@
       if (link) setOpen(false);
     });
 
-    document.addEventListener("click", (e) => {
-      if (!navRoot.classList.contains("nav--open")) return;
-      if (navRoot.contains(e.target)) return;
-      setOpen(false);
-    });
-
-    document.addEventListener("keydown", (e) => {
-      if (e.key !== "Escape") return;
-      if (!navRoot.classList.contains("nav--open")) return;
-      setOpen(false);
-    });
   }
 
   function initHeroVideo() {
