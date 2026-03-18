@@ -42,10 +42,8 @@ body {
 }
 
 body.nav-open {
-  position: fixed;
   overflow: hidden;
-  width: 100%;
-  inset: 0;
+  touch-action: none;
 }
 
 body.has-version-switch {
@@ -471,6 +469,8 @@ main > .section + .section {
     visibility: hidden;
     pointer-events: none;
     transform: translateX(100%);
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
     transition: transform 0.2s ease, visibility 0s linear 0.2s;
   }
 
