@@ -253,6 +253,11 @@
     const navRoot = document.querySelector("[data-nav-root]");
     const toggle = document.querySelector("[data-nav-toggle]");
     if (!navRoot || !toggle) return;
+    const desktopOnlyQuery = window.matchMedia?.("(min-width: 901px)");
+
+    function isDesktopOrTablet() {
+      return desktopOnlyQuery?.matches ?? true;
+    }
 
     function setOpen(isOpen) {
       const currentlyOpen = navRoot.classList.contains("nav--open");
@@ -262,9 +267,21 @@
       toggle.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
     }
 
+    function resetMobileNavState() {
+      navRoot.classList.remove("nav--open");
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.setAttribute("aria-label", "Menu");
+    }
+
+    if (!isDesktopOrTablet()) {
+      resetMobileNavState();
+      return;
+    }
+
     toggle.setAttribute("aria-label", "Open menu");
 
     toggle.addEventListener("click", (e) => {
+      if (!isDesktopOrTablet()) return;
       e.preventDefault();
       e.stopPropagation();
       const isOpen = toggle.getAttribute("aria-expanded") === "true";
@@ -272,21 +289,28 @@
     });
 
     navRoot.addEventListener("click", (e) => {
+      if (!isDesktopOrTablet()) return;
       if (!navRoot.classList.contains("nav--open")) return;
       const link = e.target?.closest?.("a[data-nav]");
       if (link) setOpen(false);
     });
 
     document.addEventListener("click", (e) => {
+      if (!isDesktopOrTablet()) return;
       if (!navRoot.classList.contains("nav--open")) return;
       if (navRoot.contains(e.target)) return;
       setOpen(false);
     });
 
     document.addEventListener("keydown", (e) => {
+      if (!isDesktopOrTablet()) return;
       if (e.key !== "Escape") return;
       if (!navRoot.classList.contains("nav--open")) return;
       setOpen(false);
+    });
+
+    desktopOnlyQuery?.addEventListener?.("change", (event) => {
+      if (!event.matches) resetMobileNavState();
     });
   }
 
