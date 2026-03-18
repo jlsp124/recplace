@@ -254,17 +254,33 @@
     const toggle = document.querySelector("[data-nav-toggle]");
     const scrim = document.querySelector("[data-nav-scrim]");
     if (!navRoot || !toggle) return;
+    let lockedScrollY = 0;
 
     function lockBodyScroll() {
+      lockedScrollY = window.scrollY || window.pageYOffset || 0;
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${lockedScrollY}px`;
+      document.body.style.left = "0";
+      document.body.style.right = "0";
+      document.body.style.width = "100%";
       document.body.classList.add("nav-open");
     }
 
     function unlockBodyScroll() {
       if (!document.body.classList.contains("nav-open")) return;
+      const restoreY = lockedScrollY || 0;
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.left = "";
+      document.body.style.right = "";
+      document.body.style.width = "";
       document.body.classList.remove("nav-open");
+      window.scrollTo(0, restoreY);
     }
 
     function setOpen(isOpen) {
+      const currentlyOpen = navRoot.classList.contains("nav--open");
+      if (currentlyOpen === isOpen) return;
       navRoot.classList.toggle("nav--open", isOpen);
       toggle.setAttribute("aria-expanded", String(isOpen));
       toggle.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
@@ -278,8 +294,7 @@
       e.preventDefault();
       e.stopPropagation();
       const isOpen = toggle.getAttribute("aria-expanded") === "true";
-      if (isOpen) return;
-      setOpen(true);
+      setOpen(!isOpen);
     });
 
     scrim?.addEventListener("click", (e) => {
@@ -292,6 +307,12 @@
       if (!navRoot.classList.contains("nav--open")) return;
       const link = e.target?.closest?.("a[data-nav]");
       if (link) setOpen(false);
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape") return;
+      if (!navRoot.classList.contains("nav--open")) return;
+      setOpen(false);
     });
 
   }
