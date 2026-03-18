@@ -33,20 +33,23 @@
       .filter(Boolean);
     const last = segments[segments.length - 1] || "";
     const page = last && last.includes(".") ? last : "index.html";
-    const isNextVersion = segments.includes("next");
+    const isNextPath = segments.includes("next");
+    const declaredVersion = document.body?.dataset?.siteVersion?.trim()?.toLowerCase();
+    const useNextUi = declaredVersion === "next" || isNextPath;
 
     return Object.freeze({
       page,
-      isNextVersion,
+      isNextPath,
+      useNextUi,
       isSwitchable: mirroredPages.has(page),
-      prefix: isNextVersion ? "../" : "",
+      prefix: isNextPath ? "../" : "",
     });
   }
 
   function resolveSiteHref(href, context) {
     const [page, hash = ""] = href.split("#");
     const normalizedPage = (page || "index.html").toLowerCase();
-    const resolvedPage = context.isNextVersion && mirroredPages.has(normalizedPage) ? page : `${context.prefix}${page}`;
+    const resolvedPage = context.isNextPath && mirroredPages.has(normalizedPage) ? page : `${context.prefix}${page}`;
     return hash ? `${resolvedPage}#${hash}` : resolvedPage;
   }
 
@@ -55,8 +58,8 @@
   }
 
   function resolveVersionHref(context) {
-    if (!context.isSwitchable) return "";
-    return context.isNextVersion ? `../${context.page}` : `next/${context.page}`;
+    if (!context.isSwitchable || !context.isNextPath) return "";
+    return `../${context.page}`;
   }
 
   function setActiveNav(root, context) {
@@ -97,7 +100,7 @@
 
   function renderFooter(context) {
     const links = navItems.map((item) => `<a href="${resolveSiteHref(item.href, context)}">${item.label}</a>`).join("");
-    const contactLabel = context.isNextVersion ? "Contact Leasing" : "Contact Realtors";
+    const contactLabel = context.useNextUi ? "Contact Leasing" : "Contact Realtors";
 
     return `
       <div class="container">
@@ -121,7 +124,7 @@
   }
 
   function renderStickyActions(context) {
-    if (context.isNextVersion) {
+    if (context.useNextUi) {
       if (context.page === "plans.html") {
         return `
           <div class="sticky-actions" data-sticky-actions role="region" aria-label="Quick actions">
@@ -160,7 +163,7 @@
   function renderVersionSwitch(context) {
     const href = resolveVersionHref(context);
     if (!href) return "";
-    const label = context.isNextVersion ? "View Current Live Site" : "View Next Version";
+    const label = "View Current Live Site";
     return `<a class="version-switch" href="${href}" aria-label="${label} for this page">${label}</a>`;
   }
 
@@ -435,7 +438,7 @@
 
   function initLayout() {
     const context = getPathContext();
-    document.body.dataset.siteVersion = context.isNextVersion ? "next" : "current";
+    document.body.dataset.siteVersion = context.useNextUi ? "next" : "current";
 
     const switchMarkup = renderVersionSwitch(context);
     if (switchMarkup) {
