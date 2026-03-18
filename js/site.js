@@ -255,21 +255,43 @@
     const scrim = document.querySelector("[data-nav-scrim]");
     if (!navRoot || !toggle) return;
 
+    let lockedScrollY = 0;
+
+    function lockBodyScroll() {
+      lockedScrollY = window.scrollY || window.pageYOffset || 0;
+      document.body.style.top = `-${lockedScrollY}px`;
+      document.body.classList.add("nav-open");
+    }
+
+    function unlockBodyScroll() {
+      if (!document.body.classList.contains("nav-open")) return;
+      document.body.classList.remove("nav-open");
+      document.body.style.top = "";
+      window.scrollTo(0, lockedScrollY);
+    }
+
     function setOpen(isOpen) {
       navRoot.classList.toggle("nav--open", isOpen);
       toggle.setAttribute("aria-expanded", String(isOpen));
       toggle.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
-      document.body.classList.toggle("nav-open", isOpen);
+      if (isOpen) lockBodyScroll();
+      else unlockBodyScroll();
     }
 
     toggle.setAttribute("aria-label", "Open menu");
 
-    toggle.addEventListener("click", () => {
+    toggle.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
       const isOpen = toggle.getAttribute("aria-expanded") === "true";
       setOpen(!isOpen);
     });
 
-    scrim?.addEventListener("click", () => setOpen(false));
+    scrim?.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setOpen(false);
+    });
 
     navRoot.addEventListener("click", (e) => {
       if (!navRoot.classList.contains("nav--open")) return;
