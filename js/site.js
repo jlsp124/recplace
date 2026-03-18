@@ -134,7 +134,7 @@
       if (context.page === "contact.html") {
         return `
           <div class="sticky-actions" data-sticky-actions role="region" aria-label="Quick actions">
-            <a class="btn" data-link="brochure" href="${resolveAssetHref(config.brochurePath, context)}" target="_blank" rel="noopener">Leasing Package</a>
+            <a class="btn" data-link="brochure" href="${resolveAssetHref(config.brochurePath, context)}" target="_blank" rel="noopener">Request Package</a>
             <a class="btn btn--primary" href="${resolveSiteHref("plans.html", context)}">View Plans</a>
           </div>
         `;
@@ -142,7 +142,7 @@
 
       return `
         <div class="sticky-actions" data-sticky-actions role="region" aria-label="Quick actions">
-          <a class="btn" data-link="brochure" href="${resolveAssetHref(config.brochurePath, context)}" target="_blank" rel="noopener">Leasing Package</a>
+          <a class="btn" data-link="brochure" href="${resolveAssetHref(config.brochurePath, context)}" target="_blank" rel="noopener">Request Package</a>
           <a class="btn btn--primary" href="${resolveSiteHref("contact.html", context)}">Contact Leasing</a>
         </div>
       `;
