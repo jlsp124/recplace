@@ -100,7 +100,7 @@
 
   function renderFooter(context) {
     const links = navItems.map((item) => `<a href="${resolveSiteHref(item.href, context)}">${item.label}</a>`).join("");
-    const contactLabel = context.useNextUi ? "Contact Leasing" : "Contact Realtors";
+    const contactLabel = "Contact Leasing";
 
     return `
       <div class="container">
@@ -154,7 +154,7 @@
     return `
       <div class="sticky-actions" data-sticky-actions role="region" aria-label="Quick actions">
         <a class="btn" data-link="listing" href="${config.listingUrl}" target="_blank" rel="noopener">MLS Listing</a>
-        <a class="btn btn--primary" href="${resolveSiteHref("contact.html", context)}">Contact Realtors</a>
+        <a class="btn btn--primary" href="${resolveSiteHref("contact.html", context)}">Contact Leasing</a>
         <a class="btn" data-link="maps" href="${config.mapsUrl}" target="_blank" rel="noopener">Open Map</a>
       </div>
     `;
@@ -253,114 +253,125 @@
     const navRoot = document.querySelector("[data-nav-root]");
     const toggle = document.querySelector("[data-nav-toggle]");
     const scrim = document.querySelector("[data-nav-scrim]");
-    if (!navRoot || !toggle) return;
+    const body = document.body;
+    if (!navRoot || !toggle || !body) return;
 
     const desktopQuery = window.matchMedia("(min-width: 901px)");
     let scrollYBeforeOpen = 0;
+    let bodyLockStyles = null;
 
     function isDesktop() {
       return desktopQuery.matches;
     }
 
+    function syncNavState() {
+      const isOpen = navRoot.classList.contains("nav--open");
+      toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      scrim?.setAttribute("aria-hidden", isOpen ? "false" : "true");
+    }
+
     function lockBodyScroll() {
+      if (bodyLockStyles) return;
+
       scrollYBeforeOpen = window.scrollY || window.pageYOffset || 0;
-      document.body.style.position = "fixed";
-      document.body.style.top = `-${scrollYBeforeOpen}px`;
-      document.body.style.left = "0";
-      document.body.style.right = "0";
-      document.body.style.width = "100%";
-      document.body.classList.add("nav-open");
+      bodyLockStyles = {
+        position: body.style.position,
+        top: body.style.top,
+        left: body.style.left,
+        right: body.style.right,
+        width: body.style.width,
+        overflow: body.style.overflow,
+      };
+
+      body.style.position = "fixed";
+      body.style.top = `-${scrollYBeforeOpen}px`;
+      body.style.left = "0";
+      body.style.right = "0";
+      body.style.width = "100%";
+      body.style.overflow = "hidden";
     }
 
     function unlockBodyScroll() {
-      document.body.classList.remove("nav-open");
-      document.body.style.position = "";
-      document.body.style.top = "";
-      document.body.style.left = "";
-      document.body.style.right = "";
-      document.body.style.width = "";
-      window.scrollTo(0, scrollYBeforeOpen);
+      if (!bodyLockStyles) return;
+
+      const restoreY = scrollYBeforeOpen;
+
+      body.style.position = bodyLockStyles.position;
+      body.style.top = bodyLockStyles.top;
+      body.style.left = bodyLockStyles.left;
+      body.style.right = bodyLockStyles.right;
+      body.style.width = bodyLockStyles.width;
+      body.style.overflow = bodyLockStyles.overflow;
+
+      bodyLockStyles = null;
+      scrollYBeforeOpen = 0;
+      window.scrollTo(0, restoreY);
     }
 
-    function setOpen(isOpen) {
-      const alreadyOpen = navRoot.classList.contains("nav--open");
-      if (alreadyOpen === isOpen) return;
-
-      navRoot.classList.toggle("nav--open", isOpen);
-      toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
-      toggle.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
-
-      if (!isDesktop()) {
-        if (isOpen) lockBodyScroll();
-        else unlockBodyScroll();
+    function closeDrawer() {
+      if (navRoot.classList.contains("nav--open")) {
+        navRoot.classList.remove("nav--open");
       }
-    }
-
-    function resetDesktopState() {
-      navRoot.classList.remove("nav--open");
-      toggle.setAttribute("aria-expanded", "false");
-      toggle.setAttribute("aria-label", "Open menu");
       unlockBodyScroll();
+      syncNavState();
     }
 
-    toggle.setAttribute("aria-expanded", "false");
-    toggle.setAttribute("aria-label", "Open menu");
+    function applyViewportMode() {
+      if (isDesktop()) {
+        closeDrawer();
+        return;
+      }
 
-    toggle.addEventListener("click", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
+      syncNavState();
+    }
 
+    toggle.addEventListener("click", (event) => {
+      if (isDesktop()) {
+        closeDrawer();
+        return;
+      }
+
+      event.preventDefault();
+
+      const isOpen = navRoot.classList.toggle("nav--open");
+      if (isOpen) lockBodyScroll();
+      else unlockBodyScroll();
+
+      syncNavState();
+    });
+
+    scrim?.addEventListener("click", (event) => {
+      event.preventDefault();
+      closeDrawer();
+    });
+
+    navRoot.addEventListener("click", (event) => {
       if (isDesktop()) return;
-
-      const isOpen = navRoot.classList.contains("nav--open");
-      setOpen(!isOpen);
+      if (!event.target?.closest?.("a[data-nav]")) return;
+      closeDrawer();
     });
 
-    scrim?.addEventListener("click", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setOpen(false);
-    });
-
-    navRoot.addEventListener("click", (e) => {
-      const link = e.target?.closest?.("a[data-nav]");
-      if (link && !isDesktop()) {
-        setOpen(false);
-      }
-    });
-
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && navRoot.classList.contains("nav--open")) {
-        setOpen(false);
-      }
-    });
-
-    document.addEventListener("click", (e) => {
+    document.addEventListener("click", (event) => {
       if (isDesktop()) return;
       if (!navRoot.classList.contains("nav--open")) return;
-      if (navRoot.contains(e.target)) return;
-      setOpen(false);
+      if (navRoot.contains(event.target)) return;
+      closeDrawer();
     });
 
-    function applyMode() {
-      if (isDesktop()) {
-        resetDesktopState();
-      } else {
-        toggle.setAttribute("aria-expanded", navRoot.classList.contains("nav--open") ? "true" : "false");
-        toggle.setAttribute("aria-label", navRoot.classList.contains("nav--open") ? "Close menu" : "Open menu");
-      }
-    }
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape") return;
+      closeDrawer();
+    });
 
     if (typeof desktopQuery.addEventListener === "function") {
-      desktopQuery.addEventListener("change", applyMode);
+      desktopQuery.addEventListener("change", applyViewportMode);
     } else if (typeof desktopQuery.addListener === "function") {
-      desktopQuery.addListener(applyMode);
+      desktopQuery.addListener(applyViewportMode);
     }
 
-    applyMode();
+    closeDrawer();
+    applyViewportMode();
   }
-
-
 
   function initHeroVideo() {
     const heroMedia = document.querySelector(".hero-media");
@@ -643,3 +654,5 @@
 
   document.addEventListener("DOMContentLoaded", initLayout);
 })();
+
+
