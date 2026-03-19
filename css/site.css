@@ -429,6 +429,7 @@ main > .section + .section {
 
   .nav-shell {
     gap: 14px;
+    align-items: flex-start;
   }
 
   .nav-brand-name {
@@ -441,67 +442,38 @@ main > .section + .section {
 
   .nav {
     position: relative;
-    flex: 0 0 auto;
-    align-items: center;
-    justify-content: flex-end;
-  }
-
-  .nav-toggle {
-    display: inline-flex;
-    position: relative;
-    z-index: 81;
-    background: #f7f4ef;
-  }
-
-  .nav-scrim {
+    flex: 1 1 100%;
     display: block;
   }
 
+  .nav-toggle {
+    display: none !important;
+  }
+
+  .nav-scrim {
+    display: none !important;
+  }
+
   .nav-links {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: min(320px, 86vw);
-    height: 100dvh;
-    max-height: 100dvh;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior: contain;
-    z-index: 80;
-    padding: calc(var(--nav-h) + 18px) 18px 24px;
-    background: #f8f5f0;
-    border-left: 1px solid var(--border);
-    box-shadow: var(--shadow-lg);
-    display: flex;
+    position: static !important;
+    transform: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    display: flex !important;
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;
-    gap: 8px;
+    gap: 0;
     flex-wrap: nowrap;
-    transform: translateX(100%);
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transition:
-      transform 0.22s ease,
-      opacity 0.22s ease,
-      visibility 0s linear 0.22s;
-  }
-
-  .nav.nav--open .nav-links {
-    transform: translateX(0);
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    transition:
-      transform 0.22s ease,
-      opacity 0.22s ease,
-      visibility 0s linear 0s;
-  }
-
-  .nav.nav--open .nav-scrim {
-    opacity: 1;
-    pointer-events: auto;
+    width: 100%;
+    height: auto;
+    max-height: none;
+    overflow: visible;
+    padding-top: 12px;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
   }
 
   .nav-link {
@@ -528,11 +500,17 @@ main > .section + .section {
 
 @media (min-width: 901px) {
   .nav-toggle {
-    display: none;
+    display: inline-flex;
   }
 
   .nav-scrim {
-    display: none !important;
+    position: fixed;
+    inset: 0;
+    z-index: 79;
+    background: rgba(15, 17, 20, 0.42);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.22s ease;
   }
 
   .nav-links {
@@ -556,7 +534,13 @@ main > .section + .section {
     visibility: visible !important;
     pointer-events: auto !important;
   }
+
+  .nav.nav--open .nav-scrim {
+    opacity: 1;
+    pointer-events: auto;
+  }
 }
+
 
 .hero {
   position: relative;
