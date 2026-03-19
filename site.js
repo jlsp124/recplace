@@ -257,8 +257,6 @@
     if (!navRoot || !toggle || !body) return;
 
     const desktopQuery = window.matchMedia("(min-width: 901px)");
-    let scrollYBeforeOpen = 0;
-    let bodyLockStyles = null;
 
     function isDesktop() {
       return desktopQuery.matches;
@@ -267,94 +265,48 @@
     function syncNavState() {
       const isOpen = navRoot.classList.contains("nav--open");
       toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
-      scrim?.setAttribute("aria-hidden", isOpen ? "false" : "true");
-    }
-
-    function lockBodyScroll() {
-      if (bodyLockStyles) return;
-
-      scrollYBeforeOpen = window.scrollY || window.pageYOffset || 0;
-      bodyLockStyles = {
-        position: body.style.position,
-        top: body.style.top,
-        left: body.style.left,
-        right: body.style.right,
-        width: body.style.width,
-        overflow: body.style.overflow,
-      };
-
-      body.style.position = "fixed";
-      body.style.top = `-${scrollYBeforeOpen}px`;
-      body.style.left = "0";
-      body.style.right = "0";
-      body.style.width = "100%";
-      body.style.overflow = "hidden";
-    }
-
-    function unlockBodyScroll() {
-      if (!bodyLockStyles) return;
-
-      const restoreY = scrollYBeforeOpen;
-
-      body.style.position = bodyLockStyles.position;
-      body.style.top = bodyLockStyles.top;
-      body.style.left = bodyLockStyles.left;
-      body.style.right = bodyLockStyles.right;
-      body.style.width = bodyLockStyles.width;
-      body.style.overflow = bodyLockStyles.overflow;
-
-      bodyLockStyles = null;
-      scrollYBeforeOpen = 0;
-      window.scrollTo(0, restoreY);
+      toggle.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
+      if (scrim) scrim.setAttribute("aria-hidden", isOpen ? "false" : "true");
+      body.classList.toggle("nav-open", !isDesktop() && isOpen);
     }
 
     function closeDrawer() {
-      if (navRoot.classList.contains("nav--open")) {
-        navRoot.classList.remove("nav--open");
-      }
-      unlockBodyScroll();
+      navRoot.classList.remove("nav--open");
+      syncNavState();
+    }
+
+    function openDrawer() {
+      navRoot.classList.add("nav--open");
       syncNavState();
     }
 
     function applyViewportMode() {
       if (isDesktop()) {
         closeDrawer();
-        return;
+      } else {
+        syncNavState();
       }
-
-      syncNavState();
     }
 
     toggle.addEventListener("click", (event) => {
-      if (isDesktop()) {
-        closeDrawer();
-        return;
-      }
-
       event.preventDefault();
+      event.stopPropagation();
 
-      const isOpen = navRoot.classList.toggle("nav--open");
-      if (isOpen) lockBodyScroll();
-      else unlockBodyScroll();
+      if (isDesktop()) return;
 
-      syncNavState();
+      if (navRoot.classList.contains("nav--open")) closeDrawer();
+      else openDrawer();
     });
 
     scrim?.addEventListener("click", (event) => {
       event.preventDefault();
+      event.stopPropagation();
       closeDrawer();
     });
 
     navRoot.addEventListener("click", (event) => {
       if (isDesktop()) return;
       if (!event.target?.closest?.("a[data-nav]")) return;
-      closeDrawer();
-    });
-
-    document.addEventListener("click", (event) => {
-      if (isDesktop()) return;
-      if (!navRoot.classList.contains("nav--open")) return;
-      if (navRoot.contains(event.target)) return;
       closeDrawer();
     });
 
@@ -654,5 +606,3 @@
 
   document.addEventListener("DOMContentLoaded", initLayout);
 })();
-
-
