@@ -80,7 +80,6 @@
       <div class="container">
         <div class="nav-shell">
           <a class="nav-brand" href="${resolveSiteHref("index.html", context)}" aria-label="${config.siteName} home">
-            <span class="nav-brand-mark" aria-hidden="true"></span>
             <span class="nav-brand-text">
               <span class="nav-brand-name">${config.siteName}</span>
               <span class="nav-brand-meta">Prince George, BC</span>
@@ -654,5 +653,3 @@
 
   document.addEventListener("DOMContentLoaded", initLayout);
 })();
-
-
