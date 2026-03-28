@@ -99,7 +99,6 @@
 
   function renderFooter(context) {
     const links = navItems.map((item) => `<a href="${resolveSiteHref(item.href, context)}">${item.label}</a>`).join("");
-    const contactLabel = "Contact Leasing";
 
     return `
       <div class="container">
@@ -113,9 +112,6 @@
             <div class="footer-links">
               ${links}
             </div>
-            <div class="footer-actions">
-              <a class="btn btn--primary" href="${resolveSiteHref("contact.html", context)}">${contactLabel}</a>
-            </div>
           </div>
         </div>
       </div>
@@ -123,40 +119,7 @@
   }
 
   function renderStickyActions(context) {
-    if (context.useNextUi) {
-      if (context.page === "plans.html") {
-        return `
-          <div class="sticky-actions" data-sticky-actions role="region" aria-label="Quick actions">
-            <a class="btn" data-link="architectural" href="${resolveAssetHref(config.architecturalSetPath, context)}" target="_blank" rel="noopener">Architectural Set</a>
-            <a class="btn btn--primary" href="${resolveSiteHref("contact.html", context)}">Contact Leasing</a>
-          </div>
-        `;
-      }
-
-      if (context.page === "contact.html") {
-        return `
-          <div class="sticky-actions" data-sticky-actions role="region" aria-label="Quick actions">
-            <a class="btn" data-link="brochure" href="${resolveAssetHref(config.brochurePath, context)}" target="_blank" rel="noopener">Request Package</a>
-            <a class="btn btn--primary" href="${resolveSiteHref("plans.html", context)}">View Plans</a>
-          </div>
-        `;
-      }
-
-      return `
-        <div class="sticky-actions" data-sticky-actions role="region" aria-label="Quick actions">
-          <a class="btn" data-link="brochure" href="${resolveAssetHref(config.brochurePath, context)}" target="_blank" rel="noopener">Request Package</a>
-          <a class="btn btn--primary" href="${resolveSiteHref("contact.html", context)}">Contact Leasing</a>
-        </div>
-      `;
-    }
-
-    return `
-      <div class="sticky-actions" data-sticky-actions role="region" aria-label="Quick actions">
-        <a class="btn" data-link="listing" href="${config.listingUrl}" target="_blank" rel="noopener">MLS Listing</a>
-        <a class="btn btn--primary" href="${resolveSiteHref("contact.html", context)}">Contact Leasing</a>
-        <a class="btn" data-link="maps" href="${config.mapsUrl}" target="_blank" rel="noopener">Open Map</a>
-      </div>
-    `;
+    return "";
   }
 
   function renderVersionSwitch(context) {
