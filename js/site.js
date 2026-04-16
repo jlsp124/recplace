@@ -348,6 +348,146 @@
     }
   }
 
+  function initImageLightbox() {
+    const triggerImages = Array.from(document.querySelectorAll("[data-lightbox] img"));
+    if (!triggerImages.length) return;
+
+    const body = document.body;
+    const docEl = document.documentElement;
+    let scrollYBeforeOpen = 0;
+    let bodyLockStyles = null;
+    let lastActiveElement = null;
+
+    const overlay = document.createElement("div");
+    overlay.className = "image-lightbox";
+    overlay.setAttribute("aria-hidden", "true");
+    overlay.innerHTML = `
+      <div class="image-lightbox__scrim" data-lightbox-close></div>
+      <div class="image-lightbox__dialog" role="dialog" aria-modal="true" aria-label="Expanded image view">
+        <button class="image-lightbox__close" type="button" data-lightbox-close aria-label="Close image viewer">Close</button>
+        <figure class="image-lightbox__figure">
+          <img class="image-lightbox__image" alt="" />
+          <figcaption class="image-lightbox__caption" hidden></figcaption>
+        </figure>
+      </div>
+    `;
+    body.append(overlay);
+
+    const lightboxImage = overlay.querySelector(".image-lightbox__image");
+    const lightboxCaption = overlay.querySelector(".image-lightbox__caption");
+    const closeButton = overlay.querySelector(".image-lightbox__close");
+    const dialog = overlay.querySelector(".image-lightbox__dialog");
+
+    function lockBodyScroll() {
+      if (bodyLockStyles) return;
+
+      scrollYBeforeOpen = window.scrollY || window.pageYOffset || 0;
+      bodyLockStyles = {
+        position: body.style.position,
+        top: body.style.top,
+        left: body.style.left,
+        right: body.style.right,
+        width: body.style.width,
+        overflow: body.style.overflow,
+      };
+
+      body.style.position = "fixed";
+      body.style.top = `-${scrollYBeforeOpen}px`;
+      body.style.left = "0";
+      body.style.right = "0";
+      body.style.width = "100%";
+      body.style.overflow = "hidden";
+      body.classList.add("image-lightbox-open");
+    }
+
+    function unlockBodyScroll() {
+      if (!bodyLockStyles) return;
+
+      const restoreY = scrollYBeforeOpen;
+      const previousScrollBehavior = docEl.style.scrollBehavior;
+
+      body.style.position = bodyLockStyles.position;
+      body.style.top = bodyLockStyles.top;
+      body.style.left = bodyLockStyles.left;
+      body.style.right = bodyLockStyles.right;
+      body.style.width = bodyLockStyles.width;
+      body.style.overflow = bodyLockStyles.overflow;
+      body.classList.remove("image-lightbox-open");
+
+      bodyLockStyles = null;
+      scrollYBeforeOpen = 0;
+      docEl.style.scrollBehavior = "auto";
+      window.scrollTo(0, restoreY);
+      window.setTimeout(() => {
+        docEl.style.scrollBehavior = previousScrollBehavior;
+      }, 0);
+    }
+
+    function hideLightbox() {
+      if (overlay.getAttribute("aria-hidden") === "true") return;
+
+      overlay.setAttribute("aria-hidden", "true");
+      lightboxImage.removeAttribute("src");
+      lightboxImage.alt = "";
+      lightboxCaption.textContent = "";
+      lightboxCaption.hidden = true;
+      unlockBodyScroll();
+      lastActiveElement?.focus?.();
+      lastActiveElement = null;
+    }
+
+    function showLightbox(image) {
+      const figure = image.closest("figure");
+      const captionText = figure?.querySelector("figcaption")?.textContent?.trim() || "";
+
+      lastActiveElement = document.activeElement instanceof HTMLElement ? document.activeElement : image;
+      lightboxImage.src = image.currentSrc || image.src;
+      lightboxImage.alt = image.alt || captionText || "Expanded project image";
+
+      if (captionText) {
+        lightboxCaption.textContent = captionText;
+        lightboxCaption.hidden = false;
+      } else {
+        lightboxCaption.textContent = "";
+        lightboxCaption.hidden = true;
+      }
+
+      overlay.setAttribute("aria-hidden", "false");
+      lockBodyScroll();
+      closeButton?.focus();
+    }
+
+    triggerImages.forEach((image) => {
+      if (!(image instanceof HTMLElement)) return;
+
+      image.classList.add("lightbox-target");
+      image.setAttribute("role", "button");
+      image.setAttribute("tabindex", "0");
+      image.setAttribute("aria-haspopup", "dialog");
+
+      image.addEventListener("click", () => showLightbox(image));
+      image.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter" && event.key !== " ") return;
+        event.preventDefault();
+        showLightbox(image);
+      });
+    });
+
+    overlay.addEventListener("click", (event) => {
+      if (
+        event.target instanceof HTMLElement &&
+        (event.target.closest("[data-lightbox-close]") || event.target === overlay || event.target === dialog)
+      ) {
+        hideLightbox();
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape") return;
+      hideLightbox();
+    });
+  }
+
   function initStickyActions() {
     const sticky = document.querySelector("[data-sticky-actions]");
     if (!sticky) return;
@@ -513,6 +653,7 @@
     initStickyActions();
     initRevealAnimations();
     initSignatureSequence();
+    initImageLightbox();
   }
 
   function safeParseJson(text) {

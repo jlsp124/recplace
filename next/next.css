@@ -5,11 +5,11 @@ body.next-site {
   --next-surface: rgba(255, 255, 255, 0.96);
   --next-surface-soft: rgba(249, 249, 249, 0.9);
   --next-panel: #f3f3f3;
-  --next-border: rgba(18, 22, 25, 0.12);
-  --next-border-strong: rgba(18, 22, 25, 0.22);
+  --next-border: rgba(18, 22, 25, 0.16);
+  --next-border-strong: rgba(18, 22, 25, 0.28);
   --next-text: #16191c;
-  --next-text-soft: rgba(22, 25, 28, 0.74);
-  --next-text-muted: rgba(22, 25, 28, 0.54);
+  --next-text-soft: rgba(22, 25, 28, 0.82);
+  --next-text-muted: rgba(22, 25, 28, 0.64);
   --next-frame: #181c1f;
   --next-accent: #b55e2b;
   --next-accent-soft: rgba(181, 94, 43, 0.1);
@@ -258,7 +258,7 @@ body.next-site .section--tight {
 
 body.next-site .section--tonal {
   background:
-    linear-gradient(180deg, rgba(242, 242, 242, 0.72), rgba(247, 247, 247, 0.4)),
+    linear-gradient(180deg, rgba(242, 242, 242, 0.82), rgba(247, 247, 247, 0.56)),
     rgba(255, 255, 255, 0.6);
 }
 
@@ -463,7 +463,7 @@ body.next-site .contact-list {
   gap: 0;
   padding: 0;
   margin: 0;
-  border-top: 1px solid rgba(18, 22, 25, 0.1);
+  border-top: 1px solid rgba(18, 22, 25, 0.14);
 }
 
 body.next-site .hero-ledger > div,
@@ -475,7 +475,7 @@ body.next-site .contact-list li {
   grid-template-columns: minmax(0, 120px) minmax(0, 1fr);
   gap: 16px;
   padding: 11px 0;
-  border-bottom: 1px solid rgba(18, 22, 25, 0.1);
+  border-bottom: 1px solid rgba(18, 22, 25, 0.14);
 }
 
 body.next-site .ledger-label,
@@ -640,7 +640,7 @@ body.next-site .mini-caption {
   gap: 10px;
   margin-top: 10px;
   padding-top: 10px;
-  border-top: 1px solid rgba(18, 22, 25, 0.1);
+  border-top: 1px solid rgba(18, 22, 25, 0.14);
   color: var(--next-text-muted);
   font-size: 11px;
   letter-spacing: 0.06em;
@@ -700,13 +700,13 @@ body.next-site .metrics-band {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 0;
-  border-top: 1px solid rgba(18, 22, 25, 0.12);
-  border-bottom: 1px solid rgba(18, 22, 25, 0.12);
+  border-top: 1px solid rgba(18, 22, 25, 0.16);
+  border-bottom: 1px solid rgba(18, 22, 25, 0.16);
 }
 
 body.next-site .metric {
   padding: 18px 18px 20px 0;
-  border-right: 1px solid rgba(18, 22, 25, 0.12);
+  border-right: 1px solid rgba(18, 22, 25, 0.16);
   background: transparent;
   box-shadow: none;
 }
@@ -765,12 +765,12 @@ body.next-site .bullet-list {
   gap: 0;
   padding: 0;
   margin: 0;
-  border-top: 1px solid rgba(18, 22, 25, 0.1);
+  border-top: 1px solid rgba(18, 22, 25, 0.14);
 }
 
 body.next-site .bullet-list li {
   padding: 12px 0;
-  border-bottom: 1px solid rgba(18, 22, 25, 0.1);
+  border-bottom: 1px solid rgba(18, 22, 25, 0.14);
   color: var(--next-frame);
   font-size: 15px;
 }
@@ -810,7 +810,7 @@ body.next-site .drawing-card--wide img {
 body.next-site .drawing-label {
   margin-top: 10px;
   padding-top: 10px;
-  border-top: 1px solid rgba(18, 22, 25, 0.1);
+  border-top: 1px solid rgba(18, 22, 25, 0.14);
   color: var(--next-frame);
   font-size: 14px;
   font-weight: 600;
@@ -826,7 +826,7 @@ body.next-site .contact-link-list {
   gap: 0;
   padding: 0;
   margin: 0;
-  border-top: 1px solid rgba(18, 22, 25, 0.1);
+  border-top: 1px solid rgba(18, 22, 25, 0.14);
 }
 
 body.next-site .contact-link-list li {
@@ -834,7 +834,7 @@ body.next-site .contact-link-list li {
   grid-template-columns: 70px minmax(0, 1fr);
   gap: 16px;
   padding: 12px 0;
-  border-bottom: 1px solid rgba(18, 22, 25, 0.1);
+  border-bottom: 1px solid rgba(18, 22, 25, 0.14);
 }
 
 body.next-site .contact-link-list span {
