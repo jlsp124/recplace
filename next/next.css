@@ -256,6 +256,16 @@ body.next-site .section--tight {
   padding: clamp(32px, 4vw, 54px) 0;
 }
 
+@media (min-width: 769px) {
+  body.next-site [aria-labelledby="facts-title"].section--tight {
+    padding-bottom: clamp(20px, 2.4vw, 32px);
+  }
+
+  body.next-site [aria-labelledby="plans-title"].section--tight {
+    padding-top: clamp(20px, 2.4vw, 32px);
+  }
+}
+
 body.next-site .section--tonal {
   background:
     linear-gradient(180deg, rgba(242, 242, 242, 0.82), rgba(247, 247, 247, 0.56)),
