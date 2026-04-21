@@ -256,16 +256,6 @@ body.next-site .section--tight {
   padding: clamp(32px, 4vw, 54px) 0;
 }
 
-@media (min-width: 769px) {
-  body.next-site [aria-labelledby="facts-title"].section--tight {
-    padding-bottom: clamp(20px, 2.4vw, 32px);
-  }
-
-  body.next-site [aria-labelledby="plans-title"].section--tight {
-    padding-top: clamp(20px, 2.4vw, 32px);
-  }
-}
-
 body.next-site .section--tonal {
   background:
     linear-gradient(180deg, rgba(242, 242, 242, 0.82), rgba(247, 247, 247, 0.56)),
@@ -715,7 +705,7 @@ body.next-site .metrics-band {
 }
 
 body.next-site .metric {
-  padding: 18px 18px 20px 0;
+  padding: 18px 20px 20px;
   border-right: 1px solid rgba(18, 22, 25, 0.16);
   background: transparent;
   box-shadow: none;
@@ -723,7 +713,6 @@ body.next-site .metric {
 
 body.next-site .metric:last-child {
   border-right: 0;
-  padding-right: 0;
 }
 
 body.next-site .metric::before {
