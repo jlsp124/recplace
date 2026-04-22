@@ -6,7 +6,7 @@
     listingUrl: "https://www.realtor.ca/real-estate/28883424/2740-recplace-drive-prince-george",
     mirrorUrl:
       "https://highamwalker.com/mylistings.html/listing.c8072356-2740-recplace-drive-prince-george-v2n-1t7.106896467",
-    mapsUrl: "https://www.google.com/maps/search/?api=1&query=53.897384795,-122.771398006",
+    mapsUrl: "https://www.google.com/maps/search/?api=1&query=2740+Recplace+Drive,+Prince+George,+BC+V2N+1T7",
     mlsId: "C8072356",
     address: "2740 Recplace Drive, Prince George, BC V2N 1T7",
     coords: { lat: 53.897384795, lng: -122.771398006 },
