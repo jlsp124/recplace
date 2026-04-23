@@ -1,8 +1,8 @@
 :root {
-  --bg: #f3f0eb;
-  --surface: #fcfbf8;
-  --surface-2: #ece7e0;
-  --surface-3: #d9d2cb;
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --surface-2: #f1f3f5;
+  --surface-3: #e4e7eb;
   --border: rgba(17, 23, 31, 0.14);
   --border-strong: rgba(17, 23, 31, 0.24);
   --text: #151a1d;
@@ -1002,7 +1002,7 @@ body.next-site .contact-actions .btn {
 
 .site-footer {
   border-top: 1px solid rgba(17, 23, 31, 0.1);
-  background: #ece7e0;
+  background: #f1f3f5;
 }
 
 .footer-grid {
