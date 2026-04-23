@@ -1,8 +1,6 @@
 (() => {
   const config = Object.freeze({
     siteName: "Recplace Professional Centre",
-    brochurePath: "Assets/recplace-leasing-brochure.pdf",
-    architecturalSetPath: "Assets/recplace-full-architectural-set.pdf",
     listingUrl: "https://www.realtor.ca/real-estate/28883424/2740-recplace-drive-prince-george",
     mirrorUrl:
       "https://highamwalker.com/mylistings.html/listing.c8072356-2740-recplace-drive-prince-george-v2n-1t7.106896467",
@@ -51,10 +49,6 @@
     const normalizedPage = (page || "index.html").toLowerCase();
     const resolvedPage = context.isNextPath && mirroredPages.has(normalizedPage) ? page : `${context.prefix}${page}`;
     return hash ? `${resolvedPage}#${hash}` : resolvedPage;
-  }
-
-  function resolveAssetHref(assetPath, context) {
-    return `${context.prefix}${assetPath}`;
   }
 
   function resolveVersionHref(context) {
@@ -168,13 +162,11 @@
     targets.forEach((el) => observer.observe(el));
   }
 
-  function hydrateLinks(context) {
+  function hydrateLinks() {
     const linkTargets = {
       listing: config.listingUrl,
       mirror: config.mirrorUrl,
       maps: config.mapsUrl,
-      brochure: resolveAssetHref(config.brochurePath, context),
-      architectural: resolveAssetHref(config.architecturalSetPath, context),
     };
 
     document.querySelectorAll("[data-link]").forEach((el) => {
@@ -182,7 +174,7 @@
       const href = linkTargets[key];
       if (!href) return;
       el.setAttribute("href", href);
-      if (key === "listing" || key === "mirror" || key === "maps" || key === "brochure" || key === "architectural") {
+      if (key === "listing" || key === "mirror" || key === "maps") {
         el.setAttribute("target", "_blank");
         el.setAttribute("rel", "noopener");
       }
@@ -647,7 +639,7 @@
     const sticky = document.getElementById("site-cta");
     if (sticky) sticky.innerHTML = renderStickyActions(context);
 
-    hydrateLinks(context);
+    hydrateLinks();
     initNavToggle();
     initHeroVideo();
     initStickyActions();
