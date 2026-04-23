@@ -19,7 +19,6 @@
   const navItems = [
     { href: "index.html", label: "Home" },
     { href: "leasing.html", label: "Leasing" },
-    { href: "plans.html", label: "Plans" },
     { href: "location.html", label: "Location" },
     { href: "contact.html", label: "Contact" },
   ];
@@ -67,7 +66,10 @@
 
   function renderHeader(context) {
     const navLinks = navItems
-      .map((item) => `<a class="nav-link" data-nav href="${resolveSiteHref(item.href, context)}">${item.label}</a>`)
+      .map(
+        (item) =>
+          `<a class="nav-link" data-nav href="${resolveSiteHref(item.href, context)}"><span class="nav-link-label">${item.label}</span></a>`
+      )
       .join("");
 
     return `
