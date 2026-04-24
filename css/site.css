@@ -1,8 +1,8 @@
 :root {
-  --bg: #f3f0eb;
-  --surface: #fcfbf8;
-  --surface-2: #ece7e0;
-  --surface-3: #d9d2cb;
+  --bg: #f7f7f7;
+  --surface: #ffffff;
+  --surface-2: #f4f4f4;
+  --surface-3: #dddddd;
   --border: rgba(17, 23, 31, 0.14);
   --border-strong: rgba(17, 23, 31, 0.24);
   --text: #151a1d;
@@ -299,7 +299,7 @@ main > .section + .section {
   min-height: var(--nav-h);
   display: flex;
   align-items: center;
-  background: #f7f4ef;
+  background: #ffffff;
   border-bottom: 1px solid rgba(17, 23, 31, 0.12);
 }
 
@@ -407,7 +407,7 @@ main > .section + .section {
   padding: 10px 14px;
   border-radius: 6px;
   border: 1px solid var(--border-strong);
-  background: #f7f4ef;
+  background: #ffffff;
   color: var(--text);
   font-weight: 700;
   letter-spacing: 0.02em;
@@ -419,7 +419,7 @@ main > .section + .section {
 
 body.next-site .site-header,
 body.next-site .site-header .nav-toggle {
-  background: #f7f4ef;
+  background: #ffffff;
 }
 
 body.next-site .site-header .nav-brand,
@@ -470,7 +470,7 @@ body.next-site .site-header .nav-scrim {
     display: inline-flex;
     position: relative;
     z-index: 81;
-    background: #f7f4ef;
+    background: #ffffff;
   }
 
   .nav-scrim {
@@ -499,7 +499,7 @@ body.next-site .site-header .nav-scrim {
     overscroll-behavior: contain;
     z-index: 80;
     padding: calc(var(--nav-h) + 18px) 18px 24px;
-    background: #f8f5f0;
+    background: #ffffff;
     border-left: 1px solid var(--border);
     box-shadow: 0 18px 36px rgba(15, 17, 20, 0.12);
     display: flex;
@@ -584,7 +584,7 @@ body.next-site .site-header .nav-scrim {
     min-height: 100dvh;
     padding: calc(var(--nav-h) + 20px) 20px 24px;
     border-left: 1px solid rgba(18, 22, 25, 0.12);
-    background: #f8f5f0;
+    background: #ffffff;
     box-shadow: none;
     z-index: 80;
     transform: translateX(100%);
@@ -715,7 +715,7 @@ body.next-site .tenant-fit-list li {
   min-height: 100%;
   padding: 14px 16px;
   border: 1px solid rgba(18, 22, 25, 0.12);
-  background: #f8f5f0;
+  background: #ffffff;
   color: var(--next-frame);
   font-size: 15px;
   line-height: 1.45;
@@ -1002,7 +1002,7 @@ body.next-site .contact-actions .btn {
 
 .site-footer {
   border-top: 1px solid rgba(17, 23, 31, 0.1);
-  background: #ece7e0;
+  background: #f4f4f4;
 }
 
 .footer-grid {
@@ -1265,7 +1265,7 @@ textarea:focus {
 }
 
 .logo-tile:hover {
-  background: #f7f4ef;
+  background: #ffffff;
   border-color: rgba(17, 23, 31, 0.16);
   box-shadow: 0 10px 24px rgba(15, 17, 20, 0.05);
 }
@@ -1602,7 +1602,7 @@ textarea:focus {
 body.next-site .site-header {
   z-index: 220 !important;
   overflow: visible !important;
-  background: #f7f4ef !important;
+  background: #ffffff !important;
 }
 
 .site-header .container,
@@ -1617,7 +1617,7 @@ body.next-site .site-header {
 
 .nav-toggle,
 body.next-site .site-header .nav-toggle {
-  background: #f7f4ef !important;
+  background: #ffffff !important;
 }
 
 @media (max-width: 900px) {
@@ -1668,7 +1668,7 @@ body.next-site .site-header .nav-toggle {
     overscroll-behavior: contain !important;
     z-index: 222 !important;
     padding: calc(var(--nav-h) + 18px) 18px 24px !important;
-    background: #f8f5f0 !important;
+    background: #ffffff !important;
     border-left: 1px solid var(--border) !important;
     box-shadow: 0 18px 36px rgba(15, 17, 20, 0.12) !important;
     display: flex !important;
