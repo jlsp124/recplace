@@ -1,40 +1,71 @@
 <!doctype html>
-<html lang="en-CA">
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Updates | RECPLACE Professional Centre</title>
-    <meta name="description" content="Project log for Recplace Professional Centre." />
-    <meta name="theme-color" content="#f2eee7" />
-    <link rel="stylesheet" href="css/site.css" />
-    <link rel="stylesheet" href="next/next.css" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Project Updates | RECPLACE Professional Centre</title>
+    <meta
+      name="description"
+      content="Project updates and notices for RECPLACE Professional Centre in Prince George, British Columbia."
+    >
+    <link rel="canonical" href="updates.html">
+    <link rel="preload" href="Assets/fonts/instrument-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="css/site.css">
+    <link rel="stylesheet" href="css/pages.css">
   </head>
-  <body class="next-site" data-site-version="next">
+  <body data-page="updates">
     <a class="skip-link" href="#main-content">Skip to content</a>
     <header id="site-header"></header>
 
     <main id="main-content" tabindex="-1">
-      <section class="section" aria-labelledby="updates-title">
-        <div class="container">
-          <div class="section-header">
-            <p class="eyebrow">Project log</p>
-            <h1 class="page-title" id="updates-title">Updates</h1>
-            <p class="page-lead">Newest posts appear first.</p>
+      <section class="updates-hero" aria-labelledby="updates-title">
+        <div class="container updates-hero__grid">
+          <div data-reveal>
+            <p class="section-label">Project journal</p>
+            <h1 class="page-title" id="updates-title">RECPLACE <span class="serif">updates.</span></h1>
           </div>
+          <p class="updates-hero__note" data-reveal data-delay="1">
+            Notices and project posts appear here in reverse chronological order. Dates and categories remain attached
+            to each entry for easy scanning.
+          </p>
+        </div>
+      </section>
 
-          <div id="updates-list"></div>
+      <section class="site-section site-section--light" aria-labelledby="journal-title">
+        <div class="container">
+          <h2 class="visually-hidden" id="journal-title">Published project updates</h2>
+          <div class="updates-list" id="updates-list" aria-live="polite"></div>
+          <div class="updates-actions">
+            <button class="button" id="updates-load-more" type="button" hidden>Load more updates</button>
+          </div>
+        </div>
+      </section>
 
-          <div style="height: 12px"></div>
-          <div style="display: flex; justify-content: center">
-            <button class="btn" id="updates-load-more" type="button" hidden>Load more</button>
+      <section class="site-section site-section--dark" aria-labelledby="updates-close-title">
+        <div class="container closing-panel">
+          <div data-reveal>
+            <p class="section-label">Questions</p>
+            <h2 class="section-title" id="updates-close-title">Speak directly with the leasing team.</h2>
+          </div>
+          <div class="closing-panel__action" data-reveal data-delay="1">
+            <a class="button button--light" href="contact.html">Contact</a>
           </div>
         </div>
       </section>
     </main>
 
     <footer id="site-footer"></footer>
-    <div id="site-cta"></div>
-
+    <script id="updates-data" type="application/json">
+      [
+        {
+          "id": "purpose",
+          "date": "2025-12-13",
+          "category": "Notices",
+          "title": "What this page is for",
+          "body": "Construction notices, tenant announcements, closures/renos that affect the building - all in one place."
+        }
+      ]
+    </script>
     <script src="js/site.js" defer></script>
     <script src="js/updates.js" defer></script>
   </body>

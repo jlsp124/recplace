@@ -1,6 +1,6 @@
 (() => {
-  function escapeHtml(text) {
-    return String(text)
+  function escapeHtml(value) {
+    return String(value)
       .replaceAll("&", "&amp;")
       .replaceAll("<", "&lt;")
       .replaceAll(">", "&gt;")
@@ -8,67 +8,64 @@
       .replaceAll("'", "&#039;");
   }
 
-  function formatDate(isoDate) {
-    const dt = new Date(`${isoDate}T00:00:00`);
-    if (Number.isNaN(dt.getTime())) return isoDate;
-    return new Intl.DateTimeFormat(undefined, { year: "numeric", month: "short", day: "2-digit" }).format(dt);
+  function formatDate(value) {
+    const date = new Date(`${value}T00:00:00`);
+    if (Number.isNaN(date.getTime())) return value;
+    return new Intl.DateTimeFormat("en-CA", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    }).format(date);
   }
 
-  function renderUpdate(u) {
-    const title = escapeHtml(u.title ?? "");
-    const body = escapeHtml(u.body ?? "").replaceAll("\n", "<br>");
-    const category = escapeHtml(u.category ?? "Update");
-    const dateLabel = formatDate(u.date ?? "");
-    const image = u.image ? `<img src="${escapeHtml(u.image)}" alt="" loading="lazy">` : "";
+  function renderUpdate(update) {
+    const title = escapeHtml(update.title || "Project update");
+    const category = escapeHtml(update.category || "Update");
+    const date = escapeHtml(formatDate(update.date || ""));
+    const body = escapeHtml(update.body || "").replaceAll("\n", "<br>");
+    const image = update.image
+      ? `<img class="journal-entry__image" src="${escapeHtml(update.image)}" alt="" width="1200" height="675" loading="lazy" decoding="async">`
+      : "";
 
     return `
-      <article class="card" style="margin-bottom:12px">
+      <article class="journal-entry" data-reveal>
+        <div class="journal-entry__meta"><time datetime="${escapeHtml(update.date || "")}">${date}</time><span>${category}</span></div>
+        <h2>${title}</h2>
+        <div class="journal-entry__body"><p>${body}</p></div>
         ${image}
-        <div class="card-body">
-          <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap">
-            <div>
-              <h3 class="card-title">${title}</h3>
-              <div class="muted mono">${escapeHtml(dateLabel)}</div>
-            </div>
-            <span class="tag">${category}</span>
-          </div>
-          <div class="divider" style="margin:14px 0"></div>
-          <p class="card-text">${body}</p>
-        </div>
-      </article>
-    `;
+      </article>`;
   }
 
   async function init() {
     const host = document.getElementById("updates-list");
-    const loadMoreBtn = document.getElementById("updates-load-more");
+    const loadMore = document.getElementById("updates-load-more");
     if (!host || !window.Recplace) return;
 
     const data = await window.Recplace.loadUpdatesData();
-    const updates = [...data].filter(Boolean);
-    updates.sort((a, b) => String(b?.date || "").localeCompare(String(a?.date || "")));
+    const updates = data.filter(Boolean).sort((a, b) => String(b.date || "").localeCompare(String(a.date || "")));
 
     if (!updates.length) {
-      host.innerHTML = `<div class="card"><div class="card-body"><p class="card-text">No updates yet.</p></div></div>`;
+      host.innerHTML = '<p class="updates-empty">No project updates have been published yet.</p>';
+      loadMore?.setAttribute("hidden", "");
       return;
     }
 
     const pageSize = 6;
-    let shown = Math.min(pageSize, updates.length);
+    let visible = Math.min(pageSize, updates.length);
 
     function render() {
-      host.innerHTML = updates.slice(0, shown).map(renderUpdate).join("");
-
-      if (!loadMoreBtn) return;
-      const hasMore = shown < updates.length;
-      loadMoreBtn.hidden = !hasMore;
+      host.innerHTML = updates.slice(0, visible).map(renderUpdate).join("");
+      host.querySelectorAll("[data-reveal]").forEach((entry) => {
+        entry.classList.add("reveal");
+        window.requestAnimationFrame(() => entry.classList.add("is-visible"));
+      });
+      if (loadMore) loadMore.hidden = visible >= updates.length;
     }
 
-    loadMoreBtn?.addEventListener("click", () => {
-      shown = Math.min(shown + pageSize, updates.length);
+    loadMore?.addEventListener("click", () => {
+      visible = Math.min(visible + pageSize, updates.length);
       render();
     });
-
     render();
   }
 
