@@ -1,7 +1,7 @@
 {
   "name": "recplacepro",
   "version": "1.0.0",
-  "description": "Static multi-page site (home, leasing, design, location, updates, contact, admin).",
+  "description": "Static RECPLACE Professional Centre website with Home, Leasing, Updates, Contact, and admin pages.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -18,7 +18,7 @@
     "url": "https://github.com/jlsp124/recplace/issues"
   },
   "homepage": "https://github.com/jlsp124/recplace#readme",
-  "dependencies": {
+  "devDependencies": {
     "playwright": "^1.58.2"
   }
 }

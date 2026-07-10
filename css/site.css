@@ -881,6 +881,7 @@ pre {
     pointer-events: none;
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
     background: var(--paper-light);
     transition:
       clip-path 320ms var(--ease),
@@ -922,11 +923,13 @@ pre {
   }
 
   .site-nav__contact {
+    display: flex;
     width: 100%;
     min-height: 52px;
     flex: 0 0 auto;
     margin-top: 24px;
     padding: 14px 18px;
+    touch-action: manipulation;
   }
 
   .nav-scrim {

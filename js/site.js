@@ -18,9 +18,6 @@
   const navItems = Object.freeze([
     { href: "index.html", label: "Home" },
     { href: "leasing.html", label: "Leasing" },
-    { href: "plans.html", label: "Building" },
-    { href: "location.html", label: "Location" },
-    { href: "design.html", label: "Design" },
     { href: "updates.html", label: "Updates" },
   ]);
 
