@@ -317,6 +317,26 @@
   object-fit: contain;
 }
 
+.partner-link {
+  display: inline-flex;
+  width: fit-content;
+  min-height: 48px;
+  align-items: center;
+  padding-block: 3px;
+  text-decoration: none;
+}
+
+.partner-link img {
+  transition:
+    opacity 180ms ease,
+    transform 220ms var(--ease);
+}
+
+.partner-link:hover img {
+  opacity: 0.72;
+  transform: translateX(4px);
+}
+
 .partner-logo--axiom { width: 178px; }
 .partner-logo--grubb { width: 126px; }
 .partner-logo--908 { width: 188px; }

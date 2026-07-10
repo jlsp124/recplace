@@ -739,8 +739,7 @@
 
 .contact-person {
   display: grid;
-  grid-template-columns: 120px minmax(0, 1fr);
-  gap: clamp(24px, 3vw, 44px);
+  grid-template-columns: minmax(0, 1fr);
   align-items: center;
   padding: clamp(32px, 4vw, 58px);
   border-bottom: 1px solid var(--line);
@@ -748,20 +747,6 @@
 
 .contact-person:last-child {
   border-bottom: 0;
-}
-
-.contact-person__portrait {
-  width: 120px;
-  aspect-ratio: 1;
-  overflow: hidden;
-  background: var(--paper-deep);
-}
-
-.contact-person__portrait img {
-  width: 100%;
-  height: 100%;
-  image-rendering: auto;
-  object-fit: cover;
 }
 
 .contact-person__role {
@@ -1058,13 +1043,8 @@
   }
 
   .contact-person {
-    grid-template-columns: 88px minmax(0, 1fr);
-    gap: 22px;
+    grid-template-columns: minmax(0, 1fr);
     padding: 32px 20px;
-  }
-
-  .contact-person__portrait {
-    width: 88px;
   }
 
   .contact-person__details {

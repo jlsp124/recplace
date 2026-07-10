@@ -240,11 +240,11 @@
       close();
     });
     panel.addEventListener("click", (event) => {
-      if (!root.classList.contains("is-interactive")) {
+      if (!desktop.matches && !root.classList.contains("is-interactive")) {
         event.preventDefault();
         return;
       }
-      if (event.target.closest("a")) close({ returnFocus: false });
+      if (!desktop.matches && event.target.closest("a")) close({ returnFocus: false });
     });
 
     document.addEventListener("keydown", (event) => {
