@@ -250,22 +250,22 @@ body.home-redesign .skip-link {
   text-decoration: none;
 }
 
-.home-button--primary {
+body.home-redesign .home-button--primary {
   background: var(--home-ink);
   color: var(--home-light);
 }
 
-.home-button--primary:hover {
+body.home-redesign .home-button--primary:hover {
   background: var(--home-accent);
   border-color: var(--home-accent);
 }
 
-.home-button--secondary {
+body.home-redesign .home-button--secondary {
   background: transparent;
   color: var(--home-ink);
 }
 
-.home-button--secondary:hover {
+body.home-redesign .home-button--secondary:hover {
   background: var(--home-paper);
 }
 
@@ -843,24 +843,24 @@ body.home-redesign .home-tenant-list {
   justify-content: flex-end;
 }
 
-.home-button--light {
+body.home-redesign .home-button--light {
   border-color: var(--home-light);
   background: var(--home-light);
   color: var(--home-dark);
 }
 
-.home-button--light:hover {
+body.home-redesign .home-button--light:hover {
   border-color: #ffffff;
   background: #ffffff;
 }
 
-.home-button--outline-light {
+body.home-redesign .home-button--outline-light {
   border-color: rgba(245, 240, 231, 0.5);
   background: transparent;
   color: var(--home-light);
 }
 
-.home-button--outline-light:hover {
+body.home-redesign .home-button--outline-light:hover {
   border-color: var(--home-light);
   background: rgba(245, 240, 231, 0.08);
 }
