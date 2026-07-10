@@ -164,38 +164,89 @@
 
     const desktop = window.matchMedia("(min-width: 901px)");
     let lastFocused = null;
+    let interactionTimer = 0;
+    let lockedScrollY = 0;
+    let bodyLockStyles = null;
 
     const focusable = () =>
       Array.from(panel.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'));
 
+    function lockPageScroll() {
+      if (bodyLockStyles) return;
+      lockedScrollY = window.scrollY || window.pageYOffset || 0;
+      bodyLockStyles = {
+        position: document.body.style.position,
+        top: document.body.style.top,
+        left: document.body.style.left,
+        right: document.body.style.right,
+        width: document.body.style.width,
+        overflow: document.body.style.overflow,
+      };
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${lockedScrollY}px`;
+      document.body.style.left = "0";
+      document.body.style.right = "0";
+      document.body.style.width = "100%";
+      document.body.style.overflow = "hidden";
+    }
+
+    function unlockPageScroll() {
+      if (!bodyLockStyles) return;
+      const restoreY = lockedScrollY;
+      Object.assign(document.body.style, bodyLockStyles);
+      bodyLockStyles = null;
+      lockedScrollY = 0;
+      window.scrollTo(0, restoreY);
+    }
+
     function close({ returnFocus = true } = {}) {
       const wasOpen = root.classList.contains("is-open");
-      root.classList.remove("is-open");
+      window.clearTimeout(interactionTimer);
+      root.classList.remove("is-open", "is-interactive");
       document.body.classList.remove("nav-open");
       toggle.setAttribute("aria-expanded", "false");
       scrim.tabIndex = -1;
-      if (wasOpen && returnFocus) (lastFocused || toggle).focus();
+      unlockPageScroll();
+      if (wasOpen && returnFocus) {
+        const focusTarget = lastFocused instanceof HTMLElement && lastFocused !== document.body ? lastFocused : toggle;
+        focusTarget.focus();
+      }
     }
 
     function open() {
       if (desktop.matches) return;
-      lastFocused = document.activeElement;
+      lastFocused = document.activeElement instanceof HTMLElement ? document.activeElement : toggle;
+      window.clearTimeout(interactionTimer);
+      root.classList.remove("is-interactive");
       root.classList.add("is-open");
       document.body.classList.add("nav-open");
+      lockPageScroll();
       toggle.setAttribute("aria-expanded", "true");
       scrim.tabIndex = 0;
+      interactionTimer = window.setTimeout(() => {
+        if (root.classList.contains("is-open")) root.classList.add("is-interactive");
+      }, 340);
       window.setTimeout(() => {
         if (root.classList.contains("is-open")) focusable()[0]?.focus();
       }, 30);
     }
 
-    toggle.addEventListener("click", () => {
+    toggle.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
       if (root.classList.contains("is-open")) close();
       else open();
     });
 
-    scrim.addEventListener("click", () => close());
+    scrim.addEventListener("click", (event) => {
+      event.preventDefault();
+      close();
+    });
     panel.addEventListener("click", (event) => {
+      if (!root.classList.contains("is-interactive")) {
+        event.preventDefault();
+        return;
+      }
       if (event.target.closest("a")) close({ returnFocus: false });
     });
 

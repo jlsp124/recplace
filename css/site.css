@@ -39,7 +39,11 @@
   --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
   --container: 1480px;
   --gutter: clamp(20px, 4vw, 72px);
-  --section-space: clamp(76px, 10vw, 164px);
+  --content-page-title: clamp(2.9rem, 5.8vw, 7rem);
+  --content-section-title: clamp(2.3rem, 4.1vw, 5rem);
+  --content-section-space: clamp(64px, 7.5vw, 120px);
+  --content-hero-max: 820px;
+  --section-space: var(--content-section-space);
   --header-height: 76px;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -173,7 +177,7 @@ p {
 }
 
 .site-section--tight {
-  padding-block: clamp(58px, 7vw, 108px);
+  padding-block: clamp(50px, 6vw, 90px);
 }
 
 .site-section--light {
@@ -226,17 +230,17 @@ p {
 }
 
 .display-title {
-  font-size: clamp(3rem, 8vw, 9.5rem);
+  font-size: clamp(2.9rem, 6.5vw, 7.5rem);
 }
 
 .page-title {
   max-width: 13ch;
-  font-size: clamp(3.2rem, 7.2vw, 8.4rem);
+  font-size: var(--content-page-title);
 }
 
 .section-title {
   max-width: 15ch;
-  font-size: clamp(2.45rem, 5.1vw, 6.2rem);
+  font-size: var(--content-section-title);
 }
 
 .serif,
@@ -250,11 +254,11 @@ p {
 
 .page-lead,
 .section-lead {
-  max-width: 42rem;
+  max-width: 46rem;
   margin-bottom: 0;
   color: var(--muted);
-  font-size: clamp(1.08rem, 1vw + 0.75rem, 1.48rem);
-  line-height: 1.48;
+  font-size: clamp(1.05rem, 0.65vw + 0.78rem, 1.34rem);
+  line-height: 1.52;
 }
 
 .site-section--dark .page-lead,
@@ -512,6 +516,10 @@ p {
 }
 
 .site-nav__contact {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
   padding: 10px 14px;
   border: 1px solid var(--ink);
   font-family: var(--font-mono);
@@ -856,13 +864,23 @@ pre {
     right: 0;
     width: min(86vw, 420px);
     max-width: 100vw;
-    display: block;
+    display: flex;
     height: 100dvh;
+    min-height: 100svh;
+    flex-direction: column;
+    align-items: stretch;
     visibility: hidden;
-    padding: 104px 26px 34px;
+    padding:
+      calc(92px + env(safe-area-inset-top, 0px))
+      26px
+      calc(26px + env(safe-area-inset-bottom, 0px));
+    overflow-x: hidden;
+    overflow-y: auto;
     clip-path: inset(0 0 0 100%);
     opacity: 0;
     pointer-events: none;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
     background: var(--paper-light);
     transition:
       clip-path 320ms var(--ease),
@@ -874,15 +892,20 @@ pre {
     visibility: visible;
     clip-path: inset(0);
     opacity: 1;
-    pointer-events: auto;
     transition:
       clip-path 320ms var(--ease),
       opacity 160ms ease,
       visibility 0s;
   }
 
+  .site-nav.is-open.is-interactive .site-nav__panel {
+    pointer-events: auto;
+  }
+
   .site-nav__links {
     display: grid;
+    width: 100%;
+    flex: 0 0 auto;
     gap: 0;
   }
 
@@ -900,8 +923,10 @@ pre {
 
   .site-nav__contact {
     width: 100%;
-    min-height: 50px;
-    margin-top: 28px;
+    min-height: 52px;
+    flex: 0 0 auto;
+    margin-top: 24px;
+    padding: 14px 18px;
   }
 
   .nav-scrim {
@@ -935,16 +960,16 @@ pre {
 @media (max-width: 680px) {
   :root {
     --gutter: 20px;
-    --section-space: 74px;
+    --section-space: 70px;
   }
 
   .page-title {
-    font-size: clamp(3.1rem, 16vw, 5.5rem);
+    font-size: clamp(2.9rem, 14vw, 5rem);
     line-height: 0.94;
   }
 
   .section-title {
-    font-size: clamp(2.5rem, 12vw, 4.4rem);
+    font-size: clamp(2.35rem, 10.5vw, 4rem);
   }
 
   .button-row {

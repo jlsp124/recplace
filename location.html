@@ -10,7 +10,15 @@
     >
     <link rel="canonical" href="location.html">
     <link rel="preload" href="Assets/fonts/instrument-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="Assets/media/recplace-drone-wide.webp" as="image" type="image/webp" fetchpriority="high">
+    <link
+      rel="preload"
+      href="Assets/media/site-context-wide-1600.webp"
+      imagesrcset="Assets/media/site-context-wide-960.webp 960w, Assets/media/site-context-wide-1600.webp 1600w"
+      imagesizes="100vw"
+      as="image"
+      type="image/webp"
+      fetchpriority="high"
+    >
     <link rel="stylesheet" href="css/site.css">
     <link rel="stylesheet" href="css/pages.css">
   </head>
@@ -21,10 +29,12 @@
     <main id="main-content" tabindex="-1">
       <section class="location-hero" aria-labelledby="location-title">
         <img
-          src="Assets/media/recplace-drone-wide.webp"
+          src="Assets/media/site-context-wide-1600.webp"
+          srcset="Assets/media/site-context-wide-960.webp 960w, Assets/media/site-context-wide-1600.webp 1600w"
+          sizes="100vw"
           alt="Wide aerial view of the RECPLACE site within Prince George's commercial corridor"
-          width="1920"
-          height="1080"
+          width="1600"
+          height="1186"
           decoding="async"
           fetchpriority="high"
         >
@@ -40,7 +50,6 @@
               <a class="button button--light" data-link="maps" href="https://www.google.com/maps/search/?api=1&amp;query=2740+Recplace+Drive,+Prince+George,+BC+V2N+1T7">Open in Google Maps</a>
             </div>
           </div>
-          <p class="location-hero__address mono" data-reveal>2740 Recplace Drive · Prince George, British Columbia</p>
         </div>
       </section>
 
@@ -50,8 +59,7 @@
             <p class="section-label">Site context</p>
             <h2 class="section-title" id="location-context-title">Access, visibility, and room to arrive.</h2>
             <p class="section-lead">
-              The site places a professional and commercial address within an established commercial corridor while
-              providing on-site parking for tenants and visitors.
+              The site sits within an established commercial corridor shaped by visible road connections.
             </p>
           </div>
           <dl class="fact-ledger location-story__facts" data-reveal data-delay="1">
@@ -59,24 +67,9 @@
             <div class="fact-ledger__row"><dt>Site area</dt><dd>Approx. 1.5 acres</dd></div>
             <div class="fact-ledger__row"><dt>Access</dt><dd>Direct commercial access</dd></div>
             <div class="fact-ledger__row"><dt>Visibility</dt><dd>Highway-visible context</dd></div>
-            <div class="fact-ledger__row"><dt>Parking</dt><dd>118 stalls</dd></div>
           </dl>
         </div>
       </section>
-
-      <figure data-reveal>
-        <div class="full-bleed-media">
-          <img
-            src="Assets/media/recplace-drone-site.webp"
-            alt="Aerial view directly above the RECPLACE parcel showing the site and nearby roads"
-            width="1920"
-            height="1080"
-            loading="lazy"
-            decoding="async"
-          >
-        </div>
-        <figcaption class="container media-caption"><span>RECPLACE site</span><span>2740 Recplace Drive</span></figcaption>
-      </figure>
 
       <section class="site-section site-section--dark" aria-labelledby="map-title">
         <div class="container">
@@ -92,17 +85,6 @@
         </div>
       </section>
 
-      <section class="site-section site-section--light" aria-labelledby="location-close-title">
-        <div class="container closing-panel">
-          <div data-reveal>
-            <p class="section-label">Next</p>
-            <h2 class="section-title" id="location-close-title">See how the building meets the site.</h2>
-          </div>
-          <div class="closing-panel__action" data-reveal data-delay="1">
-            <a class="button button--solid" href="plans.html">Explore the Building</a>
-          </div>
-        </div>
-      </section>
     </main>
 
     <footer id="site-footer"></footer>
