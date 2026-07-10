@@ -84,31 +84,7 @@
     });
   }
 
-  function initPlanKeyboardNavigation() {
-    document.querySelectorAll("[data-plan-switcher]").forEach((switcher) => {
-      const buttons = Array.from(switcher.querySelectorAll("[data-plan-tab]"));
-      if (!buttons.length) return;
-
-      buttons.forEach((button, buttonIndex) => {
-        button.addEventListener("keydown", (event) => {
-          let nextIndex = buttonIndex;
-
-          if (event.key === "ArrowRight" || event.key === "ArrowDown") nextIndex = (buttonIndex + 1) % buttons.length;
-          else if (event.key === "ArrowLeft" || event.key === "ArrowUp") nextIndex = (buttonIndex - 1 + buttons.length) % buttons.length;
-          else if (event.key === "Home") nextIndex = 0;
-          else if (event.key === "End") nextIndex = buttons.length - 1;
-          else return;
-
-          event.preventDefault();
-          buttons[nextIndex].focus();
-          buttons[nextIndex].click();
-        });
-      });
-    });
-  }
-
   document.addEventListener("DOMContentLoaded", () => {
     initStorySwitcher();
-    initPlanKeyboardNavigation();
   });
 })();
