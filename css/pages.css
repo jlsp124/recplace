@@ -559,7 +559,7 @@
 }
 
 .material-ledger__item--accent {
-  --material: #c55227;
+  --material: var(--orange);
 }
 
 .design-team {

@@ -23,16 +23,16 @@
 }
 
 :root {
-  --paper: #f0ede5;
-  --paper-deep: #e5e0d6;
-  --paper-light: #faf8f2;
+  --paper: #f0efeb;
+  --paper-deep: #e6e3dd;
+  --paper-light: #fbfaf7;
   --ink: #171917;
   --graphite: #2b2f2d;
   --muted: #686861;
-  --line: #c9c4b9;
+  --line: #c9c6bf;
   --line-dark: #4b4e4a;
-  --orange: #c55227;
-  --orange-dark: #99401f;
+  --orange: #bb5838;
+  --orange-dark: #91452f;
   --white: #fffdf8;
   --font-sans: "Instrument Sans", "Avenir Next", Avenir, "Segoe UI", sans-serif;
   --font-serif: "Instrument Serif", Georgia, serif;
