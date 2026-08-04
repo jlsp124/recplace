@@ -31,8 +31,7 @@
   --muted: #686861;
   --line: #c9c6bf;
   --line-dark: #4b4e4a;
-  --orange: #b35a43;
-  --orange-dark: #894536;
+  --accent: #555b58;
   --white: #fffdf8;
   --font-sans: "Instrument Sans", "Avenir Next", Avenir, "Segoe UI", sans-serif;
   --font-serif: "Instrument Serif", Georgia, serif;
@@ -111,12 +110,12 @@ a {
 }
 
 :focus-visible {
-  outline: 3px solid var(--orange);
+  outline: 3px solid var(--accent);
   outline-offset: 4px;
 }
 
 ::selection {
-  background: var(--orange);
+  background: var(--accent);
   color: var(--white);
 }
 
@@ -211,7 +210,7 @@ p {
 .section-label::before {
   width: 28px;
   height: 2px;
-  background: var(--orange);
+  background: var(--accent);
   content: "";
 }
 
@@ -313,8 +312,8 @@ p {
 
 .button--solid:hover,
 .btn--primary:hover {
-  border-color: var(--orange);
-  background: var(--orange);
+  border-color: var(--accent);
+  background: var(--accent);
 }
 
 .button--light {
@@ -342,7 +341,7 @@ p {
 }
 
 .text-link::after {
-  color: var(--orange);
+  color: var(--accent);
   content: "↗";
   transition: transform 180ms ease;
 }
@@ -448,7 +447,7 @@ p {
 .site-brand__mark::after {
   width: 7px;
   height: 7px;
-  background: var(--orange);
+  background: var(--accent);
   content: "";
 }
 
@@ -500,7 +499,7 @@ p {
   height: 2px;
   transform: scaleX(0);
   transform-origin: right;
-  background: var(--orange);
+  background: var(--accent);
   content: "";
   transition: transform 220ms var(--ease);
 }
@@ -605,7 +604,7 @@ p {
 
 .site-footer__links a:hover {
   text-decoration: underline;
-  text-decoration-color: var(--orange);
+  text-decoration-color: var(--accent);
 }
 
 .site-footer__base {
@@ -672,7 +671,7 @@ p {
 }
 
 .editorial-list__index {
-  color: var(--orange);
+  color: var(--accent);
   font-family: var(--font-mono);
   font-size: 0.64rem;
   letter-spacing: 0.08em;
@@ -818,40 +817,6 @@ pre {
 }
 
 /* Responsive */
-
-@media (min-width: 901px) {
-  :root {
-    --container: 1740px;
-    --gutter: clamp(24px, 3vw, 58px);
-    --content-hero-max: 870px;
-    --section-space: clamp(64px, 7.1vw, 116px);
-    --header-height: 84px;
-  }
-
-  .button,
-  .btn {
-    min-height: 52px;
-    padding: 15px 22px;
-  }
-
-  .text-link {
-    min-height: 50px;
-  }
-
-  .site-brand__mark::after {
-    width: 8px;
-    height: 8px;
-  }
-
-  .site-nav__contact {
-    min-height: 50px;
-    padding: 14px 20px;
-  }
-
-  .media-caption {
-    margin-top: 14px;
-  }
-}
 
 @media (max-width: 1120px) {
   .site-brand__descriptor {

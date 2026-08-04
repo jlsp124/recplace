@@ -135,7 +135,7 @@
 }
 
 .tenant-group__number {
-  color: var(--orange);
+  color: var(--accent);
   font-family: var(--font-mono);
   font-size: 0.68rem;
 }
@@ -296,7 +296,7 @@
 }
 
 .floor-row__index {
-  color: var(--orange);
+  color: var(--accent);
   font-family: var(--font-serif);
   font-size: clamp(3rem, 5vw, 6rem);
   line-height: 1;
@@ -435,7 +435,7 @@
 }
 
 .location-map-link::after {
-  color: var(--orange);
+  color: var(--accent);
   content: "↗";
   font-size: clamp(2rem, 5vw, 5rem);
   transition: transform 200ms var(--ease);
@@ -559,7 +559,7 @@
 }
 
 .material-ledger__item--accent {
-  --material: var(--orange);
+  --material: var(--accent);
 }
 
 .design-team {
@@ -662,7 +662,7 @@
 .journal-entry__meta span {
   display: block;
   margin-top: 8px;
-  color: var(--orange);
+  color: var(--accent);
 }
 
 .journal-entry h2 {
@@ -757,7 +757,7 @@
 
 .contact-person__role {
   margin-bottom: 12px;
-  color: var(--orange);
+  color: var(--accent);
 }
 
 .contact-person h2 {

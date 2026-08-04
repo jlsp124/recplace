@@ -124,7 +124,7 @@
   bottom: clamp(20px, 3vw, 48px);
   max-width: 20rem;
   padding: 13px 16px;
-  border-left: 3px solid var(--orange);
+  border-left: 3px solid var(--accent);
   background: var(--ink);
   color: var(--paper-light);
   font-family: var(--font-mono);
