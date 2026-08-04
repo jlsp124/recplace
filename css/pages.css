@@ -620,7 +620,7 @@
 /* Updates */
 
 .updates-hero {
-  padding: clamp(64px, 7.5vw, 118px) 0 clamp(52px, 6vw, 88px);
+  padding: clamp(58px, 6.5vw, 100px) 0 clamp(48px, 5.2vw, 74px);
   background: var(--paper-light);
 }
 
@@ -678,10 +678,16 @@
   color: var(--muted);
 }
 
-.journal-entry__image {
+.journal-entry__media {
   grid-column: 2 / -1;
-  aspect-ratio: 16 / 7;
+  display: block;
   margin-top: 10px;
+  overflow: hidden;
+}
+
+.journal-entry__image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
   object-fit: cover;
 }
 
@@ -893,7 +899,7 @@
     grid-column: 2;
   }
 
-  .journal-entry__image {
+  .journal-entry__media {
     grid-column: 2;
   }
 
@@ -1029,7 +1035,7 @@
   }
 
   .journal-entry__body,
-  .journal-entry__image {
+  .journal-entry__media {
     grid-column: 1;
   }
 

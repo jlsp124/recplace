@@ -39,10 +39,10 @@
   --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
   --container: 1480px;
   --gutter: clamp(20px, 4vw, 72px);
-  --content-page-title: clamp(2.9rem, 5.8vw, 7rem);
-  --content-section-title: clamp(2.3rem, 4.1vw, 5rem);
-  --content-section-space: clamp(64px, 7.5vw, 120px);
-  --content-hero-max: 820px;
+  --content-page-title: clamp(2.75rem, 5.1vw, 6.2rem);
+  --content-section-title: clamp(2.15rem, 3.65vw, 4.4rem);
+  --content-section-space: clamp(58px, 6.5vw, 104px);
+  --content-hero-max: 760px;
   --section-space: var(--content-section-space);
   --header-height: 76px;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -967,12 +967,12 @@ pre {
   }
 
   .page-title {
-    font-size: clamp(2.9rem, 14vw, 5rem);
+    font-size: clamp(2.8rem, 13vw, 4.7rem);
     line-height: 0.94;
   }
 
   .section-title {
-    font-size: clamp(2.35rem, 10.5vw, 4rem);
+    font-size: clamp(2.2rem, 9.5vw, 3.7rem);
   }
 
   .button-row {

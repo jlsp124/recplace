@@ -1,9 +1,42 @@
 [
   {
-    "id": "purpose",
-    "date": "2025-12-13",
-    "category": "Notices",
-    "title": "What this page is for",
-    "body": "Construction notices, tenant announcements, closures/renos that affect the building - all in one place."
+    "id": "third-floor-underway",
+    "date": "2026-07-30",
+    "category": "Construction",
+    "title": "Third floor underway",
+    "body": "Construction has progressed to the third level as the building's full scale takes shape.",
+    "image": "Assets/updates/third-floor-progress-1600.webp",
+    "imageSmall": "Assets/updates/third-floor-progress-960.webp",
+    "imageAlt": "Aerial view of RECPLACE with third-floor construction underway"
+  },
+  {
+    "id": "precast-installation",
+    "date": "2026-07",
+    "category": "Construction",
+    "title": "Precast installation begins",
+    "body": "Precast wall panels arrived on site and installation began, marking the start of vertical construction.",
+    "image": "Assets/updates/precast-installation-1600.webp",
+    "imageSmall": "Assets/updates/precast-installation-960.webp",
+    "imageAlt": "Crane, precast wall panels, and installation activity at the RECPLACE site"
+  },
+  {
+    "id": "foundation-progress",
+    "date": "2026-06-20",
+    "category": "Construction",
+    "title": "Foundation work establishes the footprint",
+    "body": "Footings and foundation work established the building footprint as site work advanced through June.",
+    "image": "Assets/updates/foundation-progress-1600.webp",
+    "imageSmall": "Assets/updates/foundation-progress-960.webp",
+    "imageAlt": "Aerial detail of RECPLACE footings and foundation work"
+  },
+  {
+    "id": "groundbreaking",
+    "date": "2026-05-25",
+    "category": "Milestone",
+    "title": "Groundbreaking",
+    "body": "Construction officially begins at RECPLACE Professional Centre, marking the start of work at 2740 Recplace Drive.",
+    "image": "Assets/updates/groundbreaking-ceremony-1600.webp",
+    "imageSmall": "Assets/updates/groundbreaking-ceremony-960.webp",
+    "imageAlt": "Project attendees taking part in the RECPLACE groundbreaking ceremony"
   }
 ]

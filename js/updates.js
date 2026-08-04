@@ -9,6 +9,14 @@
   }
 
   function formatDate(value) {
+    const monthOnly = /^(\d{4})-(\d{2})$/.exec(value);
+    if (monthOnly) {
+      const date = new Date(Number(monthOnly[1]), Number(monthOnly[2]) - 1, 1);
+      return new Intl.DateTimeFormat("en-CA", {
+        year: "numeric",
+        month: "long",
+      }).format(date);
+    }
     const date = new Date(`${value}T00:00:00`);
     if (Number.isNaN(date.getTime())) return value;
     return new Intl.DateTimeFormat("en-CA", {
@@ -24,7 +32,10 @@
     const date = escapeHtml(formatDate(update.date || ""));
     const body = escapeHtml(update.body || "").replaceAll("\n", "<br>");
     const image = update.image
-      ? `<img class="journal-entry__image" src="${escapeHtml(update.image)}" alt="" width="1200" height="675" loading="lazy" decoding="async">`
+      ? `<picture class="journal-entry__media">
+          ${update.imageSmall ? `<source srcset="${escapeHtml(update.imageSmall)} 960w, ${escapeHtml(update.image)} 1600w" sizes="(max-width: 680px) 100vw, (max-width: 900px) 72vw, 68vw" type="image/webp">` : ""}
+          <img class="journal-entry__image" src="${escapeHtml(update.image)}" alt="${escapeHtml(update.imageAlt || "")}" width="1600" height="900" loading="lazy" decoding="async">
+        </picture>`
       : "";
 
     return `

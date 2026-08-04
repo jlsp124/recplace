@@ -4,11 +4,8 @@
   const config = Object.freeze({
     siteName: "RECPLACE Professional Centre",
     listingUrl: "https://www.realtor.ca/real-estate/28883424/2740-recplace-drive-prince-george",
-    mirrorUrl: "https://highamwalker.com/mylistings.html/listing.c8072356-2740-recplace-drive-prince-george-v2n-1t7.106896467",
     mapsUrl: "https://www.google.com/maps/search/?api=1&query=2740+Recplace+Drive,+Prince+George,+BC+V2N+1T7",
-    mlsId: "C8072356",
     address: "2740 Recplace Drive, Prince George, BC V2N 1T7",
-    coords: { lat: 53.897384795, lng: -122.771398006 },
     contacts: {
       jen: { name: "Jen Higham", phone: "2506137207", phoneLabel: "(250) 613-7207", email: "jen@realtypg.com" },
       rod: { name: "Rod Walker", phone: "2506178090", phoneLabel: "(250) 617-8090", email: "rod@realtypg.com" },
@@ -100,7 +97,6 @@
   function hydrateLinks() {
     const linkTargets = {
       listing: config.listingUrl,
-      mirror: config.mirrorUrl,
       maps: config.mapsUrl,
     };
 
@@ -124,10 +120,6 @@
 
     document.querySelectorAll("[data-text='address']").forEach((element) => {
       element.textContent = config.address;
-    });
-
-    document.querySelectorAll("[data-text='coords']").forEach((element) => {
-      element.textContent = `${config.coords.lat.toFixed(6)}, ${config.coords.lng.toFixed(6)}`;
     });
   }
 
@@ -221,11 +213,10 @@
       toggle.setAttribute("aria-expanded", "true");
       scrim.tabIndex = 0;
       interactionTimer = window.setTimeout(() => {
-        if (root.classList.contains("is-open")) root.classList.add("is-interactive");
+        if (!root.classList.contains("is-open")) return;
+        root.classList.add("is-interactive");
+        focusable()[0]?.focus();
       }, 340);
-      window.setTimeout(() => {
-        if (root.classList.contains("is-open")) focusable()[0]?.focus();
-      }, 30);
     }
 
     toggle.addEventListener("click", (event) => {
