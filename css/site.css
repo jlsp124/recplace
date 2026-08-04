@@ -31,8 +31,8 @@
   --muted: #686861;
   --line: #c9c6bf;
   --line-dark: #4b4e4a;
-  --orange: #bb5838;
-  --orange-dark: #91452f;
+  --orange: #b35a43;
+  --orange-dark: #894536;
   --white: #fffdf8;
   --font-sans: "Instrument Sans", "Avenir Next", Avenir, "Segoe UI", sans-serif;
   --font-serif: "Instrument Serif", Georgia, serif;
@@ -407,7 +407,7 @@ p {
   top: 0;
   height: var(--header-height);
   border-bottom: 1px solid transparent;
-  background: rgba(240, 237, 229, 0.96);
+  background: rgba(240, 239, 235, 0.96);
   transition:
     border-color 180ms ease,
     background-color 180ms ease;
@@ -415,7 +415,7 @@ p {
 
 #site-header.is-scrolled {
   border-color: var(--line);
-  background: rgba(250, 248, 242, 0.98);
+  background: rgba(251, 250, 247, 0.98);
 }
 
 .site-header__inner {
@@ -818,6 +818,40 @@ pre {
 }
 
 /* Responsive */
+
+@media (min-width: 901px) {
+  :root {
+    --container: 1740px;
+    --gutter: clamp(24px, 3vw, 58px);
+    --content-hero-max: 870px;
+    --section-space: clamp(64px, 7.1vw, 116px);
+    --header-height: 84px;
+  }
+
+  .button,
+  .btn {
+    min-height: 52px;
+    padding: 15px 22px;
+  }
+
+  .text-link {
+    min-height: 50px;
+  }
+
+  .site-brand__mark::after {
+    width: 8px;
+    height: 8px;
+  }
+
+  .site-nav__contact {
+    min-height: 50px;
+    padding: 14px 20px;
+  }
+
+  .media-caption {
+    margin-top: 14px;
+  }
+}
 
 @media (max-width: 1120px) {
   .site-brand__descriptor {
