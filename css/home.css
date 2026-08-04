@@ -1,8 +1,8 @@
 .home-hero {
   display: grid;
-  min-height: min(var(--content-hero-max), calc(100svh - var(--header-height)));
+  min-height: calc(100svh - var(--header-height));
   grid-template-columns: minmax(390px, 0.82fr) minmax(0, 1.18fr);
-  background: var(--paper-light);
+  background: #fff;
 }
 
 .home-hero__content {
@@ -81,7 +81,7 @@
 .home-hero__media::after {
   position: absolute;
   inset: 0;
-  border: clamp(10px, 1.35vw, 22px) solid var(--paper-light);
+  border: clamp(10px, 1.35vw, 22px) solid #fff;
   content: "";
   pointer-events: none;
 }
