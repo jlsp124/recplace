@@ -3,12 +3,11 @@
 
   const config = Object.freeze({
     siteName: "RECPLACE Professional Centre",
-    listingUrl: "https://www.realtor.ca/real-estate/28883424/2740-recplace-drive-prince-george",
+    jenProfileUrl: "https://royallepageaspirerealty.com/teams/jen-higham/",
     mapsUrl: "https://www.google.com/maps/search/?api=1&query=2740+Recplace+Drive,+Prince+George,+BC+V2N+1T7",
     address: "2740 Recplace Drive, Prince George, BC V2N 1T7",
     contacts: {
       jen: { name: "Jen Higham", phone: "2506137207", phoneLabel: "(250) 613-7207", email: "jen@realtypg.com" },
-      rod: { name: "Rod Walker", phone: "2506178090", phoneLabel: "(250) 617-8090", email: "rod@realtypg.com" },
     },
   });
 
@@ -83,7 +82,7 @@
             <div class="site-footer__links">
               <a data-call="jen" href="tel:${config.contacts.jen.phone}">${config.contacts.jen.phoneLabel}</a>
               <a data-email="jen" href="mailto:${config.contacts.jen.email}">${config.contacts.jen.email}</a>
-              <a data-link="listing" href="${config.listingUrl}">View listing</a>
+              <a data-link="jen-profile" href="${config.jenProfileUrl}">Jen Higham profile</a>
             </div>
           </div>
         </div>
@@ -96,7 +95,7 @@
 
   function hydrateLinks() {
     const linkTargets = {
-      listing: config.listingUrl,
+      "jen-profile": config.jenProfileUrl,
       maps: config.mapsUrl,
     };
 
