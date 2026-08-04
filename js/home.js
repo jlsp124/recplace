@@ -2,15 +2,19 @@
   function initHeroVideo() {
     const video = document.querySelector("[data-hero-video]");
     const media = video?.closest(".home-hero__media");
-    const source = video?.querySelector("source[data-src]");
+    const source = video?.querySelector("source[data-src-desktop]");
     if (!video || !media || !source) return;
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const smallScreen = window.matchMedia("(max-width: 900px)");
+    const mobileScreen = window.matchMedia("(max-width: 900px)");
     const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
 
     function shouldUseVideo() {
-      return !reducedMotion.matches && !smallScreen.matches && !connection?.saveData;
+      return !reducedMotion.matches && !connection?.saveData;
+    }
+
+    function desiredSource() {
+      return mobileScreen.matches ? source.dataset.srcMobile : source.dataset.srcDesktop;
     }
 
     function stopVideo() {
@@ -24,8 +28,11 @@
 
     async function startVideo() {
       if (!shouldUseVideo()) return stopVideo();
-      if (!source.hasAttribute("src")) {
-        source.src = source.dataset.src;
+      const nextSource = desiredSource();
+      if (!nextSource) return stopVideo();
+      if (source.getAttribute("src") !== nextSource) {
+        media.classList.remove("has-playing-video");
+        source.src = nextSource;
         video.load();
       }
       try {
@@ -38,7 +45,7 @@
     video.addEventListener("playing", () => media.classList.add("has-playing-video"));
     video.addEventListener("error", () => media.classList.remove("has-playing-video"));
     reducedMotion.addEventListener?.("change", startVideo);
-    smallScreen.addEventListener?.("change", startVideo);
+    mobileScreen.addEventListener?.("change", startVideo);
     connection?.addEventListener?.("change", startVideo);
     startVideo();
   }
