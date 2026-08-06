@@ -674,7 +674,7 @@
 
 .contact-person__visual {
   display: grid;
-  align-self: start;
+  align-self: center;
   justify-items: center;
   gap: 20px;
 }
@@ -742,6 +742,51 @@
 .contact-person__brokerage-logo img {
   width: 100%;
   height: auto;
+}
+
+.contact-person__credentials {
+  display: grid;
+  width: min(100%, 280px);
+  margin-top: 4px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  gap: 20px;
+  justify-items: center;
+}
+
+.contact-person__commercial-logo {
+  display: block;
+  width: min(100%, 230px);
+  padding: 12px 14px;
+  background: var(--ink);
+}
+
+.contact-person__commercial-logo img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.contact-person__awards {
+  display: flex;
+  width: 100%;
+  gap: 14px;
+  align-items: center;
+  justify-content: center;
+}
+
+.contact-person__award {
+  display: block;
+  height: auto;
+  object-fit: contain;
+}
+
+.contact-person__award--diamond {
+  width: min(42%, 104px);
+}
+
+.contact-person__award--ruby {
+  width: min(52%, 136px);
 }
 
 .contact-person__summary {
@@ -1075,6 +1120,12 @@
 
   .contact-person__visual {
     justify-items: start;
+  }
+
+  .contact-person__credentials,
+  .contact-person__awards {
+    justify-items: start;
+    justify-content: start;
   }
 
   .contact-person__monogram {
