@@ -326,8 +326,8 @@
 
 .building-summary {
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(340px, 0.9fr);
-  gap: clamp(52px, 8vw, 126px);
+  grid-template-columns: minmax(0, 1.14fr) minmax(360px, 0.86fr);
+  gap: clamp(44px, 6vw, 96px);
   align-items: center;
 }
 
@@ -344,8 +344,22 @@
 }
 
 .building-summary__copy .section-title {
-  max-width: 9ch;
-  margin-bottom: 28px;
+  max-width: 12ch;
+  margin-bottom: clamp(22px, 2.2vw, 30px);
+  font-size: clamp(2.6rem, 3.35vw, 4.1rem);
+  letter-spacing: -0.045em;
+  line-height: 0.96;
+}
+
+.building-summary__title-line {
+  display: block;
+}
+
+.building-summary__copy > p:not(.section-label) {
+  max-width: 32rem;
+  color: var(--muted);
+  font-size: clamp(1rem, 0.45vw + 0.9rem, 1.18rem);
+  line-height: 1.6;
 }
 
 /* Location */
@@ -562,61 +576,6 @@
   --material: var(--accent);
 }
 
-.design-team {
-  display: grid;
-  grid-template-columns: minmax(0, 0.65fr) minmax(440px, 1.35fr);
-  gap: clamp(54px, 8vw, 132px);
-  align-items: start;
-}
-
-.design-team .section-title {
-  max-width: 10ch;
-}
-
-.team-rows {
-  border-top: 1px solid var(--line);
-}
-
-.team-row {
-  display: grid;
-  grid-template-columns: 120px minmax(0, 1fr);
-  gap: 30px;
-  align-items: center;
-  min-height: 104px;
-  border-bottom: 1px solid var(--line);
-}
-
-.team-row span {
-  color: var(--muted);
-  font-family: var(--font-mono);
-  font-size: 0.64rem;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-}
-
-.team-row img {
-  width: auto;
-  max-width: 190px;
-  max-height: 58px;
-  object-fit: contain;
-}
-
-.team-logo--axiom {
-  width: 178px;
-}
-
-.team-logo--grubb {
-  width: 126px;
-}
-
-.team-logo--908 {
-  width: 188px;
-}
-
-.team-logo--eagle {
-  width: 142px;
-}
-
 /* Updates */
 
 .updates-hero {
@@ -745,18 +704,25 @@
 
 .contact-person {
   display: grid;
-  grid-template-columns: minmax(170px, 0.62fr) minmax(0, 1.38fr);
+  grid-template-columns: minmax(190px, 0.66fr) minmax(280px, 1.34fr);
   gap: clamp(32px, 4.5vw, 72px);
   align-items: center;
   padding: clamp(40px, 5vw, 76px);
 }
 
+.contact-person__visual {
+  display: grid;
+  align-self: start;
+  justify-items: center;
+  gap: 20px;
+}
+
 .contact-person__portrait {
-  width: min(100%, 240px);
+  width: min(100%, 280px);
   margin: 0;
   justify-self: center;
   overflow: hidden;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 1;
   background: #fff;
   border: 1px solid var(--line);
 }
@@ -767,14 +733,21 @@
   object-fit: cover;
 }
 
+.contact-person__monogram {
+  width: 64px;
+  height: auto;
+}
+
 .contact-person__content {
   min-width: 0;
-  max-width: 34rem;
+  max-width: 36rem;
 }
 
 .contact-person__role {
   margin-bottom: 12px;
   color: var(--accent);
+  font-size: 0.64rem;
+  line-height: 1.5;
 }
 
 .contact-person h2 {
@@ -791,10 +764,28 @@
   font-size: 1rem;
 }
 
+.contact-person__brokerage-lockup {
+  margin-top: 20px;
+}
+
+.contact-person__brokerage-logo {
+  display: inline-flex;
+  width: min(100%, 250px);
+  margin-top: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  background: #fff;
+}
+
+.contact-person__brokerage-logo img {
+  width: 100%;
+  height: auto;
+}
+
 .contact-person__summary {
   max-width: 30rem;
-  margin: clamp(28px, 3.5vw, 44px) 0 0;
-  padding-top: clamp(22px, 2.5vw, 32px);
+  margin: clamp(24px, 3vw, 36px) 0 0;
+  padding-top: clamp(20px, 2.2vw, 28px);
   border-top: 1px solid var(--line);
   color: var(--muted);
   font-size: clamp(1rem, 0.45vw + 0.88rem, 1.2rem);
@@ -805,6 +796,7 @@
   display: grid;
   margin-top: clamp(22px, 2.5vw, 32px);
   border-top: 1px solid var(--line);
+  font-style: normal;
 }
 
 .contact-person__action {
@@ -833,6 +825,14 @@
 
 .contact-person__action:hover strong {
   color: var(--accent);
+}
+
+.contact-person__action--static {
+  margin: 0;
+}
+
+.contact-person__action--static:hover strong {
+  color: inherit;
 }
 
 .contact-person__profile-link {
@@ -889,7 +889,6 @@
   .building-summary,
   .location-story,
   .design-language,
-  .design-team,
   .updates-hero__grid,
   .contact-notes,
   .closing-panel {
@@ -1083,11 +1082,6 @@
     border-bottom: 0;
   }
 
-  .team-row {
-    grid-template-columns: 90px minmax(0, 1fr);
-    gap: 20px;
-  }
-
   .journal-entry {
     grid-template-columns: 1fr;
     gap: 14px;
@@ -1114,7 +1108,16 @@
   }
 
   .contact-person__portrait {
-    width: min(64vw, 240px);
+    width: min(76vw, 320px);
     justify-self: start;
+  }
+
+  .contact-person__visual {
+    justify-items: start;
+  }
+
+  .contact-person__monogram {
+    width: 54px;
+    margin-left: 8px;
   }
 }

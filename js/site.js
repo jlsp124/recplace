@@ -4,10 +4,13 @@
   const config = Object.freeze({
     siteName: "RECPLACE Professional Centre",
     jenProfileUrl: "https://royallepageaspirerealty.com/teams/jen-higham/",
+    jenWebsiteUrl: "https://jenhigham.com/",
+    jenFacebookUrl: "https://facebook.com/jenhighamrealestateagent",
+    aspireRealtyUrl: "https://royallepageaspirerealty.com/",
     mapsUrl: "https://www.google.com/maps/search/?api=1&query=2740+Recplace+Drive,+Prince+George,+BC+V2N+1T7",
     address: "2740 Recplace Drive, Prince George, BC V2N 1T7",
     contacts: {
-      jen: { name: "Jen Higham", phone: "2506137207", phoneLabel: "(250) 613-7207", email: "jen@realtypg.com" },
+      jen: { name: "Jen Higham", phone: "+12506137207", phoneLabel: "(250) 613-7207", email: "jen@realtypg.com" },
     },
   });
 
@@ -102,6 +105,9 @@
   function hydrateLinks() {
     const linkTargets = {
       "jen-profile": config.jenProfileUrl,
+      "jen-website": config.jenWebsiteUrl,
+      "jen-facebook": config.jenFacebookUrl,
+      "aspire-realty": config.aspireRealtyUrl,
       maps: config.mapsUrl,
     };
 
