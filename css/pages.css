@@ -696,8 +696,9 @@
 }
 
 .contact-person__monogram {
-  width: 64px;
+  width: 58px;
   height: auto;
+  justify-self: center;
 }
 
 .contact-person__content {
@@ -747,16 +748,25 @@
 .contact-person__credentials {
   display: grid;
   width: min(100%, 280px);
-  margin-top: 4px;
+  grid-template-columns: 64px minmax(0, 1fr);
+  grid-template-areas:
+    "monogram commercial"
+    "awards awards";
+  column-gap: 16px;
+  row-gap: 18px;
   padding-top: 20px;
   border-top: 1px solid var(--line);
-  gap: 20px;
-  justify-items: center;
+  align-items: center;
+}
+
+.contact-person__credentials .contact-person__monogram {
+  grid-area: monogram;
 }
 
 .contact-person__commercial-logo {
   display: block;
-  width: min(100%, 230px);
+  width: 100%;
+  grid-area: commercial;
   padding: 12px 14px;
   background: var(--ink);
 }
@@ -770,6 +780,7 @@
 .contact-person__awards {
   display: flex;
   width: 100%;
+  grid-area: awards;
   gap: 14px;
   align-items: center;
   justify-content: center;
@@ -1122,14 +1133,7 @@
     justify-items: start;
   }
 
-  .contact-person__credentials,
-  .contact-person__awards {
-    justify-items: start;
-    justify-content: start;
-  }
-
   .contact-person__monogram {
-    width: 54px;
-    margin-left: 8px;
+    width: 52px;
   }
 }
