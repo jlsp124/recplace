@@ -5,8 +5,8 @@
     "category": "Construction",
     "title": "Third floor is in",
     "body": "The third floor is now in place, bringing RECPLACE Professional Centre to its full three-storey form.",
-    "image": "Assets/updates/third-floor-in-1280.webp",
-    "imageSmall": "Assets/updates/third-floor-in-960.webp",
+    "image": "/Assets/updates/third-floor-in-1280.webp",
+    "imageSmall": "/Assets/updates/third-floor-in-960.webp",
     "imageWidth": 1280,
     "imageSmallWidth": 960,
     "imageHeight": 720,
@@ -18,8 +18,8 @@
     "category": "Construction",
     "title": "Third floor underway",
     "body": "Construction has progressed to the third level as the building's full scale takes shape.",
-    "image": "Assets/updates/third-floor-progress-1600.webp",
-    "imageSmall": "Assets/updates/third-floor-progress-960.webp",
+    "image": "/Assets/updates/third-floor-progress-1600.webp",
+    "imageSmall": "/Assets/updates/third-floor-progress-960.webp",
     "imageAlt": "Aerial view of RECPLACE with third-floor construction underway"
   },
   {
@@ -28,8 +28,8 @@
     "category": "Construction",
     "title": "Precast installation begins",
     "body": "Precast wall panels arrived on site and installation began, marking the start of vertical construction.",
-    "image": "Assets/updates/precast-installation-1600.webp",
-    "imageSmall": "Assets/updates/precast-installation-960.webp",
+    "image": "/Assets/updates/precast-installation-1600.webp",
+    "imageSmall": "/Assets/updates/precast-installation-960.webp",
     "imageAlt": "Crane, precast wall panels, and installation activity at the RECPLACE site"
   },
   {
@@ -38,8 +38,8 @@
     "category": "Construction",
     "title": "Foundation work establishes the footprint",
     "body": "Footings and foundation work established the building footprint as site work advanced through June.",
-    "image": "Assets/updates/foundation-progress-1600.webp",
-    "imageSmall": "Assets/updates/foundation-progress-960.webp",
+    "image": "/Assets/updates/foundation-progress-1600.webp",
+    "imageSmall": "/Assets/updates/foundation-progress-960.webp",
     "imageAlt": "Aerial detail of RECPLACE footings and foundation work"
   },
   {
@@ -48,8 +48,8 @@
     "category": "Milestone",
     "title": "Groundbreaking",
     "body": "Construction officially begins at RECPLACE Professional Centre, marking the start of work at 2740 Recplace Drive.",
-    "image": "Assets/updates/groundbreaking-ceremony-1600.webp",
-    "imageSmall": "Assets/updates/groundbreaking-ceremony-960.webp",
+    "image": "/Assets/updates/groundbreaking-ceremony-1600.webp",
+    "imageSmall": "/Assets/updates/groundbreaking-ceremony-960.webp",
     "imageAlt": "Project attendees taking part in the RECPLACE groundbreaking ceremony"
   }
 ]

@@ -12,38 +12,44 @@
   });
 
   const navItems = Object.freeze([
-    { href: "index.html", label: "Home" },
-    { href: "leasing.html", label: "Leasing" },
-    { href: "updates.html", label: "Updates" },
+    { href: "/", label: "Home", route: "home" },
+    { href: "/leasing/", label: "Leasing", route: "leasing" },
+    { href: "/updates/", label: "Updates", route: "updates" },
+  ]);
+
+  const footerItems = Object.freeze([
+    ...navItems.slice(0, 2),
+    { href: "/location/", label: "Location", route: "location" },
+    { href: "/plans/", label: "Plans", route: "plans" },
+    { href: "/design/", label: "Design", route: "design" },
+    navItems[2],
+    { href: "/contact/", label: "Contact", route: "contact" },
   ]);
 
   function getPathContext() {
-    const segments = window.location.pathname.split("/").filter(Boolean);
-    const page = (segments.at(-1) || "index.html").toLowerCase();
-    const inNextDirectory = segments.map((segment) => segment.toLowerCase()).includes("next");
-    return {
-      page: page.includes(".") ? page : "index.html",
-      prefix: inNextDirectory ? "../" : "",
-    };
+    const normalizedPath = window.location.pathname.replace(/\/index\.html$/i, "/");
+    const segments = normalizedPath.split("/").filter(Boolean);
+    const leaf = (segments.at(-1) || "home").toLowerCase();
+    return { route: leaf.replace(/\.html$/i, "") };
   }
 
   function resolveHref(href, context) {
-    if (/^(?:https?:|mailto:|tel:|#)/i.test(href)) return href;
-    return `${context.prefix}${href}`;
+    if (/^(?:https?:|mailto:|tel:|#|\/)/i.test(href)) return href;
+    return `/${href.replace(/^\.\//, "")}`;
   }
 
   function renderHeader(context) {
     const navLinks = navItems
-      .map(({ href, label }) => {
-        const current = context.page === href ? ' aria-current="page"' : "";
+      .map(({ href, label, route }) => {
+        const current = context.route === route ? ' aria-current="page"' : "";
         return `<a class="nav-link" data-nav-link href="${resolveHref(href, context)}"${current}>${label}</a>`;
       })
       .join("");
-    const contactCurrent = context.page === "contact.html" ? ' aria-current="page"' : "";
+    const contactCurrent = context.route === "contact" ? ' aria-current="page"' : "";
 
     return `
       <div class="container site-header__inner">
-        <a class="site-brand" href="${resolveHref("index.html", context)}" aria-label="RECPLACE Professional Centre home">
+        <a class="site-brand" href="${resolveHref("/", context)}" aria-label="RECPLACE Professional Centre home">
           <span class="site-brand__mark">RECPLACE</span>
           <span class="site-brand__descriptor">Professional Centre<br>Prince George, BC</span>
         </a>
@@ -52,14 +58,14 @@
           <button class="nav-scrim" type="button" data-nav-scrim aria-label="Close navigation" tabindex="-1"></button>
           <div class="site-nav__panel" id="site-nav-panel" data-nav-panel>
             <div class="site-nav__links">${navLinks}</div>
-            <a class="site-nav__contact" href="${resolveHref("contact.html", context)}"${contactCurrent}>Contact</a>
+            <a class="site-nav__contact" href="${resolveHref("/contact/", context)}"${contactCurrent}>Contact</a>
           </div>
         </nav>
       </div>`;
   }
 
   function renderFooter(context) {
-    const footerLinks = [...navItems, { href: "contact.html", label: "Contact" }]
+    const footerLinks = footerItems
       .map(({ href, label }) => `<a href="${resolveHref(href, context)}">${label}</a>`)
       .join("");
 
@@ -310,7 +316,7 @@
   async function loadUpdatesData() {
     const context = getPathContext();
     try {
-      const response = await fetch(`${context.prefix}data/updates.json`, { cache: "no-store" });
+      const response = await fetch("/data/updates.json", { cache: "no-store" });
       if (!response.ok) return [];
       const parsed = await response.json();
       return Array.isArray(parsed) ? parsed : [];
