@@ -31,10 +31,13 @@
     const category = escapeHtml(update.category || "Update");
     const date = escapeHtml(formatDate(update.date || ""));
     const body = escapeHtml(update.body || "").replaceAll("\n", "<br>");
+    const imageWidth = Number.isFinite(Number(update.imageWidth)) ? Number(update.imageWidth) : 1600;
+    const imageSmallWidth = Number.isFinite(Number(update.imageSmallWidth)) ? Number(update.imageSmallWidth) : 960;
+    const imageHeight = Number.isFinite(Number(update.imageHeight)) ? Number(update.imageHeight) : 900;
     const image = update.image
       ? `<picture class="journal-entry__media">
-          ${update.imageSmall ? `<source srcset="${escapeHtml(update.imageSmall)} 960w, ${escapeHtml(update.image)} 1600w" sizes="(max-width: 680px) 100vw, (max-width: 900px) 72vw, 68vw" type="image/webp">` : ""}
-          <img class="journal-entry__image" src="${escapeHtml(update.image)}" alt="${escapeHtml(update.imageAlt || "")}" width="1600" height="900" loading="lazy" decoding="async">
+          ${update.imageSmall ? `<source srcset="${escapeHtml(update.imageSmall)} ${imageSmallWidth}w, ${escapeHtml(update.image)} ${imageWidth}w" sizes="(max-width: 680px) 100vw, (max-width: 900px) 72vw, 68vw" type="image/webp">` : ""}
+          <img class="journal-entry__image" src="${escapeHtml(update.image)}" alt="${escapeHtml(update.imageAlt || "")}" width="${imageWidth}" height="${imageHeight}" loading="lazy" decoding="async">
         </picture>`
       : "";
 
