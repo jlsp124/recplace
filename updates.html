@@ -1,40 +1,106 @@
 <!doctype html>
-<html lang="en-CA">
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Updates | RECPLACE Professional Centre</title>
-    <meta name="description" content="Project log for Recplace Professional Centre." />
-    <meta name="theme-color" content="#f2eee7" />
-    <link rel="stylesheet" href="css/site.css" />
-    <link rel="stylesheet" href="next/next.css" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="data:,">
+    <title>Project Updates | RECPLACE Professional Centre</title>
+    <meta
+      name="description"
+      content="Project updates and notices for RECPLACE Professional Centre in Prince George, British Columbia."
+    >
+    <link rel="canonical" href="updates.html">
+    <link rel="preload" href="Assets/fonts/instrument-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="css/site.css">
+    <link rel="stylesheet" href="css/pages.css">
   </head>
-  <body class="next-site" data-site-version="next">
+  <body data-page="updates">
     <a class="skip-link" href="#main-content">Skip to content</a>
     <header id="site-header"></header>
 
     <main id="main-content" tabindex="-1">
-      <section class="section" aria-labelledby="updates-title">
-        <div class="container">
-          <div class="section-header">
-            <p class="eyebrow">Project log</p>
-            <h1 class="page-title" id="updates-title">Updates</h1>
-            <p class="page-lead">Newest posts appear first.</p>
+      <section class="updates-hero" aria-labelledby="updates-title">
+        <div class="container updates-hero__grid">
+          <div data-reveal>
+            <p class="section-label">Project journal</p>
+            <h1 class="page-title" id="updates-title">RECPLACE <span class="serif">updates.</span></h1>
           </div>
+          <p class="updates-hero__note" data-reveal data-delay="1">
+            A concise record of the meaningful stages shaping RECPLACE, from groundbreaking through current construction.
+          </p>
+        </div>
+      </section>
 
-          <div id="updates-list"></div>
-
-          <div style="height: 12px"></div>
-          <div style="display: flex; justify-content: center">
-            <button class="btn" id="updates-load-more" type="button" hidden>Load more</button>
+      <section class="site-section site-section--light" aria-labelledby="journal-title">
+        <div class="container">
+          <h2 class="visually-hidden" id="journal-title">Published project updates</h2>
+          <div class="updates-list" id="updates-list" aria-live="polite"></div>
+          <div class="updates-actions">
+            <button class="button" id="updates-load-more" type="button" hidden>Load more updates</button>
           </div>
         </div>
       </section>
+
     </main>
 
     <footer id="site-footer"></footer>
-    <div id="site-cta"></div>
-
+    <script id="updates-data" type="application/json">
+      [
+        {
+          "id": "third-floor-in",
+          "date": "2026-08-05",
+          "category": "Construction",
+          "title": "Third floor is in",
+          "body": "The third floor is now in place, bringing RECPLACE Professional Centre to its full three-storey form.",
+          "image": "Assets/updates/third-floor-in-1280.webp",
+          "imageSmall": "Assets/updates/third-floor-in-960.webp",
+          "imageWidth": 1280,
+          "imageSmallWidth": 960,
+          "imageHeight": 720,
+          "imageAlt": "Wide aerial view of RECPLACE Professional Centre after the third floor was installed"
+        },
+        {
+          "id": "third-floor-underway",
+          "date": "2026-07-30",
+          "category": "Construction",
+          "title": "Third floor underway",
+          "body": "Construction has progressed to the third level as the building's full scale takes shape.",
+          "image": "Assets/updates/third-floor-progress-1600.webp",
+          "imageSmall": "Assets/updates/third-floor-progress-960.webp",
+          "imageAlt": "Aerial view of RECPLACE with third-floor construction underway"
+        },
+        {
+          "id": "precast-installation",
+          "date": "2026-07",
+          "category": "Construction",
+          "title": "Precast installation begins",
+          "body": "Precast wall panels arrived on site and installation began, marking the start of vertical construction.",
+          "image": "Assets/updates/precast-installation-1600.webp",
+          "imageSmall": "Assets/updates/precast-installation-960.webp",
+          "imageAlt": "Crane, precast wall panels, and installation activity at the RECPLACE site"
+        },
+        {
+          "id": "foundation-progress",
+          "date": "2026-06-20",
+          "category": "Construction",
+          "title": "Foundation work establishes the footprint",
+          "body": "Footings and foundation work established the building footprint as site work advanced through June.",
+          "image": "Assets/updates/foundation-progress-1600.webp",
+          "imageSmall": "Assets/updates/foundation-progress-960.webp",
+          "imageAlt": "Aerial detail of RECPLACE footings and foundation work"
+        },
+        {
+          "id": "groundbreaking",
+          "date": "2026-05-25",
+          "category": "Milestone",
+          "title": "Groundbreaking",
+          "body": "Construction officially begins at RECPLACE Professional Centre, marking the start of work at 2740 Recplace Drive.",
+          "image": "Assets/updates/groundbreaking-ceremony-1600.webp",
+          "imageSmall": "Assets/updates/groundbreaking-ceremony-960.webp",
+          "imageAlt": "Project attendees taking part in the RECPLACE groundbreaking ceremony"
+        }
+      ]
+    </script>
     <script src="js/site.js" defer></script>
     <script src="js/updates.js" defer></script>
   </body>

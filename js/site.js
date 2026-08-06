@@ -1,653 +1,302 @@
 (() => {
+  document.documentElement.classList.add("js");
+
   const config = Object.freeze({
-    siteName: "Recplace Professional Centre",
-    listingUrl: "https://www.realtor.ca/real-estate/28883424/2740-recplace-drive-prince-george",
-    mirrorUrl:
-      "https://highamwalker.com/mylistings.html/listing.c8072356-2740-recplace-drive-prince-george-v2n-1t7.106896467",
+    siteName: "RECPLACE Professional Centre",
+    jenProfileUrl: "https://royallepageaspirerealty.com/teams/jen-higham/",
     mapsUrl: "https://www.google.com/maps/search/?api=1&query=2740+Recplace+Drive,+Prince+George,+BC+V2N+1T7",
-    mlsId: "C8072356",
     address: "2740 Recplace Drive, Prince George, BC V2N 1T7",
-    coords: { lat: 53.897384795, lng: -122.771398006 },
     contacts: {
       jen: { name: "Jen Higham", phone: "2506137207", phoneLabel: "(250) 613-7207", email: "jen@realtypg.com" },
-      rod: { name: "Rod Walker", phone: "2506178090", phoneLabel: "(250) 617-8090", email: "rod@realtypg.com" },
     },
   });
 
-  const mirroredPages = new Set(["index.html", "leasing.html", "plans.html", "location.html", "contact.html"]);
-
-  const navItems = [
+  const navItems = Object.freeze([
     { href: "index.html", label: "Home" },
     { href: "leasing.html", label: "Leasing" },
-    { href: "location.html", label: "Location" },
-    { href: "contact.html", label: "Contact" },
-  ];
+    { href: "updates.html", label: "Updates" },
+  ]);
 
   function getPathContext() {
-    const segments = location.pathname
-      .split("/")
-      .map((segment) => segment.trim().toLowerCase())
-      .filter(Boolean);
-    const last = segments[segments.length - 1] || "";
-    const page = last && last.includes(".") ? last : "index.html";
-    const isNextPath = segments.includes("next");
-    const declaredVersion = document.body?.dataset?.siteVersion?.trim()?.toLowerCase();
-    const useNextUi = declaredVersion === "next" || isNextPath;
-
-    return Object.freeze({
-      page,
-      isNextPath,
-      useNextUi,
-      isSwitchable: mirroredPages.has(page),
-      prefix: isNextPath ? "../" : "",
-    });
+    const segments = window.location.pathname.split("/").filter(Boolean);
+    const page = (segments.at(-1) || "index.html").toLowerCase();
+    const inNextDirectory = segments.map((segment) => segment.toLowerCase()).includes("next");
+    return {
+      page: page.includes(".") ? page : "index.html",
+      prefix: inNextDirectory ? "../" : "",
+    };
   }
 
-  function resolveSiteHref(href, context) {
-    const [page, hash = ""] = href.split("#");
-    const normalizedPage = (page || "index.html").toLowerCase();
-    const resolvedPage = context.isNextPath && mirroredPages.has(normalizedPage) ? page : `${context.prefix}${page}`;
-    return hash ? `${resolvedPage}#${hash}` : resolvedPage;
-  }
-
-  function resolveVersionHref(context) {
-    if (!context.isSwitchable || !context.isNextPath) return "";
-    return `../${context.page}`;
-  }
-
-  function setActiveNav(root, context) {
-    root.querySelectorAll("a[data-nav]").forEach((a) => {
-      const href = (a.getAttribute("href") || "").split("#")[0];
-      const hrefPage = (href.split("/").pop() || "index.html").toLowerCase();
-      if (hrefPage === context.page) a.setAttribute("aria-current", "page");
-      else a.removeAttribute("aria-current");
-    });
+  function resolveHref(href, context) {
+    if (/^(?:https?:|mailto:|tel:|#)/i.test(href)) return href;
+    return `${context.prefix}${href}`;
   }
 
   function renderHeader(context) {
     const navLinks = navItems
-      .map(
-        (item) =>
-          `<a class="nav-link" data-nav href="${resolveSiteHref(item.href, context)}"><span class="nav-link-label">${item.label}</span></a>`
-      )
+      .map(({ href, label }) => {
+        const current = context.page === href ? ' aria-current="page"' : "";
+        return `<a class="nav-link" data-nav-link href="${resolveHref(href, context)}"${current}>${label}</a>`;
+      })
+      .join("");
+    const contactCurrent = context.page === "contact.html" ? ' aria-current="page"' : "";
+
+    return `
+      <div class="container site-header__inner">
+        <a class="site-brand" href="${resolveHref("index.html", context)}" aria-label="RECPLACE Professional Centre home">
+          <span class="site-brand__mark">RECPLACE</span>
+          <span class="site-brand__descriptor">Professional Centre<br>Prince George, BC</span>
+        </a>
+        <nav class="site-nav" data-nav-root aria-label="Primary navigation">
+          <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="site-nav-panel">Menu</button>
+          <button class="nav-scrim" type="button" data-nav-scrim aria-label="Close navigation" tabindex="-1"></button>
+          <div class="site-nav__panel" id="site-nav-panel" data-nav-panel>
+            <div class="site-nav__links">${navLinks}</div>
+            <a class="site-nav__contact" href="${resolveHref("contact.html", context)}"${contactCurrent}>Contact</a>
+          </div>
+        </nav>
+      </div>`;
+  }
+
+  function renderFooter(context) {
+    const footerLinks = [...navItems, { href: "contact.html", label: "Contact" }]
+      .map(({ href, label }) => `<a href="${resolveHref(href, context)}">${label}</a>`)
       .join("");
 
     return `
       <div class="container">
-        <div class="nav-shell">
-          <a class="nav-brand" href="${resolveSiteHref("index.html", context)}" aria-label="${config.siteName} home">
-            <span class="nav-brand-text">
-              <span class="nav-brand-name">${config.siteName}</span>
-              <span class="nav-brand-meta">Prince George, BC</span>
-            </span>
-          </a>
-          <nav class="nav" data-nav-root aria-label="Primary">
-            <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="site-nav">
-              Menu
-            </button>
-            <div class="nav-scrim" data-nav-scrim aria-hidden="true"></div>
-            <div class="nav-links" id="site-nav">${navLinks}</div>
-          </nav>
-        </div>
-      </div>
-    `;
-  }
-
-  function renderFooter(context) {
-    const links = navItems.map((item) => `<a href="${resolveSiteHref(item.href, context)}">${item.label}</a>`).join("");
-
-    return `
-      <div class="container">
-        <div class="footer-grid">
-          <div>
-            <div class="footer-title">${config.siteName}</div>
-            <div class="footer-address">${config.address}</div>
-            <div class="footer-legal">Leasing via Royal LePage Aspire Realty.</div>
+        <div class="site-footer__top">
+          <div class="site-footer__identity">
+            <div class="site-footer__name">RECPLACE <span>Professional Centre</span></div>
+            <p class="site-footer__address">
+              <a data-link="maps" href="${config.mapsUrl}">${config.address}</a><br>
+              Leasing via Royal LePage Aspire Realty.
+            </p>
           </div>
           <div>
-            <div class="footer-links">
-              ${links}
+            <div class="site-footer__heading">Explore</div>
+            <nav class="site-footer__links" aria-label="Footer navigation">${footerLinks}</nav>
+          </div>
+          <div>
+            <div class="site-footer__heading">Leasing</div>
+            <div class="site-footer__links">
+              <a data-call="jen" href="tel:${config.contacts.jen.phone}">${config.contacts.jen.phoneLabel}</a>
+              <a data-email="jen" href="mailto:${config.contacts.jen.email}">${config.contacts.jen.email}</a>
+              <a data-link="jen-profile" href="${config.jenProfileUrl}">Jen Higham profile</a>
             </div>
           </div>
         </div>
-      </div>
-    `;
-  }
-
-  function renderStickyActions(context) {
-    return "";
-  }
-
-  function renderVersionSwitch(context) {
-    const href = resolveVersionHref(context);
-    if (!href) return "";
-    const label = "View Current Live Site";
-    return `<a class="version-switch" href="${href}" aria-label="${label} for this page">${label}</a>`;
-  }
-
-  function initRevealAnimations() {
-    if (window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches) return;
-
-    const targets = [
-      ...document.querySelectorAll("main .hero-content > *, main .section-title, main .section-subtitle, main .card, main .list > li"),
-    ];
-
-    if (!targets.length) return;
-
-    targets.forEach((el) => {
-      if (!el.classList.contains("reveal")) el.classList.add("reveal");
-    });
-
-    document.querySelectorAll(".facts-grid, .agent-grid, .btn-row").forEach((container) => {
-      const children = Array.from(container.children).filter((el) => el.classList.contains("reveal"));
-      children.forEach((el, idx) => {
-        el.style.setProperty("--reveal-delay", `${Math.min(idx * 18, 72)}ms`);
-      });
-    });
-
-    if (!("IntersectionObserver" in window)) {
-      targets.forEach((el) => el.classList.add("is-visible"));
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries, obs) => {
-        for (const entry of entries) {
-          if (!entry.isIntersecting) continue;
-          entry.target.classList.add("is-visible");
-          obs.unobserve(entry.target);
-        }
-      },
-      { threshold: 0.18, rootMargin: "0px 0px -4% 0px" }
-    );
-
-    targets.forEach((el) => observer.observe(el));
+        <div class="site-footer__base">
+          <span>RECPLACE Professional Centre</span>
+          <span>2740 Recplace Drive · Prince George, British Columbia</span>
+        </div>
+      </div>`;
   }
 
   function hydrateLinks() {
     const linkTargets = {
-      listing: config.listingUrl,
-      mirror: config.mirrorUrl,
+      "jen-profile": config.jenProfileUrl,
       maps: config.mapsUrl,
     };
 
-    document.querySelectorAll("[data-link]").forEach((el) => {
-      const key = el.getAttribute("data-link");
-      const href = linkTargets[key];
-      if (!href) return;
-      el.setAttribute("href", href);
-      if (key === "listing" || key === "mirror" || key === "maps") {
-        el.setAttribute("target", "_blank");
-        el.setAttribute("rel", "noopener");
-      }
+    document.querySelectorAll("[data-link]").forEach((element) => {
+      const target = linkTargets[element.dataset.link];
+      if (!target) return;
+      element.href = target;
+      element.target = "_blank";
+      element.rel = "noopener noreferrer";
     });
 
-    document.querySelectorAll("[data-call]").forEach((el) => {
-      const key = el.getAttribute("data-call");
-      const person = config.contacts[key];
-      if (!person) return;
-      el.setAttribute("href", `tel:${person.phone}`);
+    document.querySelectorAll("[data-call]").forEach((element) => {
+      const contact = config.contacts[element.dataset.call];
+      if (contact) element.href = `tel:${contact.phone}`;
     });
 
-    document.querySelectorAll("[data-email]").forEach((el) => {
-      const key = el.getAttribute("data-email");
-      const person = config.contacts[key];
-      if (!person) return;
-      el.setAttribute("href", `mailto:${person.email}`);
+    document.querySelectorAll("[data-email]").forEach((element) => {
+      const contact = config.contacts[element.dataset.email];
+      if (contact) element.href = `mailto:${contact.email}`;
     });
 
-    document.querySelectorAll("[data-text='address']").forEach((el) => {
-      el.textContent = config.address;
-    });
-
-    document.querySelectorAll("[data-text='coords']").forEach((el) => {
-      el.textContent = `${config.coords.lat.toFixed(6)}, ${config.coords.lng.toFixed(6)}`;
+    document.querySelectorAll("[data-text='address']").forEach((element) => {
+      element.textContent = config.address;
     });
   }
 
-  function initNavToggle() {
-    const navRoot = document.querySelector("[data-nav-root]");
-    const toggle = document.querySelector("[data-nav-toggle]");
-    const scrim = document.querySelector("[data-nav-scrim]");
-    const body = document.body;
-    if (!navRoot || !toggle || !body) return;
+  function initHeaderState() {
+    const header = document.getElementById("site-header");
+    if (!header) return;
+    let frame = 0;
 
-    const desktopQuery = window.matchMedia("(min-width: 901px)");
-    let scrollYBeforeOpen = 0;
-    let bodyLockStyles = null;
-
-    function isDesktop() {
-      return desktopQuery.matches;
-    }
-
-    function syncNavState() {
-      const isOpen = navRoot.classList.contains("nav--open");
-      toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
-      scrim?.setAttribute("aria-hidden", isOpen ? "false" : "true");
-    }
-
-    function lockBodyScroll() {
-      if (bodyLockStyles) return;
-
-      scrollYBeforeOpen = window.scrollY || window.pageYOffset || 0;
-      bodyLockStyles = {
-        position: body.style.position,
-        top: body.style.top,
-        left: body.style.left,
-        right: body.style.right,
-        width: body.style.width,
-        overflow: body.style.overflow,
-      };
-
-      body.style.position = "fixed";
-      body.style.top = `-${scrollYBeforeOpen}px`;
-      body.style.left = "0";
-      body.style.right = "0";
-      body.style.width = "100%";
-      body.style.overflow = "hidden";
-    }
-
-    function unlockBodyScroll() {
-      if (!bodyLockStyles) return;
-
-      const restoreY = scrollYBeforeOpen;
-
-      body.style.position = bodyLockStyles.position;
-      body.style.top = bodyLockStyles.top;
-      body.style.left = bodyLockStyles.left;
-      body.style.right = bodyLockStyles.right;
-      body.style.width = bodyLockStyles.width;
-      body.style.overflow = bodyLockStyles.overflow;
-
-      bodyLockStyles = null;
-      scrollYBeforeOpen = 0;
-      window.scrollTo(0, restoreY);
-    }
-
-    function closeDrawer() {
-      if (navRoot.classList.contains("nav--open")) {
-        navRoot.classList.remove("nav--open");
-      }
-      unlockBodyScroll();
-      syncNavState();
-    }
-
-    function applyViewportMode() {
-      if (isDesktop()) {
-        closeDrawer();
-        return;
-      }
-
-      syncNavState();
-    }
-
-    toggle.addEventListener("click", (event) => {
-      if (isDesktop()) {
-        closeDrawer();
-        return;
-      }
-
-      event.preventDefault();
-
-      const isOpen = navRoot.classList.toggle("nav--open");
-      if (isOpen) lockBodyScroll();
-      else unlockBodyScroll();
-
-      syncNavState();
-    });
-
-    scrim?.addEventListener("click", (event) => {
-      event.preventDefault();
-      closeDrawer();
-    });
-
-    navRoot.addEventListener("click", (event) => {
-      if (isDesktop()) return;
-      if (!event.target?.closest?.("a[data-nav]")) return;
-      closeDrawer();
-    });
-
-    document.addEventListener("click", (event) => {
-      if (isDesktop()) return;
-      if (!navRoot.classList.contains("nav--open")) return;
-      if (navRoot.contains(event.target)) return;
-      closeDrawer();
-    });
-
-    document.addEventListener("keydown", (event) => {
-      if (event.key !== "Escape") return;
-      closeDrawer();
-    });
-
-    if (typeof desktopQuery.addEventListener === "function") {
-      desktopQuery.addEventListener("change", applyViewportMode);
-    } else if (typeof desktopQuery.addListener === "function") {
-      desktopQuery.addListener(applyViewportMode);
-    }
-
-    closeDrawer();
-    applyViewportMode();
-  }
-
-  function initHeroVideo() {
-    const heroMedia = document.querySelector(".hero-media");
-    const video = heroMedia?.querySelector("video");
-    if (!heroMedia || !video) return;
-
-    const setReady = () => heroMedia.classList.add("is-ready");
-    if (video.readyState >= 2) setReady();
-    else {
-      video.addEventListener("canplay", setReady, { once: true });
-      video.addEventListener("error", setReady, { once: true });
-    }
-  }
-
-  function initImageLightbox() {
-    const triggerImages = Array.from(document.querySelectorAll("[data-lightbox] img"));
-    if (!triggerImages.length) return;
-
-    const body = document.body;
-    const docEl = document.documentElement;
-    let scrollYBeforeOpen = 0;
-    let bodyLockStyles = null;
-    let lastActiveElement = null;
-
-    const overlay = document.createElement("div");
-    overlay.className = "image-lightbox";
-    overlay.setAttribute("aria-hidden", "true");
-    overlay.innerHTML = `
-      <div class="image-lightbox__scrim" data-lightbox-close></div>
-      <div class="image-lightbox__dialog" role="dialog" aria-modal="true" aria-label="Expanded image view">
-        <button class="image-lightbox__close" type="button" data-lightbox-close aria-label="Close image viewer">Close</button>
-        <figure class="image-lightbox__figure">
-          <img class="image-lightbox__image" alt="" />
-          <figcaption class="image-lightbox__caption" hidden></figcaption>
-        </figure>
-      </div>
-    `;
-    body.append(overlay);
-
-    const lightboxImage = overlay.querySelector(".image-lightbox__image");
-    const lightboxCaption = overlay.querySelector(".image-lightbox__caption");
-    const closeButton = overlay.querySelector(".image-lightbox__close");
-    const dialog = overlay.querySelector(".image-lightbox__dialog");
-
-    function lockBodyScroll() {
-      if (bodyLockStyles) return;
-
-      scrollYBeforeOpen = window.scrollY || window.pageYOffset || 0;
-      bodyLockStyles = {
-        position: body.style.position,
-        top: body.style.top,
-        left: body.style.left,
-        right: body.style.right,
-        width: body.style.width,
-        overflow: body.style.overflow,
-      };
-
-      body.style.position = "fixed";
-      body.style.top = `-${scrollYBeforeOpen}px`;
-      body.style.left = "0";
-      body.style.right = "0";
-      body.style.width = "100%";
-      body.style.overflow = "hidden";
-      body.classList.add("image-lightbox-open");
-    }
-
-    function unlockBodyScroll() {
-      if (!bodyLockStyles) return;
-
-      const restoreY = scrollYBeforeOpen;
-      const previousScrollBehavior = docEl.style.scrollBehavior;
-
-      body.style.position = bodyLockStyles.position;
-      body.style.top = bodyLockStyles.top;
-      body.style.left = bodyLockStyles.left;
-      body.style.right = bodyLockStyles.right;
-      body.style.width = bodyLockStyles.width;
-      body.style.overflow = bodyLockStyles.overflow;
-      body.classList.remove("image-lightbox-open");
-
-      bodyLockStyles = null;
-      scrollYBeforeOpen = 0;
-      docEl.style.scrollBehavior = "auto";
-      window.scrollTo(0, restoreY);
-      window.setTimeout(() => {
-        docEl.style.scrollBehavior = previousScrollBehavior;
-      }, 0);
-    }
-
-    function hideLightbox() {
-      if (overlay.getAttribute("aria-hidden") === "true") return;
-
-      overlay.setAttribute("aria-hidden", "true");
-      lightboxImage.removeAttribute("src");
-      lightboxImage.alt = "";
-      lightboxCaption.textContent = "";
-      lightboxCaption.hidden = true;
-      unlockBodyScroll();
-      lastActiveElement?.focus?.();
-      lastActiveElement = null;
-    }
-
-    function showLightbox(image) {
-      const figure = image.closest("figure");
-      const captionText = figure?.querySelector("figcaption")?.textContent?.trim() || "";
-
-      lastActiveElement = document.activeElement instanceof HTMLElement ? document.activeElement : image;
-      lightboxImage.src = image.currentSrc || image.src;
-      lightboxImage.alt = image.alt || captionText || "Expanded project image";
-
-      if (captionText) {
-        lightboxCaption.textContent = captionText;
-        lightboxCaption.hidden = false;
-      } else {
-        lightboxCaption.textContent = "";
-        lightboxCaption.hidden = true;
-      }
-
-      overlay.setAttribute("aria-hidden", "false");
-      lockBodyScroll();
-      closeButton?.focus();
-    }
-
-    triggerImages.forEach((image) => {
-      if (!(image instanceof HTMLElement)) return;
-
-      image.classList.add("lightbox-target");
-      image.setAttribute("role", "button");
-      image.setAttribute("tabindex", "0");
-      image.setAttribute("aria-haspopup", "dialog");
-
-      image.addEventListener("click", () => showLightbox(image));
-      image.addEventListener("keydown", (event) => {
-        if (event.key !== "Enter" && event.key !== " ") return;
-        event.preventDefault();
-        showLightbox(image);
-      });
-    });
-
-    overlay.addEventListener("click", (event) => {
-      if (
-        event.target instanceof HTMLElement &&
-        (event.target.closest("[data-lightbox-close]") || event.target === overlay || event.target === dialog)
-      ) {
-        hideLightbox();
-      }
-    });
-
-    document.addEventListener("keydown", (event) => {
-      if (event.key !== "Escape") return;
-      hideLightbox();
-    });
-  }
-
-  function initStickyActions() {
-    const sticky = document.querySelector("[data-sticky-actions]");
-    if (!sticky) return;
-
-    if (window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches) {
-      sticky.classList.remove("is-hidden");
-      return;
-    }
-
-    const minY = 120;
-    let lastY = window.scrollY;
-    let raf = 0;
-
-    function setHidden(hidden) {
-      sticky.classList.toggle("is-hidden", hidden);
-    }
-
-    setHidden(window.scrollY < minY);
-
-    function onScroll() {
-      const y = window.scrollY;
-      const delta = y - lastY;
-      lastY = y;
-
-      if (y < minY) {
-        setHidden(true);
-        return;
-      }
-
-      if (Math.abs(delta) < 6) return;
-      if (delta < 0) setHidden(true);
-      else setHidden(false);
-    }
+    const update = () => {
+      frame = 0;
+      header.classList.toggle("is-scrolled", window.scrollY > 18);
+    };
 
     window.addEventListener(
       "scroll",
       () => {
-        if (raf) return;
-        raf = window.requestAnimationFrame(() => {
-          raf = 0;
-          onScroll();
-        });
+        if (frame) return;
+        frame = window.requestAnimationFrame(update);
       },
       { passive: true }
     );
+    update();
   }
 
-  function initSignatureSequence() {
-    const section = document.querySelector("[data-signature]");
-    if (!section) return;
+  function initNavigation() {
+    const root = document.querySelector("[data-nav-root]");
+    const toggle = root?.querySelector("[data-nav-toggle]");
+    const panel = root?.querySelector("[data-nav-panel]");
+    const scrim = root?.querySelector("[data-nav-scrim]");
+    if (!root || !toggle || !panel || !scrim) return;
 
-    const steps = Array.from(section.querySelectorAll("[data-signature-step]"));
-    if (!steps.length) return;
+    const desktop = window.matchMedia("(min-width: 901px)");
+    let lastFocused = null;
+    let interactionTimer = 0;
+    let lockedScrollY = 0;
+    let bodyLockStyles = null;
 
-    const reducedMotionQuery = window.matchMedia?.("(prefers-reduced-motion: reduce)");
-    const desktopQuery = window.matchMedia?.("(min-width: 901px)");
-    let observer = null;
-    let activeIndex = 0;
+    const focusable = () =>
+      Array.from(panel.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'));
 
-    function setActive(index) {
-      if (!Number.isInteger(index) || index < 0 || index >= steps.length) return;
-      activeIndex = index;
-      section.dataset.signatureStage = String(index);
-      steps.forEach((step, stepIndex) => {
-        step.classList.toggle("is-active", stepIndex === index);
-      });
+    function lockPageScroll() {
+      if (bodyLockStyles) return;
+      lockedScrollY = window.scrollY || window.pageYOffset || 0;
+      bodyLockStyles = {
+        position: document.body.style.position,
+        top: document.body.style.top,
+        left: document.body.style.left,
+        right: document.body.style.right,
+        width: document.body.style.width,
+        overflow: document.body.style.overflow,
+      };
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${lockedScrollY}px`;
+      document.body.style.left = "0";
+      document.body.style.right = "0";
+      document.body.style.width = "100%";
+      document.body.style.overflow = "hidden";
     }
 
-    function disconnectObserver() {
-      observer?.disconnect();
-      observer = null;
+    function unlockPageScroll() {
+      if (!bodyLockStyles) return;
+      const restoreY = lockedScrollY;
+      Object.assign(document.body.style, bodyLockStyles);
+      bodyLockStyles = null;
+      lockedScrollY = 0;
+      window.scrollTo(0, restoreY);
     }
 
-    function setStaticMode() {
-      disconnectObserver();
-      section.dataset.signatureMode = "static";
-      setActive(0);
+    function close({ returnFocus = true } = {}) {
+      const wasOpen = root.classList.contains("is-open");
+      window.clearTimeout(interactionTimer);
+      root.classList.remove("is-open", "is-interactive");
+      document.body.classList.remove("nav-open");
+      toggle.setAttribute("aria-expanded", "false");
+      scrim.tabIndex = -1;
+      unlockPageScroll();
+      if (wasOpen && returnFocus) {
+        const focusTarget = lastFocused instanceof HTMLElement && lastFocused !== document.body ? lastFocused : toggle;
+        focusTarget.focus();
+      }
     }
 
-    function setMotionMode() {
-      if (!("IntersectionObserver" in window)) {
-        setStaticMode();
+    function open() {
+      if (desktop.matches) return;
+      lastFocused = document.activeElement instanceof HTMLElement ? document.activeElement : toggle;
+      window.clearTimeout(interactionTimer);
+      root.classList.remove("is-interactive");
+      root.classList.add("is-open");
+      document.body.classList.add("nav-open");
+      lockPageScroll();
+      toggle.setAttribute("aria-expanded", "true");
+      scrim.tabIndex = 0;
+      interactionTimer = window.setTimeout(() => {
+        if (!root.classList.contains("is-open")) return;
+        root.classList.add("is-interactive");
+        focusable()[0]?.focus();
+      }, 340);
+    }
+
+    toggle.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      if (root.classList.contains("is-open")) close();
+      else open();
+    });
+
+    scrim.addEventListener("click", (event) => {
+      event.preventDefault();
+      close();
+    });
+    panel.addEventListener("click", (event) => {
+      if (!desktop.matches && !root.classList.contains("is-interactive")) {
+        event.preventDefault();
         return;
       }
+      if (!desktop.matches && event.target.closest("a")) close({ returnFocus: false });
+    });
 
-      disconnectObserver();
-      section.dataset.signatureMode = "motion";
-      setActive(activeIndex);
-
-      observer = new IntersectionObserver(
-        (entries) => {
-          const visible = entries
-            .filter((entry) => entry.isIntersecting)
-            .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-
-          if (!visible) return;
-
-          const nextIndex = Number(visible.target.getAttribute("data-signature-step"));
-          if (Number.isInteger(nextIndex)) setActive(nextIndex);
-        },
-        {
-          threshold: [0.24, 0.48, 0.72],
-          rootMargin: "-16% 0px -28% 0px",
-        }
-      );
-
-      steps.forEach((step) => observer.observe(step));
-    }
-
-    function applyMode() {
-      const reduced = reducedMotionQuery?.matches ?? false;
-      const desktop = desktopQuery?.matches ?? true;
-      if (reduced || !desktop) {
-        setStaticMode();
+    document.addEventListener("keydown", (event) => {
+      if (!root.classList.contains("is-open")) return;
+      if (event.key === "Escape") {
+        event.preventDefault();
+        close();
         return;
       }
-      setMotionMode();
-    }
+      if (event.key !== "Tab") return;
 
-    function bindMediaListener(query, handler) {
-      if (!query) return;
-      if (typeof query.addEventListener === "function") {
-        query.addEventListener("change", handler);
-        return;
+      const items = focusable();
+      const first = items[0];
+      const last = items.at(-1);
+      if (!first || !last) return;
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
       }
-      if (typeof query.addListener === "function") query.addListener(handler);
+    });
+
+    const onDesktopChange = () => close({ returnFocus: false });
+    if (desktop.addEventListener) desktop.addEventListener("change", onDesktopChange);
+    else desktop.addListener(onDesktopChange);
+  }
+
+  function initRevealAnimations() {
+    const targets = Array.from(document.querySelectorAll("[data-reveal]"));
+    if (!targets.length) return;
+    targets.forEach((target) => target.classList.add("reveal"));
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
+      targets.forEach((target) => target.classList.add("is-visible"));
+      return;
     }
 
-    bindMediaListener(reducedMotionQuery, applyMode);
-    bindMediaListener(desktopQuery, applyMode);
-    applyMode();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }
+    );
+    targets.forEach((target) => observer.observe(target));
   }
 
   function initLayout() {
     const context = getPathContext();
-    document.body.dataset.siteVersion = context.useNextUi ? "next" : "current";
-
-    const switchMarkup = renderVersionSwitch(context);
-    if (switchMarkup) {
-      document.body.classList.add("has-version-switch");
-      document.body.insertAdjacentHTML("afterbegin", switchMarkup);
-    }
-
     const header = document.getElementById("site-header");
-    if (header) {
-      header.classList.add("site-header");
-      header.innerHTML = renderHeader(context);
-      setActiveNav(header, context);
-    }
-
     const footer = document.getElementById("site-footer");
-    if (footer) {
-      footer.classList.add("site-footer");
-      footer.innerHTML = renderFooter(context);
-    }
-
-    const sticky = document.getElementById("site-cta");
-    if (sticky) sticky.innerHTML = renderStickyActions(context);
-
+    if (header) header.innerHTML = renderHeader(context);
+    if (footer) footer.innerHTML = renderFooter(context);
     hydrateLinks();
-    initNavToggle();
-    initHeroVideo();
-    initStickyActions();
+    initHeaderState();
+    initNavigation();
     initRevealAnimations();
-    initSignatureSequence();
-    initImageLightbox();
   }
 
   function safeParseJson(text) {
@@ -659,32 +308,28 @@
   }
 
   async function loadUpdatesData() {
+    const context = getPathContext();
     try {
-      const res = await fetch("data/updates.json", { cache: "no-store" });
-      if (!res.ok) return [];
-      const parsed = await res.json();
+      const response = await fetch(`${context.prefix}data/updates.json`, { cache: "no-store" });
+      if (!response.ok) return [];
+      const parsed = await response.json();
       return Array.isArray(parsed) ? parsed : [];
-    } catch (err) {
+    } catch {
       const embedded = document.getElementById("updates-data");
-      if (embedded?.textContent) {
-        const parsed = safeParseJson(embedded.textContent);
-        if (Array.isArray(parsed)) return parsed;
-      }
-      return [];
+      const parsed = embedded?.textContent ? safeParseJson(embedded.textContent) : null;
+      return Array.isArray(parsed) ? parsed : [];
     }
   }
 
   function downloadText(filename, text, mime = "application/json") {
     const blob = new Blob([text], { type: mime });
     const url = URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = filename;
-    document.body.append(a);
-    a.click();
-    a.remove();
-
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    document.body.append(link);
+    link.click();
+    link.remove();
     URL.revokeObjectURL(url);
   }
 
@@ -696,58 +341,36 @@
     const form = gate.querySelector("form");
     const input = gate.querySelector("input[type='password']");
     const error = gate.querySelector("[data-gate-error]");
-    const lockBtn = content.querySelector("[data-gate-lock]");
+    const lockButton = content.querySelector("[data-gate-lock]");
 
-    function showUnlocked() {
-      gate.hidden = true;
-      content.hidden = false;
+    const setLocked = (locked) => {
+      gate.hidden = !locked;
+      content.hidden = locked;
       if (error) error.hidden = true;
       if (input) input.value = "";
-    }
+    };
 
-    function showLocked() {
-      gate.hidden = false;
-      content.hidden = true;
-      if (error) error.hidden = true;
-      if (input) input.value = "";
-    }
-
-    const unlocked = localStorage.getItem(storageKey) === "1";
-    if (unlocked) showUnlocked();
-    else showLocked();
-
-    form?.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const val = (input?.value || "").trim();
-      if (val === password) {
+    setLocked(localStorage.getItem(storageKey) !== "1");
+    form?.addEventListener("submit", (event) => {
+      event.preventDefault();
+      if ((input?.value || "").trim() === password) {
         localStorage.setItem(storageKey, "1");
-        showUnlocked();
-        return;
-      }
-      if (error) {
+        setLocked(false);
+      } else if (error) {
         error.hidden = false;
         error.textContent = "Incorrect password.";
+        input?.focus();
+        input?.select?.();
       }
-      input?.focus();
-      input?.select?.();
     });
-
-    lockBtn?.addEventListener("click", () => {
+    lockButton?.addEventListener("click", () => {
       localStorage.removeItem(storageKey);
-      showLocked();
+      setLocked(true);
     });
   }
 
-  const api = Object.freeze({
-    config,
-    initLayout,
-    initGate,
-    loadUpdatesData,
-    downloadText,
-  });
-
+  const api = Object.freeze({ config, initLayout, initGate, loadUpdatesData, downloadText });
   window.recplace = api;
   window.Recplace = api;
-
   document.addEventListener("DOMContentLoaded", initLayout);
 })();
