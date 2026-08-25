@@ -690,6 +690,131 @@ p {
   font-size: 0.94rem;
 }
 
+/* Image lightbox */
+
+body.media-lightbox-open {
+  overflow: hidden;
+}
+
+.is-expandable {
+  cursor: zoom-in;
+  transition:
+    filter 180ms ease,
+    opacity 180ms ease;
+}
+
+.is-expandable:hover {
+  filter: brightness(0.94);
+}
+
+.media-lightbox {
+  position: fixed;
+  z-index: 500;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 72px clamp(18px, 4vw, 72px) 28px;
+  visibility: hidden;
+  overflow: auto;
+  opacity: 0;
+  background: rgba(12, 14, 12, 0.96);
+  cursor: zoom-out;
+  transition:
+    opacity 220ms ease,
+    visibility 0s linear 220ms;
+}
+
+.media-lightbox.is-open {
+  visibility: visible;
+  opacity: 1;
+  transition:
+    opacity 220ms ease,
+    visibility 0s;
+}
+
+.media-lightbox__stage {
+  display: grid;
+  max-width: min(94vw, 1800px);
+  justify-items: center;
+  cursor: default;
+}
+
+.media-lightbox__image {
+  width: auto;
+  max-width: 100%;
+  max-height: calc(100dvh - 138px);
+  object-fit: contain;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+  transform: scale(0.985);
+  transition: transform 220ms var(--ease);
+}
+
+.media-lightbox.is-open .media-lightbox__image {
+  transform: scale(1);
+}
+
+.media-lightbox__caption {
+  max-width: 72ch;
+  margin: 14px 0 0;
+  color: #c9c6bd;
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.05em;
+  line-height: 1.45;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.media-lightbox__close {
+  position: fixed;
+  z-index: 1;
+  top: max(16px, env(safe-area-inset-top));
+  right: max(16px, env(safe-area-inset-right));
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 13px;
+  border: 1px solid #8b8d87;
+  border-radius: 1px;
+  background: rgba(12, 14, 12, 0.84);
+  color: var(--paper-light);
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease;
+}
+
+.media-lightbox__close span:last-child {
+  font-size: 1.1rem;
+  line-height: 0.8;
+}
+
+.media-lightbox__close:hover {
+  border-color: var(--paper-light);
+  background: #272a27;
+}
+
+@media (max-width: 680px) {
+  .media-lightbox {
+    padding: 68px 12px 22px;
+  }
+
+  .media-lightbox__image {
+    max-height: calc(100dvh - 132px);
+  }
+
+  .media-lightbox__caption {
+    margin-top: 11px;
+    font-size: 0.58rem;
+  }
+}
+
 /* Progressive reveal */
 
 .js .reveal {

@@ -1,5 +1,39 @@
 [
   {
+    "id": "roof-work-underway",
+    "date": "2026-08",
+    "sortDate": "2026-08-24",
+    "category": "Construction",
+    "title": "The roof is going on",
+    "body": "Roof work is underway at RECPLACE Professional Centre as construction continues across the building's full three-storey form.",
+    "images": [
+      {
+        "image": "/Assets/updates/august-24-current-progress-1600.webp",
+        "imageSmall": "/Assets/updates/august-24-current-progress-960.webp",
+        "imageWidth": 1600,
+        "imageSmallWidth": 960,
+        "imageHeight": 900,
+        "imageAlt": "Wide aerial view of RECPLACE Professional Centre and its construction site beside Highway 16"
+      },
+      {
+        "image": "/Assets/updates/august-24-site-context-1600.webp",
+        "imageSmall": "/Assets/updates/august-24-site-context-960.webp",
+        "imageWidth": 1600,
+        "imageSmallWidth": 960,
+        "imageHeight": 900,
+        "imageAlt": "Aerial view of the RECPLACE construction site within Prince George's south-side commercial area"
+      },
+      {
+        "image": "/Assets/updates/august-24-construction-detail-1600.webp",
+        "imageSmall": "/Assets/updates/august-24-construction-detail-960.webp",
+        "imageWidth": 1600,
+        "imageSmallWidth": 960,
+        "imageHeight": 900,
+        "imageAlt": "Closer aerial view of RECPLACE Professional Centre's concrete three-storey structure and roof framing"
+      }
+    ]
+  },
+  {
     "id": "third-floor-in",
     "date": "2026-08-05",
     "category": "Construction",

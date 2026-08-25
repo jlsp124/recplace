@@ -299,6 +299,126 @@
     targets.forEach((target) => observer.observe(target));
   }
 
+  function initMediaLightbox() {
+    const main = document.querySelector("main");
+    if (!main) return;
+
+    const lightbox = document.createElement("div");
+    lightbox.className = "media-lightbox";
+    lightbox.hidden = true;
+    lightbox.setAttribute("role", "dialog");
+    lightbox.setAttribute("aria-modal", "true");
+    lightbox.setAttribute("aria-label", "Image preview");
+    lightbox.innerHTML = `
+      <button class="media-lightbox__close" type="button" data-lightbox-close>
+        <span>Close</span><span aria-hidden="true">&times;</span>
+      </button>
+      <div class="media-lightbox__stage">
+        <img class="media-lightbox__image" alt="">
+        <p class="media-lightbox__caption" id="media-lightbox-caption"></p>
+      </div>`;
+    document.body.append(lightbox);
+
+    const closeButton = lightbox.querySelector("[data-lightbox-close]");
+    const preview = lightbox.querySelector(".media-lightbox__image");
+    const caption = lightbox.querySelector(".media-lightbox__caption");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let activeImage = null;
+    let closeTimer = 0;
+
+    function isExpandable(image) {
+      return image instanceof HTMLImageElement
+        && Boolean(image.alt.trim())
+        && !image.closest("a, button, [aria-hidden='true'], .home-hero__media, .contact-person__visual, .partner-row");
+    }
+
+    function enhance(image) {
+      if (!isExpandable(image) || image.dataset.lightboxReady === "true") return;
+      image.dataset.lightboxReady = "true";
+      image.classList.add("is-expandable");
+      image.setAttribute("role", "button");
+      image.setAttribute("tabindex", "0");
+      image.setAttribute("aria-haspopup", "dialog");
+      image.setAttribute("aria-label", `View larger: ${image.alt.trim()}`);
+    }
+
+    function enhanceWithin(root) {
+      if (root instanceof HTMLImageElement) enhance(root);
+      root.querySelectorAll?.("img").forEach(enhance);
+    }
+
+    function open(image) {
+      if (!isExpandable(image)) return;
+      window.clearTimeout(closeTimer);
+      activeImage = image;
+      const source = image.getAttribute("src");
+      if (!source) return;
+      preview.src = new URL(source, window.location.href).href;
+      preview.alt = image.alt;
+      caption.textContent = image.alt;
+      lightbox.hidden = false;
+      document.body.classList.add("media-lightbox-open");
+      window.requestAnimationFrame(() => {
+        lightbox.classList.add("is-open");
+        closeButton.focus({ preventScroll: true });
+      });
+    }
+
+    function finishClose() {
+      if (lightbox.classList.contains("is-open")) return;
+      lightbox.hidden = true;
+      preview.removeAttribute("src");
+      preview.alt = "";
+      caption.textContent = "";
+      activeImage?.focus({ preventScroll: true });
+      activeImage = null;
+    }
+
+    function close() {
+      if (lightbox.hidden) return;
+      lightbox.classList.remove("is-open");
+      document.body.classList.remove("media-lightbox-open");
+      window.clearTimeout(closeTimer);
+      if (reduceMotion.matches) finishClose();
+      else closeTimer = window.setTimeout(finishClose, 220);
+    }
+
+    enhanceWithin(main);
+    if ("MutationObserver" in window) {
+      const observer = new MutationObserver((records) => {
+        records.forEach((record) => record.addedNodes.forEach((node) => {
+          if (node instanceof Element) enhanceWithin(node);
+        }));
+      });
+      observer.observe(main, { childList: true, subtree: true });
+    }
+
+    main.addEventListener("click", (event) => {
+      const image = event.target.closest?.("img.is-expandable");
+      if (image) open(image);
+    });
+    main.addEventListener("keydown", (event) => {
+      const image = event.target.closest?.("img.is-expandable");
+      if (!image || (event.key !== "Enter" && event.key !== " ")) return;
+      event.preventDefault();
+      open(image);
+    });
+    closeButton.addEventListener("click", close);
+    lightbox.addEventListener("click", (event) => {
+      if (event.target === lightbox) close();
+    });
+    document.addEventListener("keydown", (event) => {
+      if (lightbox.hidden) return;
+      if (event.key === "Escape") {
+        event.preventDefault();
+        close();
+      } else if (event.key === "Tab") {
+        event.preventDefault();
+        closeButton.focus();
+      }
+    });
+  }
+
   function initLayout() {
     const context = getPathContext();
     const header = document.getElementById("site-header");
@@ -309,6 +429,7 @@
     initHeaderState();
     initNavigation();
     initRevealAnimations();
+    initMediaLightbox();
   }
 
   function safeParseJson(text) {
