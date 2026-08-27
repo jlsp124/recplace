@@ -17,15 +17,14 @@
   const navItems = Object.freeze([
     { href: "/", label: "Home", route: "home" },
     { href: "/leasing/", label: "Leasing", route: "leasing" },
+    { href: "/plans/", label: "Plans", route: "plans" },
+    { href: "/location/", label: "Location", route: "location" },
     { href: "/updates/", label: "Updates", route: "updates" },
   ]);
 
   const footerItems = Object.freeze([
-    ...navItems.slice(0, 2),
-    { href: "/location/", label: "Location", route: "location" },
-    { href: "/plans/", label: "Plans", route: "plans" },
+    ...navItems,
     { href: "/design/", label: "Design", route: "design" },
-    navItems[2],
     { href: "/contact/", label: "Contact", route: "contact" },
   ]);
 
@@ -423,8 +422,8 @@
     const context = getPathContext();
     const header = document.getElementById("site-header");
     const footer = document.getElementById("site-footer");
-    if (header) header.innerHTML = renderHeader(context);
-    if (footer) footer.innerHTML = renderFooter(context);
+    if (header && !header.children.length) header.innerHTML = renderHeader(context);
+    if (footer && !footer.children.length) footer.innerHTML = renderFooter(context);
     hydrateLinks();
     initHeaderState();
     initNavigation();
@@ -441,16 +440,15 @@
   }
 
   async function loadUpdatesData() {
-    const context = getPathContext();
+    const embedded = document.getElementById("updates-data");
+    const fallback = embedded?.textContent ? safeParseJson(embedded.textContent) : null;
     try {
       const response = await fetch("/data/updates.json", { cache: "no-store" });
-      if (!response.ok) return [];
+      if (!response.ok) return Array.isArray(fallback) ? fallback : [];
       const parsed = await response.json();
       return Array.isArray(parsed) ? parsed : [];
     } catch {
-      const embedded = document.getElementById("updates-data");
-      const parsed = embedded?.textContent ? safeParseJson(embedded.textContent) : null;
-      return Array.isArray(parsed) ? parsed : [];
+      return Array.isArray(fallback) ? fallback : [];
     }
   }
 
