@@ -4,21 +4,26 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="/Assets/favicon.svg" type="image/svg+xml">
-    <title>Contact Jen Higham for Leasing | RECPLACE Professional Centre</title>
+    <link rel="icon" href="/Assets/favicon-48.png" type="image/png" sizes="48x48">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/Assets/apple-touch-icon.png" sizes="180x180">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#171917">
+    <title>Contact Leasing | RECPLACE Professional Centre</title>
     <meta
       name="description"
       content="Contact Jen Higham for leasing enquiries at RECPLACE Professional Centre, 2740 Recplace Drive in Prince George, British Columbia."
     >
     <link rel="canonical" href="https://recplace.ca/contact/">
-    <meta property="og:site_name" content="RECPLACE Professional Centre">
-    <meta property="og:title" content="Contact Jen Higham for Leasing | RECPLACE Professional Centre">
+    <meta property="og:site_name" content="RECPLACE">
+    <meta property="og:title" content="Contact Leasing | RECPLACE Professional Centre">
     <meta property="og:description" content="Contact Jen Higham at Royal LePage Aspire Realty about leasing at RECPLACE Professional Centre in Prince George, BC.">
     <meta property="og:url" content="https://recplace.ca/contact/">
     <meta property="og:image" content="https://recplace.ca/Assets/media/building-front.webp">
     <meta property="og:image:alt" content="Front exterior rendering of RECPLACE Professional Centre">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Contact Jen Higham for Leasing | RECPLACE Professional Centre">
+    <meta name="twitter:title" content="Contact Leasing | RECPLACE Professional Centre">
     <meta name="twitter:description" content="Contact Jen Higham at Royal LePage Aspire Realty about leasing at RECPLACE Professional Centre in Prince George, BC.">
     <meta name="twitter:image" content="https://recplace.ca/Assets/media/building-front.webp">
     <meta name="twitter:image:alt" content="Front exterior rendering of RECPLACE Professional Centre">
@@ -50,7 +55,19 @@
   </head>
   <body data-page="contact">
     <a class="skip-link" href="#main-content">Skip to content</a>
-    <header id="site-header"></header>
+    <header id="site-header">
+      <div class="container site-header__inner">
+        <a class="site-brand" href="/" aria-label="RECPLACE Professional Centre home"><span class="site-brand__mark">RECPLACE</span><span class="site-brand__descriptor">Professional Centre<br>Prince George, BC</span></a>
+        <nav class="site-nav" data-nav-root aria-label="Primary navigation">
+          <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="site-nav-panel">Menu</button>
+          <button class="nav-scrim" type="button" data-nav-scrim aria-label="Close navigation" tabindex="-1"></button>
+          <div class="site-nav__panel" id="site-nav-panel" data-nav-panel>
+            <div class="site-nav__links"><a class="nav-link" data-nav-link href="/">Home</a><a class="nav-link" data-nav-link href="/leasing/">Leasing</a><a class="nav-link" data-nav-link href="/plans/">Plans</a><a class="nav-link" data-nav-link href="/location/">Location</a><a class="nav-link" data-nav-link href="/updates/">Updates</a></div>
+            <a class="site-nav__contact" href="/contact/" aria-current="page">Contact</a>
+          </div>
+        </nav>
+      </div>
+    </header>
 
     <main id="main-content" tabindex="-1">
       <section class="contact-opening" aria-labelledby="contact-title">
@@ -61,6 +78,7 @@
             <p class="page-lead">
               Connect directly with the project&rsquo;s leasing representative for questions about RECPLACE Professional Centre.
             </p>
+            <div class="button-row"><a class="text-link" href="/leasing/">Leasing Details</a><a class="text-link" href="/plans/">Building Overview</a></div>
           </div>
           <div class="contact-address" data-reveal>
             <p class="mono">Project address</p>
@@ -123,7 +141,16 @@
       </section>
     </main>
 
-    <footer id="site-footer"></footer>
-    <script src="/js/site.js?v=2" defer></script>
+    <footer id="site-footer">
+      <div class="container">
+        <div class="site-footer__top">
+          <div class="site-footer__identity"><div class="site-footer__name">RECPLACE <span>Professional Centre</span></div><p class="site-footer__address"><a data-link="maps" href="https://www.google.com/maps/search/?api=1&amp;query=2740+Recplace+Drive,+Prince+George,+BC+V2N+1T7">2740 Recplace Drive, Prince George, BC V2N 1T7</a><br>Leasing via Royal LePage Aspire Realty.</p></div>
+          <div><div class="site-footer__heading">Explore</div><nav class="site-footer__links" aria-label="Footer navigation"><a href="/">Home</a><a href="/leasing/">Leasing</a><a href="/plans/">Plans</a><a href="/location/">Location</a><a href="/updates/">Updates</a><a href="/design/">Design</a><a href="/contact/">Contact</a></nav></div>
+          <div><div class="site-footer__heading">Leasing</div><div class="site-footer__links"><a data-call="jen" href="tel:+12506137207">(250) 613-7207</a><a data-email="jen" href="mailto:jen@realtypg.com">jen@realtypg.com</a><a data-link="jen-profile" href="https://royallepageaspirerealty.com/teams/jen-higham/">Jen Higham profile</a></div></div>
+        </div>
+        <div class="site-footer__base"><span>RECPLACE Professional Centre</span><span>2740 Recplace Drive &middot; Prince George, British Columbia</span></div>
+      </div>
+    </footer>
+    <script src="/js/site.js?v=3" defer></script>
   </body>
 </html>
