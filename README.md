@@ -1,6 +1,6 @@
-# Recplace Professional Centre
+# RECPLACE Professional Centre
 
-A responsive website for Recplace Professional Centre, a medical and professional development in Prince George, British Columbia.
+A responsive website for RECPLACE Professional Centre, a professional and commercial development in Prince George, British Columbia.
 
 <!-- Add after taking a screenshot:
 ![Recplace Professional Centre homepage](docs/images/recplace-home.png)
@@ -8,7 +8,7 @@ A responsive website for Recplace Professional Centre, a medical and professiona
 
 ## About
 
-This website presents the building, leasing opportunities, design, location, construction updates, and contact information for Recplace Professional Centre.
+This website presents the building, leasing opportunities, design, location, construction updates, and contact information for RECPLACE Professional Centre.
 
 I built it to give the development a polished online presence while keeping the content clear, responsive, and easy to update as construction progresses.
 
@@ -28,12 +28,12 @@ I built it to give the development a polished online presence while keeping the 
 ## Pages
 
 - Home
-- Overview
 - Leasing
-- Design
+- Plans / building overview
 - Location
 - Updates
 - Contact
+- Design
 
 ## Technology
 
@@ -62,6 +62,17 @@ Then open:
 ```text
 http://localhost:8000
 ```
+
+## Verify changes
+
+Run the static SEO and content checks, followed by responsive browser QA:
+
+```bash
+npm test
+npm run qa:site
+```
+
+See `SEO_OPERATIONS.md` for canonical URL, sitemap, index-control, GSC Wizard, Bing, IndexNow, and release procedures.
 
 ## Screenshots
 
