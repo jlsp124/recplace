@@ -4,10 +4,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="/Assets/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="/Assets/favicon-48.png" type="image/png" sizes="48x48">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/Assets/apple-touch-icon.png" sizes="180x180">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#171917">
     <title>Commercial Space for Lease in Prince George | RECPLACE</title>
     <meta name="description" content="Explore professional office and commercial space for lease at RECPLACE Professional Centre in Prince George, BC, with building facts and leasing details.">
     <link rel="canonical" href="https://recplace.ca/leasing/">
-    <meta property="og:site_name" content="RECPLACE Professional Centre">
+    <meta property="og:site_name" content="RECPLACE">
     <meta property="og:title" content="Commercial Space for Lease in Prince George | RECPLACE">
     <meta property="og:description" content="Professional office and commercial space available for lease at RECPLACE Professional Centre in Prince George, BC.">
     <meta property="og:url" content="https://recplace.ca/leasing/">
@@ -25,7 +30,19 @@
   </head>
   <body data-page="leasing">
     <a class="skip-link" href="#main-content">Skip to content</a>
-    <header id="site-header"></header>
+    <header id="site-header">
+      <div class="container site-header__inner">
+        <a class="site-brand" href="/" aria-label="RECPLACE Professional Centre home"><span class="site-brand__mark">RECPLACE</span><span class="site-brand__descriptor">Professional Centre<br>Prince George, BC</span></a>
+        <nav class="site-nav" data-nav-root aria-label="Primary navigation">
+          <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="site-nav-panel">Menu</button>
+          <button class="nav-scrim" type="button" data-nav-scrim aria-label="Close navigation" tabindex="-1"></button>
+          <div class="site-nav__panel" id="site-nav-panel" data-nav-panel>
+            <div class="site-nav__links"><a class="nav-link" data-nav-link href="/">Home</a><a class="nav-link" data-nav-link href="/leasing/" aria-current="page">Leasing</a><a class="nav-link" data-nav-link href="/plans/">Plans</a><a class="nav-link" data-nav-link href="/location/">Location</a><a class="nav-link" data-nav-link href="/updates/">Updates</a></div>
+            <a class="site-nav__contact" href="/contact/">Contact</a>
+          </div>
+        </nav>
+      </div>
+    </header>
 
     <main id="main-content" tabindex="-1">
       <section class="site-section site-section--light leasing-hero" aria-labelledby="leasing-title">
@@ -35,7 +52,7 @@
               <p class="section-label">Leasing</p>
               <h1 class="page-title" id="leasing-title">Commercial space in Prince George, shaped for <span class="serif">professional use.</span></h1>
               <p class="page-lead">RECPLACE offers professional office space for lease, suited to healthcare, dental, wellness, and compatible retail uses.</p>
-              <div class="button-row"><a class="button button--solid" href="/contact/">Contact Leasing</a><a class="text-link" href="/plans/#explore-recplace">Explore the building in 3D</a></div>
+              <div class="button-row"><a class="button button--solid" href="/contact/">Contact Leasing</a><a class="text-link" href="/plans/">Building Overview</a><a class="text-link" href="/location/">Location</a><a class="text-link" href="/plans/#explore-recplace">Explore in 3D</a></div>
             </div>
           </div>
           <figure class="leasing-media" data-reveal>
@@ -109,12 +126,21 @@
       <section class="site-section site-section--dark" aria-labelledby="leasing-close-title">
         <div class="container closing-panel">
           <div data-reveal><p class="section-label">Next step</p><h2 class="section-title" id="leasing-close-title">Discuss your commercial leasing requirements directly with Jen Higham.</h2></div>
-          <div class="closing-panel__action" data-reveal data-delay="1"><a class="button button--light" href="/contact/">Contact Leasing</a></div>
+          <div class="closing-panel__action" data-reveal data-delay="1"><div class="button-row"><a class="button button--light" href="/contact/">Contact Leasing</a><a class="text-link text-link--light" href="/plans/">Building Overview</a></div></div>
         </div>
       </section>
     </main>
 
-    <footer id="site-footer"></footer>
-    <script src="/js/site.js?v=2" defer></script>
+    <footer id="site-footer">
+      <div class="container">
+        <div class="site-footer__top">
+          <div class="site-footer__identity"><div class="site-footer__name">RECPLACE <span>Professional Centre</span></div><p class="site-footer__address"><a data-link="maps" href="https://www.google.com/maps/search/?api=1&amp;query=2740+Recplace+Drive,+Prince+George,+BC+V2N+1T7">2740 Recplace Drive, Prince George, BC V2N 1T7</a><br>Leasing via Royal LePage Aspire Realty.</p></div>
+          <div><div class="site-footer__heading">Explore</div><nav class="site-footer__links" aria-label="Footer navigation"><a href="/">Home</a><a href="/leasing/">Leasing</a><a href="/plans/">Plans</a><a href="/location/">Location</a><a href="/updates/">Updates</a><a href="/design/">Design</a><a href="/contact/">Contact</a></nav></div>
+          <div><div class="site-footer__heading">Leasing</div><div class="site-footer__links"><a data-call="jen" href="tel:+12506137207">(250) 613-7207</a><a data-email="jen" href="mailto:jen@realtypg.com">jen@realtypg.com</a><a data-link="jen-profile" href="https://royallepageaspirerealty.com/teams/jen-higham/">Jen Higham profile</a></div></div>
+        </div>
+        <div class="site-footer__base"><span>RECPLACE Professional Centre</span><span>2740 Recplace Drive &middot; Prince George, British Columbia</span></div>
+      </div>
+    </footer>
+    <script src="/js/site.js?v=3" defer></script>
   </body>
 </html>

@@ -4,7 +4,11 @@
   "description": "Static RECPLACE Professional Centre website with Home, Leasing, Updates, Contact, and admin pages.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:favicons": "node scripts/build-favicons.cjs",
+    "qa:site": "node scripts/site-smoke.cjs",
+    "seo:check": "node scripts/seo-check.cjs",
+    "seo:check:live": "node scripts/seo-check.cjs --live",
+    "test": "node scripts/seo-check.cjs",
     "build:3d:model": "python scripts/build-recplace-model.py && node scripts/compress-recplace-model.cjs",
     "build:3d:viewer": "node scripts/build-recplace-viewer.cjs",
     "build:3d": "npm run build:3d:model && npm run build:3d:viewer",
