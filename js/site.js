@@ -329,6 +329,7 @@
     function isExpandable(image) {
       return image instanceof HTMLImageElement
         && Boolean(image.alt.trim())
+        && !image.hasAttribute("data-no-lightbox")
         && !image.closest("a, button, [aria-hidden='true'], .home-hero__media, .contact-person__visual, .partner-row");
     }
 

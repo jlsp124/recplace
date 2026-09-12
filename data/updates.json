@@ -1,5 +1,27 @@
 [
   {
+    "id": "structure-complete",
+    "date": "2026-09",
+    "sortDate": "2026-09-11",
+    "category": "Construction",
+    "title": "Structure complete",
+    "body": "The building structure and precast panel installation are complete, and the crane has left the site. Work continues on the remaining stages of construction at RECPLACE Professional Centre.",
+    "images": [
+      {
+        "image": "/Assets/updates/structure-complete-front-1280.jpg",
+        "imageWidth": 1280,
+        "imageHeight": 720,
+        "imageAlt": "Front aerial view of RECPLACE Professional Centre with the building structure and precast panels in place"
+      },
+      {
+        "image": "/Assets/updates/structure-complete-angle-1280.jpg",
+        "imageWidth": 1280,
+        "imageHeight": 720,
+        "imageAlt": "Angled aerial view of the RECPLACE structure and roof beside Highway 16"
+      }
+    ]
+  },
+  {
     "id": "roof-work-underway",
     "date": "2026-08",
     "sortDate": "2026-08-24",

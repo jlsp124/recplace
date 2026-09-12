@@ -1,0 +1,134 @@
+.recplace-explore {
+  scroll-margin-top: calc(var(--header-height) + 20px);
+  background: var(--paper-deep);
+}
+
+.recplace-explore__heading {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: clamp(28px, 5vw, 80px);
+  align-items: end;
+  margin-bottom: clamp(28px, 4vw, 52px);
+}
+
+.recplace-explore__heading .section-lead { max-width: 38ch; margin: 0; }
+.recplace-explore__heading .section-title { max-width: 17ch; }
+.recplace-explore__viewer { border-top: 1px solid var(--line); }
+
+.recplace-explore__stage {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 2 / 1;
+  min-height: 300px;
+  background: #deddd6;
+  background: radial-gradient(ellipse at 55% 38%, #f4f2e9 0%, #e3e1d8 68%, #d5d4cb 100%);
+}
+
+.recplace-explore__poster, .recplace-explore__stage canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.recplace-explore__poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 48%;
+}
+
+.recplace-explore__poster::after {
+  position: absolute;
+  inset: 55% 0 0;
+  background: linear-gradient(transparent, rgba(17, 23, 26, .25));
+  content: '';
+  pointer-events: none;
+}
+
+.recplace-explore__stage canvas {
+  cursor: grab;
+  touch-action: pan-y;
+  animation: recplace-model-enter 420ms ease both;
+}
+.recplace-explore__stage canvas.is-dragging { cursor: grabbing; }
+.recplace-explore__stage canvas:focus-visible { outline-offset: -5px; }
+
+.recplace-explore__launch {
+  position: absolute;
+  left: clamp(18px, 3vw, 40px);
+  bottom: clamp(18px, 3vw, 36px);
+  z-index: 1;
+  background: var(--paper-light);
+  color: var(--ink);
+  border-color: var(--paper-light);
+  min-height: 50px;
+}
+.recplace-explore__launch:disabled { cursor: wait; opacity: .9; }
+.recplace-explore__launch:not(:disabled):hover { background: var(--ink); color: var(--paper-light); border-color: var(--ink); }
+
+.recplace-explore__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 24px;
+  flex-wrap: wrap;
+  padding: 10px 0;
+  border-top: 1px solid var(--line);
+}
+.recplace-explore__controls { display: flex; flex-wrap: wrap; align-items: center; gap: 0 18px; }
+.recplace-explore__controls button, .recplace-explore__stop {
+  min-height: 44px;
+  padding: 8px 0;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  font-size: .83rem;
+}
+.recplace-explore__controls button:hover, .recplace-explore__stop:hover { border-bottom-color: currentColor; }
+.recplace-explore__zoom { display: flex; gap: 4px; }
+.recplace-explore__zoom button { width: 44px; font-size: 1.15rem; }
+.recplace-explore__stop { margin-left: auto; }
+
+.recplace-explore__footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px 32px;
+  align-items: start;
+  border-top: 1px solid var(--line);
+  padding-top: 20px;
+}
+.recplace-explore__caption { max-width: 65ch; }
+.recplace-explore__caption p { margin: 0 0 7px; }
+.recplace-explore__caption .mono { color: var(--muted); font-size: .63rem; }
+.recplace-explore__help { font-size: .82rem; }
+.recplace-explore__status { font-size: .78rem; color: #51534d; }
+.recplace-explore__links { display: flex; flex-wrap: wrap; gap: 12px 24px; flex-shrink: 0; }
+.recplace-explore__links .text-link { font-size: .85rem; }
+.recplace-explore__static-note { margin: 0; font-size: .8rem; }
+.recplace-explore [data-3d-stage-help] { display: none; }
+.recplace-explore [data-state='ready'] [data-3d-stage-help] { display: block; }
+
+@keyframes recplace-model-enter { from { opacity: 0; } to { opacity: 1; } }
+
+@media (max-width: 900px) {
+  .recplace-explore__heading { grid-template-columns: 1fr; gap: 24px; }
+  .recplace-explore__heading .section-lead { max-width: 50ch; }
+  .recplace-explore__stage { aspect-ratio: 1.6; }
+  .recplace-explore__footer { flex-direction: column; }
+}
+
+@media (max-width: 600px) {
+  .recplace-explore__stage { min-height: 0; aspect-ratio: 1.6; }
+  .recplace-explore__poster img { object-position: 52% center; }
+  .recplace-explore__controls { gap: 0 13px; }
+  .recplace-explore__controls button, .recplace-explore__stop { font-size: .78rem; }
+  .recplace-explore__stop { margin-left: 0; }
+  .recplace-explore__toolbar { column-gap: 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .recplace-explore__stage canvas { animation: none; }
+}

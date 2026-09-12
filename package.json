@@ -4,7 +4,11 @@
   "description": "Static RECPLACE Professional Centre website with Home, Leasing, Updates, Contact, and admin pages.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:3d:model": "python scripts/build-recplace-model.py && node scripts/compress-recplace-model.cjs",
+    "build:3d:viewer": "node scripts/build-recplace-viewer.cjs",
+    "build:3d": "npm run build:3d:model && npm run build:3d:viewer",
+    "qa:3d": "node scripts/qa-recplace-3d.cjs"
   },
   "repository": {
     "type": "git",
@@ -19,6 +23,9 @@
   },
   "homepage": "https://github.com/jlsp124/recplace#readme",
   "devDependencies": {
-    "playwright": "^1.58.2"
+    "esbuild": "0.25.10",
+    "meshoptimizer": "0.24.0",
+    "playwright": "^1.58.2",
+    "three": "0.180.0"
   }
 }
