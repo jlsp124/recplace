@@ -13,6 +13,7 @@
 
 .recplace-explore__heading .section-lead { max-width: 38ch; margin: 0; }
 .recplace-explore__heading .section-title { max-width: 17ch; }
+.recplace-explore__invitation .button { margin-top: 24px; }
 .recplace-explore__viewer { border-top: 1px solid var(--line); }
 
 .recplace-explore__stage {
