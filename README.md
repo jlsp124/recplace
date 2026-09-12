@@ -24,7 +24,8 @@ I built it to give the development a polished online presence while keeping the 
 - Mobile navigation
 - Desktop and mobile layouts
 - Browser testing with Playwright
-- Click-to-load interactive building exterior on Home and Plans
+- Click-to-load interactive building exterior on Home and Plans, with a larger dedicated Explore page
+- Current drone video with quality-focused desktop and mobile exports
 
 See [Interactive 3D implementation](docs/INTERACTIVE_3D.md) for source provenance,
 model limitations, build commands, browser QA, and the future leasing mapping.

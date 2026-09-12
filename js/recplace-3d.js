@@ -1,5 +1,5 @@
 // Only this small controller loads with the page. The engine and GLB are fetched
-// after a visitor explicitly chooses to explore.
+// after activation, or directly on the dedicated Explore page.
 (() => {
   document.querySelectorAll('[data-recplace-3d]').forEach((root) => {
     const stage = root.querySelector('[data-3d-stage]');
@@ -8,6 +8,10 @@
     const controls = root.querySelector('[data-3d-controls]');
     const status = root.querySelector('[data-3d-status]');
     const stop = root.querySelector('[data-3d-stop]');
+    const orbit = root.querySelector('[data-3d-orbit]');
+    const expand = root.querySelector('[data-3d-expand]');
+    let expanded = false;
+    let savedOverflow = '';
     let viewer;
     let engine;
     let engineAttempt = 0;
@@ -27,6 +31,7 @@
     }
 
     function restore(message, failed = false) {
+      endExpanded();
       clearTimeout(timeout);
       request?.abort();
       viewer?.dispose();
@@ -35,6 +40,47 @@
       launch.textContent = failed ? 'Try 3D again' : 'Explore in 3D';
       status.textContent = message;
     }
+
+    function resetOrbit() { orbit?.setAttribute('aria-pressed', 'false'); }
+    function endExpanded() {
+      if (!expanded) return;
+      expanded = false;
+      root.classList.remove('is-expanded');
+      root.removeAttribute('role');
+      root.removeAttribute('aria-modal');
+      root.removeAttribute('aria-label');
+      document.body.style.overflow = savedOverflow;
+      expand.textContent = 'Expand view';
+      expand.setAttribute('aria-expanded', 'false');
+      expand.focus({ preventScroll: true });
+    }
+    expand?.addEventListener('click', () => {
+      if (expanded) return endExpanded();
+      savedOverflow = document.body.style.overflow;
+      expanded = true;
+      root.classList.add('is-expanded');
+      root.setAttribute('role', 'dialog');
+      root.setAttribute('aria-modal', 'true');
+      root.setAttribute('aria-label', 'RECPLACE expanded 3D view');
+      document.body.style.overflow = 'hidden';
+      expand.textContent = 'Close expanded view';
+      expand.setAttribute('aria-expanded', 'true');
+      expand.focus({ preventScroll: true });
+    });
+    root.addEventListener('keydown', (event) => {
+      if (!expanded) return;
+      if (event.key === 'Escape') { event.preventDefault(); endExpanded(); }
+      if (event.key === 'Tab') {
+        const items = [...root.querySelectorAll('button:not(:disabled), a[href], canvas')].filter((el) => el.getClientRects().length);
+        const first = items[0], last = items.at(-1);
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+        if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+      }
+    });
+    orbit?.addEventListener('click', () => {
+      const active = viewer?.setOrbit(orbit.getAttribute('aria-pressed') !== 'true');
+      orbit.setAttribute('aria-pressed', String(Boolean(active)));
+    });
 
     launch.hidden = false;
     launch.addEventListener('click', async () => {
@@ -62,12 +108,13 @@
         }
         const { createViewer } = engine;
         if (current.signal.aborted) return;
-        const loaded = await createViewer(stage, { signal: current.signal, onFailure: fail });
+        const loaded = await createViewer(stage, { signal: current.signal, onFailure: fail, onInteraction: resetOrbit });
         if (current.signal.aborted) { loaded.dispose(); return; }
         viewer = loaded;
         clearTimeout(timeout);
         const shouldFocus = document.activeElement === launch;
         setState('ready');
+        resetOrbit();
         status.textContent = '3D exterior ready. Illustrative model; final details may vary.';
         if (shouldFocus) stage.querySelector('canvas').focus({ preventScroll: true });
         root.dispatchEvent(new CustomEvent('recplace:viewer-ready', { detail: { viewer } }));
@@ -78,6 +125,7 @@
 
     root.querySelectorAll('[data-3d-view]').forEach((button) => button.addEventListener('click', () => {
       viewer?.setView(button.dataset['3dView']);
+      resetOrbit();
       status.textContent = `${button.textContent.trim()} view. Illustrative model; final details may vary.`;
     }));
     root.querySelector('[data-3d-zoom-in]').addEventListener('click', () => viewer?.zoom(1.15));
@@ -87,5 +135,6 @@
       launch.focus({ preventScroll: true });
     });
     window.addEventListener('pagehide', () => restore('Select Explore in 3D to explore the building.'));
+    if (root.hasAttribute('data-3d-autostart')) launch.click();
   });
 })();

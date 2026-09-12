@@ -13,6 +13,7 @@ const pages = [
   ["updates/index.html", "/updates/"],
   ["contact/index.html", "/contact/"],
   ["design/index.html", "/design/"],
+  ["explore/index.html", "/explore/"],
 ];
 const canonicalBase = "https://recplace.ca";
 

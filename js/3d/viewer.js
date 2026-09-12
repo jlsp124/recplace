@@ -4,6 +4,7 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 
 const PUBLIC_MODEL_URL = new URL('/Assets/3d/recplace-exterior.glb', location.origin);
 const VIEWS = {
+  perspective: { theta: .64, phi: 1.28, zoom: 1.04 },
   approach: { theta: .40, phi: 1.615, zoom: 1 },
   opposite: { theta: Math.PI + .3, phi: 1.60, zoom: 1 },
   overview: { theta: .58, phi: .85, zoom: 1 },
@@ -94,7 +95,7 @@ function releaseTree(tree) {
   textures.forEach((value) => { value.source?.data?.close?.(); value.dispose(); });
 }
 
-export async function createViewer(stage, { signal, onFailure }) {
+export async function createViewer(stage, { signal, onFailure, onInteraction, initialView = 'perspective' }) {
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('webgl2', { antialias: true, alpha: true, powerPreference: 'low-power' });
   if (!context) throw new Error('WebGL2 is unavailable');
@@ -119,8 +120,10 @@ export async function createViewer(stage, { signal, onFailure }) {
   let visible = true;
   let resizeObserver;
   let visibilityObserver;
-  let pose = { ...VIEWS.approach };
+  let pose = { ...(VIEWS[initialView] || VIEWS.perspective) };
   let animation;
+  let orbiting = false;
+  let lastTime = 0;
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const listeners = new AbortController();
   const points = new Map();
@@ -145,6 +148,8 @@ export async function createViewer(stage, { signal, onFailure }) {
   function draw(now = performance.now()) {
     frame = 0;
     if (disposed || !visible || document.hidden) return;
+    if (orbiting && !animation) pose.theta += Math.min(50, now - (lastTime || now)) * .000075;
+    lastTime = now;
     if (animation) {
       const t = Math.min(1, (now - animation.start) / 620);
       const e = 1 - (1 - t) ** 3;
@@ -165,7 +170,7 @@ export async function createViewer(stage, { signal, onFailure }) {
       Math.max(1.8, target.y + distance * Math.cos(pose.phi)), target.z + distance * Math.sin(pose.phi) * Math.cos(pose.theta));
     camera.lookAt(target);
     renderer.render(scene, camera);
-    if (animation) requestDraw();
+    if (animation || orbiting) requestDraw();
   }
 
   function requestDraw() {
@@ -184,6 +189,7 @@ export async function createViewer(stage, { signal, onFailure }) {
   function setView(name, instant = false) {
     const next = VIEWS[name];
     if (!next || disposed) return;
+    setOrbit(false);
     const delta = THREE.MathUtils.euclideanModulo(next.theta - pose.theta + Math.PI, Math.PI * 2) - Math.PI;
     const to = { ...next, theta: pose.theta + delta };
     animation = instant || reducedMotion.matches ? null : { from: { ...pose }, to, start: performance.now() };
@@ -195,6 +201,13 @@ export async function createViewer(stage, { signal, onFailure }) {
     animation = null;
     pose.zoom = THREE.MathUtils.clamp(pose.zoom * factor, .8, 2.1);
     requestDraw();
+  }
+
+  function setOrbit(enabled) {
+    orbiting = Boolean(enabled) && !reducedMotion.matches;
+    lastTime = 0;
+    requestDraw();
+    return orbiting;
   }
 
   try {
@@ -256,11 +269,12 @@ export async function createViewer(stage, { signal, onFailure }) {
     resizeObserver.observe(stage);
     visibilityObserver = new IntersectionObserver(([entry]) => {
       visible = entry.isIntersecting;
-      if (!visible) { cancelAnimationFrame(frame); frame = 0; }
+      if (!visible) { cancelAnimationFrame(frame); frame = 0; lastTime = 0; }
       else requestDraw();
     });
     visibilityObserver.observe(stage);
     document.addEventListener('visibilitychange', requestDraw, { signal: listeners.signal });
+    reducedMotion.addEventListener('change', () => { setOrbit(false); onInteraction?.(); }, { signal: listeners.signal });
     canvas.addEventListener('webglcontextlost', (event) => {
       event.preventDefault();
       onFailure(new Error('Graphics context lost'));
@@ -268,6 +282,8 @@ export async function createViewer(stage, { signal, onFailure }) {
     canvas.addEventListener('pointerdown', (event) => {
       if (event.pointerType === 'mouse' && event.button !== 0) return;
       animation = null;
+      setOrbit(false);
+      onInteraction?.();
       canvas.setPointerCapture(event.pointerId);
       points.set(event.pointerId, [event.clientX, event.clientY]);
       canvas.classList.add('is-dragging');
@@ -298,20 +314,22 @@ export async function createViewer(stage, { signal, onFailure }) {
       if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', '+', '=', '-', '_', 'Home'].includes(event.key)) return;
       event.preventDefault();
       animation = null;
+      setOrbit(false);
+      onInteraction?.();
       if (event.key === 'ArrowLeft') pose.theta += .12;
       if (event.key === 'ArrowRight') pose.theta -= .12;
       if (event.key === 'ArrowUp') pose.phi = Math.max(.55, pose.phi - .07);
       if (event.key === 'ArrowDown') pose.phi = Math.min(1.64, pose.phi + .07);
       if ('+='.includes(event.key)) zoom(1.12);
       if ('-_'.includes(event.key)) zoom(1 / 1.12);
-      if (event.key === 'Home') setView('approach');
+      if (event.key === 'Home') setView(initialView);
       requestDraw();
     }, { signal: listeners.signal });
     // Deliberately no wheel listener: scrolling over the model scrolls the page.
     resize();
     draw();
     return {
-      dispose, setView, zoom,
+      dispose, setView, zoom, setOrbit,
       // Stable, deliberately small extension point for future leasing clients.
       // These groups contain exterior slices, not authored interiors or suites.
       getFloor: (id) => model.getObjectByName(id.replaceAll('-', '_')) || null,

@@ -4,7 +4,7 @@ const path = require("node:path");
 const { chromium } = require("playwright");
 
 const root = path.resolve(__dirname, "..");
-const routes = ["/", "/leasing/", "/plans/", "/location/", "/updates/", "/contact/", "/design/"];
+const routes = ["/", "/leasing/", "/plans/", "/location/", "/updates/", "/contact/", "/design/", "/explore/"];
 const viewports = [
   { name: "desktop", width: 1440, height: 1000 },
   { name: "mobile", width: 390, height: 844 },

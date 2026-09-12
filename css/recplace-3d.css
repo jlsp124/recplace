@@ -91,6 +91,32 @@
 .recplace-explore__zoom { display: flex; gap: 4px; }
 .recplace-explore__zoom button { width: 44px; font-size: 1.15rem; }
 .recplace-explore__stop { margin-left: auto; }
+.recplace-explore__controls button[aria-pressed='true'] { color: var(--accent); border-bottom-color: currentColor; }
+
+body[data-page='explore'] .recplace-explore { padding-block: clamp(28px, 4vw, 60px); }
+body[data-page='explore'] .recplace-explore > .container { width: 100%; max-width: none; }
+body[data-page='explore'] .recplace-explore__heading { margin-bottom: 28px; }
+body[data-page='explore'] .recplace-explore__heading .section-title { font-size: clamp(2.8rem, 4.5vw, 6rem); }
+body[data-page='explore'] .recplace-explore__stage { height: max(460px, calc(100svh - 320px)); aspect-ratio: auto; }
+
+.recplace-explore__viewer.is-expanded {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  padding: 16px clamp(16px, 3vw, 48px);
+  background: var(--paper-deep);
+  overflow-y: auto;
+}
+.recplace-explore__viewer.is-expanded .recplace-explore__stage {
+  flex: 1;
+  min-height: 180px;
+  height: auto;
+  aspect-ratio: auto;
+}
+.recplace-explore__viewer.is-expanded .recplace-explore__footer { padding-block: 10px; }
+.recplace-explore__viewer.is-expanded .recplace-explore__toolbar { flex-shrink: 0; }
 
 .recplace-explore__footer {
   display: flex;
@@ -105,7 +131,7 @@
 .recplace-explore__caption .mono { color: var(--muted); font-size: .63rem; }
 .recplace-explore__help { font-size: .82rem; }
 .recplace-explore__status { font-size: .78rem; color: #51534d; }
-.recplace-explore__links { display: flex; flex-wrap: wrap; gap: 12px 24px; flex-shrink: 0; }
+.recplace-explore__links { display: flex; flex-wrap: wrap; gap: 12px 24px; }
 .recplace-explore__links .text-link { font-size: .85rem; }
 .recplace-explore__static-note { margin: 0; font-size: .8rem; }
 .recplace-explore [data-3d-stage-help] { display: none; }
@@ -121,6 +147,9 @@
 }
 
 @media (max-width: 600px) {
+  body[data-page='explore'] .recplace-explore__stage { height: clamp(240px, 34svh, 320px); min-height: 240px; }
+  body[data-page='explore'] .is-expanded .recplace-explore__stage { height: auto; min-height: 150px; }
+  .is-expanded .recplace-explore__footer { display: none; }
   .recplace-explore__stage { min-height: 0; aspect-ratio: 1.6; }
   .recplace-explore__poster img { object-position: 52% center; }
   .recplace-explore__controls { gap: 0 13px; }
@@ -130,5 +159,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  [data-3d-orbit] { display: none; }
   .recplace-explore__stage canvas { animation: none; }
 }

@@ -134,6 +134,22 @@
   text-transform: uppercase;
 }
 
+.home-hero__playback {
+  position: absolute;
+  z-index: 3;
+  top: clamp(20px, 3vw, 48px);
+  right: clamp(20px, 3vw, 48px);
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid #ffffff80;
+  background: #171917dc;
+  color: var(--white);
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
 .js .home-hero__content > * {
   opacity: 0;
   transform: translateY(22px);

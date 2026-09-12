@@ -222,19 +222,34 @@ for (group, material), objects in batches.items():
             vertices.append([p['p'][k] + (vy if k == 1 else v[k]) * p['s'][k] / 2 for k in range(3)])
         for face in FACES:
             vs = [vertices[j] for j in face]
-            a, b = [[vs[j][k] - vs[0][k] for k in range(3)] for j in (1, 2)]
-            n = [a[1]*b[2]-a[2]*b[1], a[2]*b[0]-a[0]*b[2], a[0]*b[1]-a[1]*b[0]]
-            length = math.sqrt(sum(c*c for c in n))
-            if length < 1e-10:
+            triangles = []
+            for tri in [(0, 1, 2), (0, 2, 3)]:
+                a, b = [[vs[j][k] - vs[tri[0]][k] for k in range(3)] for j in tri[1:]]
+                n = [a[1]*b[2]-a[2]*b[1], a[2]*b[0]-a[0]*b[2], a[0]*b[1]-a[1]*b[0]]
+                length = math.sqrt(sum(c*c for c in n))
+                if length > 1e-10:
+                    triangles.append(tri)
+                    normal = [c/length for c in n]
+            if not triangles:
                 continue
-            n = [c/length for c in n]
+            n = normal
             offset = len(positions)
             uv_axes = [k for k in range(3) if k != max(range(3), key=lambda k: abs(n[k]))]
             for v in vs:
                 positions.append(v)
                 normals.append(n)
                 uvs.append([v[k] / (2 if material == 'stone' else 3) for k in uv_axes])
-            indices.extend([offset, offset+1, offset+2, offset, offset+2, offset+3])
+            indices.extend(offset + j for tri in triangles for j in tri)
+        if p.get('wedge'):
+            # Check a closed surface by geometric edge incidence, including both
+            # triangular end walls. A degenerate half-quad must not drop a wall.
+            edges = {}
+            for j in range(start, len(indices), 3):
+                tri = [tuple(positions[k]) for k in indices[j:j+3]]
+                for a, b in zip(tri, tri[1:] + tri[:1]):
+                    edge = tuple(sorted((a, b)))
+                    edges[edge] = edges.get(edge, 0) + 1
+            assert all(count == 2 for count in edges.values()), 'Stair roof must be watertight'
         ranges.append({'sourceId': p['sourceId'], 'name': p['name'], 'firstIndex': start, 'indexCount': len(indices)-start})
     primitive = {'attributes': {'POSITION': accessor(positions, 3), 'NORMAL': accessor(normals, 3),
                                 'TEXCOORD_0': accessor(uvs, 2)},

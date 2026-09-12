@@ -4,6 +4,9 @@
     const media = video?.closest(".home-hero__media");
     const source = video?.querySelector("source[data-src-desktop]");
     if (!video || !media || !source) return;
+    const playback = media.querySelector('[data-hero-playback]');
+    let userPaused = false;
+    let inView = false;
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const mobileScreen = window.matchMedia("(max-width: 900px)");
@@ -24,10 +27,12 @@
         source.removeAttribute("src");
         video.load();
       }
+      updatePlayback();
     }
 
     async function startVideo() {
       if (!shouldUseVideo()) return stopVideo();
+      if (!inView || document.hidden || userPaused) { video.pause(); return; }
       const nextSource = desiredSource();
       if (!nextSource) return stopVideo();
       if (source.getAttribute("src") !== nextSource) {
@@ -39,15 +44,31 @@
         await video.play();
       } catch {
         media.classList.remove("has-playing-video");
+        updatePlayback();
       }
     }
 
-    video.addEventListener("playing", () => media.classList.add("has-playing-video"));
-    video.addEventListener("error", () => media.classList.remove("has-playing-video"));
+    function updatePlayback() {
+      if (!playback) return;
+      playback.hidden = !source.hasAttribute('src');
+      playback.textContent = video.paused ? 'Play video' : 'Pause video';
+      playback.setAttribute('aria-label', video.paused ? 'Play construction video' : 'Pause construction video');
+    }
+    video.addEventListener("playing", () => { media.classList.add("has-playing-video"); updatePlayback(); });
+    video.addEventListener('pause', updatePlayback);
+    video.addEventListener("error", () => { media.classList.remove("has-playing-video"); if (playback) playback.hidden = true; });
+    playback?.addEventListener('click', () => {
+      userPaused = !video.paused;
+      if (userPaused) video.pause(); else startVideo();
+    });
+    new IntersectionObserver(([entry]) => {
+      inView = entry.isIntersecting;
+      startVideo();
+    }, { threshold: .05 }).observe(media);
+    document.addEventListener('visibilitychange', startVideo);
     reducedMotion.addEventListener?.("change", startVideo);
     mobileScreen.addEventListener?.("change", startVideo);
     connection?.addEventListener?.("change", startVideo);
-    startVideo();
   }
 
   function initHeroDepth() {

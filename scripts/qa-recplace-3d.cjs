@@ -139,7 +139,8 @@ async function check(name, fn) {
         assert.equal(await page.locator('canvas').evaluate((c) => getComputedStyle(c).animationName), 'none');
         await page.locator('[data-3d-stop]').click();
       }
-      assert.equal(await page.locator('.recplace-explore__links a').first().getAttribute('href'), '#floor-summary');
+      assert.equal(await page.locator('.recplace-explore__links a[href="#floor-summary"]').count(), 1);
+      assert.equal(await page.locator('.recplace-explore__links a[href="/explore/"]').count(), 1);
       await context.close();
     });
 

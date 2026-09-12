@@ -1,11 +1,10 @@
 # RECPLACE interactive exterior
 
-The homepage has a new **Explore RECPLACE** section immediately after Building
-identity and before Intended uses. The same viewer appears on `/plans/`, before
-the floor overview. Leasing links to `/plans/#explore-recplace`.
-
-The existing construction hero, architectural images, page routes, metadata and
-site design remain in place. This is a static HTML/CSS/JavaScript addition.
+The homepage has an **Explore RECPLACE** section before Intended uses. The
+redundant Building identity section has been removed; its `/#design` anchor
+remains. The same viewer appears on `/plans/`, before the floor overview.
+Home, Plans and Leasing link to a larger dedicated experience at `/explore/`.
+The existing visual language and other public routes remain in place.
 
 ## Source selection and scope
 
@@ -50,8 +49,13 @@ and angle renders guide appearance; they are not projected onto the building.
 - Place RECPLACE / PROFESSIONAL CENTRE on the existing entrance surround, using
   the supplied front rendering as the placement reference. This text treatment
   is created in the viewer; it is not baked into the standalone GLB.
-- Start at a low entrance viewpoint. Entrance, Opposite side and Overview views
-  use the same bounds-aware framing; zoom remains under visitor control.
+- Restore the missing triangular sides of the rooftop stair enclosures. Export
+  each nondegenerate triangle independently, then assert that every wedge edge
+  has exactly two incident triangles so each enclosure remains closed.
+- Start at an elevated perspective. Perspective, Entrance, Opposite side and
+  Overview use bounds-aware framing; zoom remains under visitor control.
+- Add opt-in Slow orbit and an expanded viewport with Escape to close, keyboard
+  focus containment and scroll restoration. Direct manipulation stops orbiting.
 
 The result is an interactive architectural illustration. It does not match the
 professional renders' photorealism. Those renders remain the first impression
@@ -60,20 +64,21 @@ parking layout, interior spaces or new landscape features have been introduced.
 
 ## Loading, fallback and mobile
 
-The regular page downloads a roughly 4.1 KB controller and 4.3 KB stylesheet.
+The regular page downloads a small controller and scoped stylesheet.
 It reuses the existing `building-angle.webp` as a lazy static poster. Merely
-scrolling to the section does **not** fetch Three.js or the GLB.
+scrolling to the section on Home or Plans does **not** fetch Three.js or the GLB.
+The dedicated Explore page starts the viewer directly, retaining the same fallback.
 
 Clicking Explore in 3D imports the self-hosted engine bundle (approximately 598 KB
-before HTTP compression) and the 418,008-byte Meshopt GLB. The 65,966-byte source
+before HTTP compression) and the 418,152-byte Meshopt GLB. The source
 interaction map is for future clients and is not fetched by this viewer.
 The build compresses geometry losslessly and decodes every buffer to verify
 byte equality before writing the final file. There are 28 material/floor mesh
 batches. No runtime CDN, external font, HDR download or third-party API is needed.
 
-Rendering happens on demand. There is no idle rotation or continuous animation
-loop. Resize, drag, keyboard, zoom and the short view transitions request frames;
-offscreen or hidden pages stop rendering. Shadow maps are generated once because
+Rendering happens on demand unless the visitor enables Slow orbit. Resize, drag,
+keyboard, zoom and short view transitions request frames; offscreen or hidden
+pages stop rendering, including orbit. Shadow maps are generated once because
 the building and lighting are static. DPR is capped at 1.75. Shadow resolution
 is 1024 on phone-sized viewports and 2048 on larger viewports.
 
@@ -88,7 +93,7 @@ On touch screens, horizontal dragging rotates the building and vertical swipes
 remain available for page scrolling. Zoom buttons are always provided; there is
 no wheel interception. Keyboard users can use arrow keys, + / − and Home.
 Controls have at least 44 px targets, visible focus, and loading/fallback status.
-Reduced motion removes the canvas fade and camera-view transitions.
+Reduced motion removes the canvas fade, camera-view transitions and orbit control.
 
 ## Future leasing integration
 
@@ -105,7 +110,8 @@ to the range to resolve the original part.
 
 The controller dispatches `recplace:viewer-ready` on its `[data-recplace-3d]`
 element with `event.detail.viewer`. This small API provides `getFloor(id)`,
-`resolveIntersection(hit)`, `setView(name)`, `zoom(factor)` and `dispose()`.
+`resolveIntersection(hit)`, `setView(name)`, `zoom(factor)`, `setOrbit(enabled)`
+and `dispose()`.
 The current UI does not present floor/suite selection as an available feature.
 
 The mapping has an explicitly empty `suites` array. Add approved suite IDs,
@@ -122,7 +128,8 @@ without changing public-page routing or adding management data to the public sit
 | --- | --- |
 | `index.html` | Homepage section, static poster and progressive controls |
 | `plans/index.html` | Same viewer beside the existing floor overview |
-| `leasing/index.html` | Link into the Plans viewer |
+| `explore/index.html` | Dedicated larger viewer with automatic initialization |
+| `leasing/index.html` | Link into the dedicated viewer |
 | `css/recplace-3d.css` | Scoped section, controls and responsive styling |
 | `js/recplace-3d.js` | Small lazy loader, status, fallback and lifecycle |
 | `js/3d/viewer.js` | Maintainable Three.js scene and interaction source |
@@ -136,6 +143,7 @@ without changing public-page routing or adding management data to the public sit
 | `scripts/compress-recplace-model.cjs` | Lossless compression and byte verification |
 | `scripts/build-recplace-viewer.cjs` | Reproducible, pinned self-hosted JS bundle |
 | `scripts/qa-recplace-3d.cjs` | End-to-end static-site and viewer checks |
+| `scripts/qa-explore-media.cjs` | Video preferences, dedicated viewer and expansion checks |
 | `package.json`, `package-lock.json` | Pinned build tools and useful build/QA commands |
 
 ## Build and test
@@ -166,16 +174,37 @@ WebGL, request failures, cancellation and graphics context loss. Viewport/touch
 checks are browser emulations with software WebGL, not physical iOS/Android or
 hardware performance certification.
 
-Verified locally on September 11, 2026: all 13 QA groups passed, including retry
-after an engine download failure, model request failure and graphics context
-loss. JavaScript syntax checks and `git diff --check` passed. Rebuilding the
-generated assets produced identical SHA-256 hashes:
+For the new video and dedicated viewer checks, start `python -m http.server 8765
+--bind 127.0.0.1` in a separate terminal, then run
+`node scripts/qa-explore-media.cjs`. Screenshots go to `.qa/explore-media/`.
+The script checks 1440, 390 and 320 px layouts, video source selection and playback,
+offscreen suspension, reduced-motion/data-saving fallbacks, automatic model
+loading, orbit, expanded view, Escape and restored focus/scroll behavior.
 
-- GLB: `23fefce2635e3db55e0b362dbe30eeaeb28d34384fe66f8c8924ee09e4b75752`
-- Viewer bundle: `0f4e1b2f5c67f66c3bee9e6ddf10c224ae8a025935455d1bd1b2c5dd9ddf06ca`
+Current generated asset SHA-256 hashes:
 
-This verification is local. No live deployment or physical-device performance
-result is implied.
+- GLB: `1e42fd550421523d22feb731290f952aa6920256f41aee6f3655264066b4b802`
+- Viewer bundle: `769c0631ab3645e4c3bc5f5fa873ca2a78bf744fc037ed5f8a27d296aea29cf7`
+
+## September construction video
+
+The homepage uses seconds 1–15 of `DJI_20260911191716_0093_D.MP4`, the newest
+video in the supplied DJI folder when inspected. The original 48.75-second
+3840 × 2160, 59.94 fps, 10-bit HEVC recording is untouched. Its color metadata
+is BT.709 SDR.
+
+- Desktop: `recplace-september-11-1440.mp4`, 2560 × 1440 at 59.94 fps,
+  H.264 CRF 18, 35,536,671 bytes.
+- Up to 900 px: `recplace-september-11-1080.mp4`, 1920 × 1080 at 29.97 fps,
+  H.264 CRF 19, 17,342,631 bytes.
+- Both exports use Lanczos scaling, yuv420p, BT.709 metadata, no audio and
+  fast-start MP4 layout. Bitrate caps are 22 Mbps desktop and 10 Mbps mobile.
+- A 2560 px JPEG from the same clip is the immediate poster. Video downloads
+  only when the hero is visible and neither reduced motion nor data saving is
+  requested. Playback pauses offscreen or in hidden tabs; visitors can pause it.
+
+These quality-focused exports are larger than a heavily compressed hero loop.
+They preserve roof and facade detail while selecting a smaller export on phones.
 
 ## Further source work
 
