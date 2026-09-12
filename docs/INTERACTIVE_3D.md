@@ -188,20 +188,21 @@ Current generated asset SHA-256 hashes:
 
 ## September construction video
 
-The homepage uses seconds 1–15 of `DJI_20260911191716_0093_D.MP4`, the newest
-video in the supplied DJI folder when inspected. The original 48.75-second
+The homepage uses the sunset pass at seconds 30–46 of the user-selected
+`DJI_20260911190502_0063_D.MP4`. The original 137.14-second
 3840 × 2160, 59.94 fps, 10-bit HEVC recording is untouched. Its color metadata
 is BT.709 SDR.
 
-- Desktop: `recplace-september-11-1440.mp4`, 2560 × 1440 at 59.94 fps,
-  H.264 CRF 18, 35,536,671 bytes.
-- Up to 900 px: `recplace-september-11-1080.mp4`, 1920 × 1080 at 29.97 fps,
-  H.264 CRF 19, 17,342,631 bytes.
+- Desktop: `recplace-sunset-1440.mp4`, 2560 × 1440 at 59.94 fps,
+  H.264 CRF 18.
+- Up to 900 px: `recplace-sunset-1080.mp4`, 1920 × 1080 at 29.97 fps,
+  H.264 CRF 19.
 - Both exports use Lanczos scaling, yuv420p, BT.709 metadata, no audio and
   fast-start MP4 layout. Bitrate caps are 22 Mbps desktop and 10 Mbps mobile.
 - A 2560 px JPEG from the same clip is the immediate poster. Video downloads
   only when the hero is visible and neither reduced motion nor data saving is
-  requested. Playback pauses offscreen or in hidden tabs; visitors can pause it.
+  requested. Playback pauses offscreen or in hidden tabs. The hero has no visible
+  playback controls, as requested.
 
 These quality-focused exports are larger than a heavily compressed hero loop.
 They preserve roof and facade detail while selecting a smaller export on phones.

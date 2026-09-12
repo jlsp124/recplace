@@ -9,7 +9,7 @@ fs.mkdirSync(out, { recursive: true });
 (async () => {
   const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
   try {
-    for (const width of [1440, 390, 320]) {
+    for (const width of process.env.QA_WIDTHS?.split(',').map(Number) || [1440, 390, 320]) {
       const context = await browser.newContext({ viewport: { width, height: 1000 } });
       const page = await context.newPage();
       const errors = [];
@@ -22,11 +22,8 @@ fs.mkdirSync(out, { recursive: true });
       const video = page.locator('[data-hero-video]');
       assert.match(await video.evaluate(v => v.currentSrc), width > 900 ? /1440\.mp4$/ : /1080\.mp4$/);
       assert.equal(await page.locator('.home-building').count(), 0);
-      await page.locator('[data-hero-playback]').click();
-      assert(await video.evaluate(v => v.paused));
-      await page.screenshot({ path: path.join(out, `home-${width}.png`) });
-      await page.locator('[data-hero-playback]').click();
-      await page.waitForFunction(() => !document.querySelector('[data-hero-video]').paused);
+      assert.equal(await page.locator('[data-hero-playback]').count(), 0);
+      await page.screenshot({ path: path.join(out, `home-${width}.png`), animations: 'disabled' });
       await page.locator('#explore-recplace').scrollIntoViewIfNeeded();
       await page.waitForFunction(() => document.querySelector('[data-hero-video]').paused);
       await page.goto(base + '/explore/');
@@ -37,9 +34,13 @@ fs.mkdirSync(out, { recursive: true });
       await page.screenshot({ path: path.join(out, `explore-${width}.png`), fullPage: true });
       await page.locator('[data-3d-orbit]').click();
       assert.equal(await page.locator('[data-3d-orbit]').getAttribute('aria-pressed'), 'true');
-      const before = await page.locator('canvas').screenshot();
-      await page.waitForTimeout(600);
-      assert(!before.equals(await page.locator('canvas').screenshot()), 'Orbit did not animate');
+      // A wrapped mobile toolbar can scroll the stage offscreen when clicked.
+      // Bring it back before checking animation; hidden stages intentionally pause.
+      await page.locator('canvas').scrollIntoViewIfNeeded();
+      await page.waitForTimeout(300);
+      const before = await page.screenshot();
+      await page.waitForTimeout(1000);
+      assert(!before.equals(await page.screenshot()), 'Orbit did not animate');
       await page.locator('canvas').focus();
       await page.keyboard.press('ArrowLeft');
       assert.equal(await page.locator('[data-3d-orbit]').getAttribute('aria-pressed'), 'false');
@@ -59,7 +60,7 @@ fs.mkdirSync(out, { recursive: true });
       await page.locator('canvas').screenshot({ path: path.join(out, `roof-${width}.png`) });
       assert.deepEqual(errors, []);
       await context.close();
-      console.log(`PASS ${width}px: responsive video, pause, offscreen suspension, dedicated 3D, orbit and expansion`);
+      console.log(`PASS ${width}px: responsive video, offscreen suspension, dedicated 3D, orbit and expansion`);
     }
     for (const preference of ['reduced-motion', 'save-data']) {
       const context = await browser.newContext({ reducedMotion: preference === 'reduced-motion' ? 'reduce' : 'no-preference' });
