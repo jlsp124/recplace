@@ -8,7 +8,11 @@ from pathlib import Path
 from PIL import Image, ImageOps
 
 ROOT = Path(__file__).resolve().parents[1]
-VIDEO = 'DJI_20261005164353_0148_D.MP4'
+VIDEO = 'DJI_20261013093945_0200_D.MP4'
+VIDEO_STEM = 'recplace-october-13'
+VIDEO_START = 22.0
+VIDEO_DURATION = 13.0
+LOOP_BLEND = 0.7
 PHOTOS = {
     'october-13-painted-exterior': ('DJI_20261013094054_0202_D.JPG', None),
     'september-17-exterior-paint': ('DJI_20260917180201_0046_D.JPG', None),
@@ -29,10 +33,13 @@ def webp(image, destination, width, quality):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--source-dir', type=Path, default=Path('D:/DCIM/DJI_001'))
-    parser.add_argument('--images-only', action='store_true', help='Export stills without re-encoding the unchanged hero video')
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument('--images-only', action='store_true', help='Export journal stills without re-encoding the hero video')
+    mode.add_argument('--video-only', action='store_true', help='Export the hero video and posters without changing journal photos')
     args = parser.parse_args()
     source = args.source_dir
-    for name in [*([VIDEO] if not args.images_only else []), *(name for name, _ in PHOTOS.values())]:
+    photos = {} if args.video_only else PHOTOS
+    for name in [*([VIDEO] if not args.images_only else []), *(name for name, _ in photos.values())]:
         if not (source / name).is_file():
             raise FileNotFoundError(source / name)
 
@@ -41,7 +48,7 @@ def main():
     updates.mkdir(exist_ok=True)
     videos.mkdir(exist_ok=True)
 
-    for stem, (filename, crop) in PHOTOS.items():
+    for stem, (filename, crop) in photos.items():
         with Image.open(source / filename) as original:
             image = ImageOps.exif_transpose(original).convert('RGB')
             if crop:
@@ -54,20 +61,20 @@ def main():
     if args.images_only:
         return
 
-    # The settled 4.5-second pass near the end of the flight, at half speed,
-    # uses the original 60 fps frames
-    # to produce 30 fps. Move the first 0.8 seconds to the end as a dissolve,
-    # so the final frame leads directly into the first frame on repeat.
+    # The street-facing sweep moves around the glazed facade at natural speed.
+    # Move the first 0.7 seconds to the end as a dissolve, so the final frame
+    # leads directly into the first frame on repeat.
     for width, crf, rate in [(1440, 24, 2400), (960, 26, 1200)]:
         graph = (
-            f'[0:v:0]setpts=2*(PTS-STARTPTS),fps=30,scale={width}:-2:flags=lanczos,'
+            f'[0:v:0]setpts=PTS-STARTPTS,fps=30,scale={width}:-2:flags=lanczos,'
             'setsar=1,split=2[a][b];'
-            '[a]trim=start=0.8:end=9,setpts=PTS-STARTPTS[body];'
-            '[b]trim=start=0:end=0.8,setpts=PTS-STARTPTS[head];'
-            '[body][head]xfade=transition=fade:duration=0.8:offset=7.4,format=yuv420p[v]'
+            f'[a]trim=start={LOOP_BLEND}:end={VIDEO_DURATION},setpts=PTS-STARTPTS[body];'
+            f'[b]trim=start=0:end={LOOP_BLEND},setpts=PTS-STARTPTS[head];'
+            f'[body][head]xfade=transition=fade:duration={LOOP_BLEND}:'
+            f'offset={VIDEO_DURATION - 2 * LOOP_BLEND},format=yuv420p[v]'
         )
-        output = videos / f'recplace-october-5-orbit-{width}.mp4'
-        run('-ss', '128.5', '-t', '4.5', '-i', source / VIDEO,
+        output = videos / f'{VIDEO_STEM}-orbit-{width}.mp4'
+        run('-ss', VIDEO_START, '-t', VIDEO_DURATION, '-i', source / VIDEO,
             '-filter_complex', graph, '-map', '[v]', '-an', '-sn', '-dn',
             '-map_metadata', '-1', '-map_chapters', '-1', '-c:v', 'libx264',
             '-preset', 'slow', '-crf', crf, '-maxrate', f'{rate}k', '-bufsize', f'{rate * 2}k',
@@ -77,10 +84,10 @@ def main():
     # Use the loop's first frame to avoid a visual jump when playback begins.
     with tempfile.TemporaryDirectory(prefix='recplace-media-') as temporary:
         frame = Path(temporary) / 'poster.png'
-        run('-ss', '128.9', '-i', source / VIDEO, '-map', '0:v:0', '-frames:v', '1', '-y', frame)
+        run('-ss', VIDEO_START + LOOP_BLEND, '-i', source / VIDEO, '-map', '0:v:0', '-frames:v', '1', '-y', frame)
         with Image.open(frame) as image:
             for width in [1600, 960]:
-                output = videos / f'recplace-october-5-poster-{width}.webp'
+                output = videos / f'{VIDEO_STEM}-poster-{width}.webp'
                 webp(image, output, width, 83)
                 print(f'{output.name}: {output.stat().st_size:,} bytes', flush=True)
 
