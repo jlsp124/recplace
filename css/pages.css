@@ -1143,6 +1143,10 @@
     aspect-ratio: 4 / 3;
   }
 
+  .journal-entry:first-child .journal-entry__image {
+    aspect-ratio: 16 / 9;
+  }
+
   .contact-opening__intro {
     min-height: auto;
     padding-top: 48px;

@@ -20,7 +20,7 @@ fs.mkdirSync(out, { recursive: true });
         return v.currentTime > .1 && !v.paused;
       });
       const video = page.locator('[data-hero-video]');
-      assert.match(await video.evaluate(v => v.currentSrc), width > 900 ? /1440\.mp4$/ : /1080\.mp4$/);
+      assert.match(await video.evaluate(v => v.currentSrc), width > 900 ? /1440\.mp4$/ : /960\.mp4$/);
       assert.equal(await page.locator('.home-building').count(), 0);
       assert.equal(await page.locator('[data-hero-playback]').count(), 0);
       await page.screenshot({ path: path.join(out, `home-${width}.png`), animations: 'disabled' });
@@ -62,10 +62,12 @@ fs.mkdirSync(out, { recursive: true });
       await context.close();
       console.log(`PASS ${width}px: responsive video, offscreen suspension, dedicated 3D, orbit and expansion`);
     }
-    for (const preference of ['reduced-motion', 'save-data']) {
+    for (const preference of ['reduced-motion', 'save-data', 'slow-connection', 'low-bandwidth']) {
       const context = await browser.newContext({ reducedMotion: preference === 'reduced-motion' ? 'reduce' : 'no-preference' });
       const page = await context.newPage();
       if (preference === 'save-data') await page.addInitScript(() => Object.defineProperty(navigator, 'connection', { value: { saveData: true } }));
+      if (preference === 'slow-connection') await page.addInitScript(() => Object.defineProperty(navigator, 'connection', { value: { effectiveType: '3g' } }));
+      if (preference === 'low-bandwidth') await page.addInitScript(() => Object.defineProperty(navigator, 'connection', { value: { effectiveType: '4g', downlink: 1 } }));
       const videos = [];
       page.on('request', r => { if (/\.mp4/.test(r.url())) videos.push(r.url()); });
       await page.goto(base + '/');
