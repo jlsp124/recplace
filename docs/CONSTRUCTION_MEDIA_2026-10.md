@@ -17,14 +17,15 @@ October 5, and October 13 and sampled sequences from all
 seven videos dated September 27 or later. Earlier website imagery was compared with
 the new sources. Camera EXIF and MP4 creation metadata confirm the selected dates.
 
-- Hero: `DJI_20261013093945_0200_D.MP4`, October 13, 2026.
-  The street-facing sweep at source seconds 22–35 moves around the glazed corner
-  and painted facade at natural speed. The closer architectural view and changing
-  perspective replace the October 5 hold after the request for more movement and a
-  better angle. The existing tall desktop hero frames the facade and corner details;
-  the journal photographs provide the wider building views. MP4 creation metadata
-  records `2026-10-13T16:39:46Z`, matching the local October 13 capture date.
-  Other October 13 clips show different properties and were excluded.
+- Hero: `DJI_20261005164353_0148_D.MP4`, October 5, 2026.
+  The wide orbit at source seconds 94–106 shows the whole building and its site
+  while moving around the painted facade toward the corner at natural speed.
+  Desktop and phone focal positions retain both building corners in the homepage
+  frame. The matching poster comes from source second 94.7. MP4 creation metadata
+  records `2026-10-05T23:43:53Z`, matching the local October 5 capture date.
+  September 11, September 23, September 27, and October 13 passes were compared
+  before selecting the wider composition. Other October 13 clips show different
+  properties and were excluded.
 - Exterior: `DJI_20261013094054_0202_D.JPG`, October 13 at 09:40:54.
   Clear, balanced view of the painted three-storey exterior and installed glazing.
 - Paint: `DJI_20260917180201_0046_D.JPG`, September 17 at 18:02:01.
@@ -64,9 +65,9 @@ python scripts/build-construction-media.py --source-dir 'D:\DCIM\DJI_001'
 
 Use `--video-only` to rebuild just the hero video and its matching posters.
 
-The hero uses source seconds 22–35 at natural speed, sampled from the original
+The hero uses source seconds 94–106 at natural speed, sampled from the original
 approximately 60 fps footage. A 0.7-second cyclic dissolve makes a
-12.3-second loop. H.264, 30 fps, YUV 4:2:0, no audio, and fast-start MP4 are used for
+11.3-second loop. H.264, 30 fps, YUV 4:2:0, no audio, and fast-start MP4 are used for
 browser compatibility. The desktop export is 1440 pixels wide; mobile is 960 pixels.
 WebP posters at 1600 and 960 pixels match the loop's first frame.
 
@@ -79,13 +80,16 @@ All existing journal entries and older published assets are retained.
 
 ## Validation
 
-The October 19 hero revision was checked in the homepage at 1440 × 900 and
-390 × 844. Both sizes decoded moving frames, used their intended MP4 resolution
-and one responsive poster, and had no horizontal overflow. The desktop loop was
-observed repeating. Reduced motion loaded the matching poster with zero video
-requests; the reported slow-connection fallback also retained the poster. Browser
-test overrides were removed afterward. `npm test` passed all eight canonical-page
-SEO checks. The journal JSON and HTML remain unchanged in this revision.
+The October 19 wide-hero revision was checked in the homepage at 1440 × 900,
+1024 × 768, 390 × 844, and 320 × 720. The wider framing was inspected during
+playback, including the later corner view at 1024 pixels and on a narrow phone.
+Both video resolutions decoded moving frames without horizontal overflow; the
+desktop loop was observed repeating. Phone visits requested one MP4 and one
+responsive poster. Reduced motion loaded the matching poster with zero video
+requests. No browser console errors were reported. Browser test overrides were
+removed afterward. The stylesheet URL is versioned to refresh the focal positions.
+`npm test` passed all eight canonical-page SEO checks. The journal JSON and HTML
+remain unchanged in this revision.
 
 The original journal rollout was checked as follows:
 
@@ -105,7 +109,7 @@ The original journal rollout was checked as follows:
   a diagnostic that confirmed advancing animation frames and changed screenshots.
   The 3D implementation was not changed.
 
-The current hero exports are 3,882,586 bytes at 1440 pixels and 1,948,798 bytes at
-960 pixels. Both contain one H.264 video stream, 30 fps, 12.3 seconds, and no audio
-stream. Matching WebP posters are 201,100 bytes at 1600 pixels and 95,120 bytes at
+The current hero exports are 3,370,872 bytes at 1440 pixels and 1,727,707 bytes at
+960 pixels. Both contain one H.264 video stream, 30 fps, 11.3 seconds, and no audio
+stream. Matching WebP posters are 324,214 bytes at 1600 pixels and 137,042 bytes at
 960 pixels. Earlier published media assets are retained.

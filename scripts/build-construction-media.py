@@ -8,10 +8,10 @@ from pathlib import Path
 from PIL import Image, ImageOps
 
 ROOT = Path(__file__).resolve().parents[1]
-VIDEO = 'DJI_20261013093945_0200_D.MP4'
-VIDEO_STEM = 'recplace-october-13'
-VIDEO_START = 22.0
-VIDEO_DURATION = 13.0
+VIDEO = 'DJI_20261005164353_0148_D.MP4'
+VIDEO_STEM = 'recplace-october-5-wide'
+VIDEO_START = 94.0
+VIDEO_DURATION = 12.0
 LOOP_BLEND = 0.7
 PHOTOS = {
     'october-13-painted-exterior': ('DJI_20261013094054_0202_D.JPG', None),
@@ -61,7 +61,7 @@ def main():
     if args.images_only:
         return
 
-    # The street-facing sweep moves around the glazed facade at natural speed.
+    # The wider orbit keeps the whole building and site visible at natural speed.
     # Move the first 0.7 seconds to the end as a dissolve, so the final frame
     # leads directly into the first frame on repeat.
     for width, crf, rate in [(1440, 24, 2400), (960, 26, 1200)]:
