@@ -1,5 +1,56 @@
 [
   {
+    "id": "roof-nearing-completion",
+    "date": "2026-10-13",
+    "category": "Construction",
+    "title": "Roofing nearing completion",
+    "body": "Roofing is nearing completion, with the white roof surface now covering most of the building. Work continues around the roof penetrations and remaining details.",
+    "images": [
+      {
+        "image": "/Assets/updates/october-13-painted-exterior-1600.webp",
+        "imageSmall": "/Assets/updates/october-13-painted-exterior-960.webp",
+        "imageWidth": 1600,
+        "imageSmallWidth": 960,
+        "imageHeight": 900,
+        "imageAlt": "October 13 aerial view of RECPLACE's white, charcoal, and orange exterior with new glazing and a largely covered roof"
+      },
+      {
+        "image": "/Assets/updates/october-13-roof-detail-1600.webp",
+        "imageSmall": "/Assets/updates/october-13-roof-detail-960.webp",
+        "imageWidth": 1600,
+        "imageSmallWidth": 960,
+        "imageHeight": 900,
+        "imageAlt": "October 13 close aerial view of RECPLACE's white roof surface and work around the roof penetrations"
+      }
+    ]
+  },
+  {
+    "id": "window-installation",
+    "date": "2026-09-23",
+    "category": "Construction",
+    "title": "Window installation underway",
+    "body": "Window frames are being installed across the facade, including the tall corner openings. Work continues on the building's glazing.",
+    "image": "/Assets/updates/september-23-window-installation-1600.webp",
+    "imageSmall": "/Assets/updates/september-23-window-installation-960.webp",
+    "imageWidth": 1600,
+    "imageSmallWidth": 960,
+    "imageHeight": 900,
+    "imageAlt": "September 23 detail of new window framing across RECPLACE's painted facade, with work continuing at the larger openings"
+  },
+  {
+    "id": "exterior-paint",
+    "date": "2026-09-17",
+    "category": "Construction",
+    "title": "Exterior painting takes shape",
+    "body": "White, charcoal, and orange finishes are taking shape across the exterior as painting progresses around the building.",
+    "image": "/Assets/updates/september-17-exterior-paint-1600.webp",
+    "imageSmall": "/Assets/updates/september-17-exterior-paint-960.webp",
+    "imageWidth": 1600,
+    "imageSmallWidth": 960,
+    "imageHeight": 900,
+    "imageAlt": "September 17 aerial view of RECPLACE's white, charcoal, and orange exterior, with the window openings still largely unglazed"
+  },
+  {
     "id": "structure-complete",
     "date": "2026-09",
     "sortDate": "2026-09-11",

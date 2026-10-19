@@ -4,6 +4,8 @@
     const media = video?.closest(".home-hero__media");
     const source = video?.querySelector("source[data-src-desktop]");
     if (!video || !media || !source) return;
+    const poster = media.querySelector(".home-hero__poster");
+    video.muted = true;
     let inView = false;
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -11,7 +13,9 @@
     const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
 
     function shouldUseVideo() {
-      return !reducedMotion.matches && !connection?.saveData;
+      const slowConnection = ["slow-2g", "2g", "3g"].includes(connection?.effectiveType)
+        || (connection?.downlink > 0 && connection.downlink < 1.5);
+      return !reducedMotion.matches && !connection?.saveData && !slowConnection;
     }
 
     function desiredSource() {
@@ -34,6 +38,7 @@
       if (!nextSource) return stopVideo();
       if (source.getAttribute("src") !== nextSource) {
         media.classList.remove("has-playing-video");
+        if (poster) video.poster = poster.currentSrc || poster.src;
         source.src = nextSource;
         video.load();
       }
