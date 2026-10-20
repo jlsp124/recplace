@@ -1,10 +1,23 @@
 [
   {
-    "id": "roof-nearing-completion",
-    "date": "2026-10-13",
+    "id": "concrete-floors-2-and-3",
+    "date": "2026-10-19",
     "category": "Construction",
-    "title": "Roofing nearing completion",
-    "body": "Roofing is nearing completion, with the white roof surface now covering most of the building. Work continues around the roof penetrations and remaining details.",
+    "title": "Concrete poured on floors 2 and 3",
+    "body": "Concrete has been poured for floors 2 and 3. The main-floor pour is expected to be finished by the end of this week.",
+    "image": "/Assets/updates/october-19-concrete-1280.webp",
+    "imageSmall": "/Assets/updates/october-19-concrete-960.webp",
+    "imageWidth": 1280,
+    "imageSmallWidth": 960,
+    "imageHeight": 591,
+    "imageAlt": "Front view of RECPLACE Professional Centre with concrete trucks and a concrete pump on site"
+  },
+  {
+    "id": "roofing-complete",
+    "date": "2026-10-19",
+    "category": "Construction",
+    "title": "Roofing complete",
+    "body": "Roofing is complete.",
     "images": [
       {
         "image": "/Assets/updates/october-13-painted-exterior-1600.webp",
@@ -12,7 +25,7 @@
         "imageWidth": 1600,
         "imageSmallWidth": 960,
         "imageHeight": 900,
-        "imageAlt": "October 13 aerial view of RECPLACE's white, charcoal, and orange exterior with new glazing and a largely covered roof"
+        "imageAlt": "October 13 aerial view of RECPLACE Professional Centre with its painted exterior, glazing, and roof"
       },
       {
         "image": "/Assets/updates/october-13-roof-detail-1600.webp",
@@ -20,16 +33,17 @@
         "imageWidth": 1600,
         "imageSmallWidth": 960,
         "imageHeight": 900,
-        "imageAlt": "October 13 close aerial view of RECPLACE's white roof surface and work around the roof penetrations"
+        "imageAlt": "October 13 aerial view of the roof at RECPLACE Professional Centre"
       }
-    ]
+    ],
+    "mediaCaption": "Photographed October 13, 2026."
   },
   {
     "id": "window-installation",
     "date": "2026-09-23",
     "category": "Construction",
     "title": "Window installation underway",
-    "body": "Window frames are being installed across the facade, including the tall corner openings. Work continues on the building's glazing.",
+    "body": "Window frames are being installed across the building, including the tall corner openings.",
     "image": "/Assets/updates/september-23-window-installation-1600.webp",
     "imageSmall": "/Assets/updates/september-23-window-installation-960.webp",
     "imageWidth": 1600,
@@ -41,8 +55,8 @@
     "id": "exterior-paint",
     "date": "2026-09-17",
     "category": "Construction",
-    "title": "Exterior painting takes shape",
-    "body": "White, charcoal, and orange finishes are taking shape across the exterior as painting progresses around the building.",
+    "title": "Exterior painting underway",
+    "body": "Exterior painting is underway in white, charcoal, and orange.",
     "image": "/Assets/updates/september-17-exterior-paint-1600.webp",
     "imageSmall": "/Assets/updates/september-17-exterior-paint-960.webp",
     "imageWidth": 1600,
@@ -56,7 +70,7 @@
     "sortDate": "2026-09-11",
     "category": "Construction",
     "title": "Structure complete",
-    "body": "The building structure and precast panel installation are complete, and the crane has left the site. Work continues on the remaining stages of construction at RECPLACE Professional Centre.",
+    "body": "The building structure and precast panel installation are complete. The crane has left the site.",
     "images": [
       {
         "image": "/Assets/updates/structure-complete-front-1280.jpg",
@@ -78,7 +92,7 @@
     "sortDate": "2026-08-24",
     "category": "Construction",
     "title": "Roof installation underway",
-    "body": "Roof work is underway at RECPLACE Professional Centre as construction continues across the building's full three-storey form.",
+    "body": "Roof installation is underway.",
     "images": [
       {
         "image": "/Assets/updates/august-24-current-progress-1600.webp",
@@ -111,7 +125,7 @@
     "date": "2026-08-05",
     "category": "Construction",
     "title": "Third floor is in",
-    "body": "The third floor is now in place, bringing RECPLACE Professional Centre to its full three-storey form.",
+    "body": "The third floor is now in place.",
     "image": "/Assets/updates/third-floor-in-1280.webp",
     "imageSmall": "/Assets/updates/third-floor-in-960.webp",
     "imageWidth": 1280,
@@ -124,7 +138,7 @@
     "date": "2026-07-30",
     "category": "Construction",
     "title": "Third floor underway",
-    "body": "Construction has progressed to the third level as the building's full scale takes shape.",
+    "body": "Construction is underway on the third floor.",
     "image": "/Assets/updates/third-floor-progress-1600.webp",
     "imageSmall": "/Assets/updates/third-floor-progress-960.webp",
     "imageAlt": "Aerial view of RECPLACE with third-floor construction underway"
@@ -134,7 +148,7 @@
     "date": "2026-07",
     "category": "Construction",
     "title": "Precast installation begins",
-    "body": "Precast wall panels arrived on site and installation began, marking the start of vertical construction.",
+    "body": "Precast wall panels have arrived on site, and installation has begun.",
     "image": "/Assets/updates/precast-installation-1600.webp",
     "imageSmall": "/Assets/updates/precast-installation-960.webp",
     "imageAlt": "Crane, precast wall panels, and installation activity at the RECPLACE site"
@@ -143,8 +157,8 @@
     "id": "foundation-progress",
     "date": "2026-06-20",
     "category": "Construction",
-    "title": "Foundation work establishes the footprint",
-    "body": "Footings and foundation work established the building footprint as site work advanced through June.",
+    "title": "Foundation work underway",
+    "body": "Work on the footings and foundations continued through June.",
     "image": "/Assets/updates/foundation-progress-1600.webp",
     "imageSmall": "/Assets/updates/foundation-progress-960.webp",
     "imageAlt": "Aerial detail of RECPLACE footings and foundation work"
@@ -154,7 +168,7 @@
     "date": "2026-05-25",
     "category": "Milestone",
     "title": "Groundbreaking",
-    "body": "Construction officially begins at RECPLACE Professional Centre, marking the start of work at 2740 Recplace Drive.",
+    "body": "Construction has officially begun at RECPLACE Professional Centre, 2740 Recplace Drive.",
     "image": "/Assets/updates/groundbreaking-ceremony-1600.webp",
     "imageSmall": "/Assets/updates/groundbreaking-ceremony-960.webp",
     "imageAlt": "Project attendees taking part in the RECPLACE groundbreaking ceremony"

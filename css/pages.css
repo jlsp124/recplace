@@ -612,6 +612,13 @@
   object-fit: cover;
 }
 
+.journal-entry__caption {
+  grid-column: 2 / -1;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
 .journal-entry__gallery {
   grid-column: 2 / -1;
   display: grid;
@@ -1125,6 +1132,7 @@
     gap: 14px;
   }
 
+  .journal-entry__caption,
   .journal-entry__body,
   .journal-entry__media {
     grid-column: 1;
@@ -1170,4 +1178,10 @@
   .contact-person__monogram {
     width: 52px;
   }
+}
+
+/* Preserve the full composition of wide construction photographs at every size. */
+.journal-entry .journal-entry__media .journal-entry__image--panorama {
+  aspect-ratio: auto;
+  height: auto;
 }

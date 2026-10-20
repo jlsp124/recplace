@@ -43,7 +43,7 @@
 
       return `<picture class="journal-entry__media">
           ${image.imageSmall ? `<source srcset="${escapeHtml(image.imageSmall)} ${imageSmallWidth}w, ${escapeHtml(image.image)} ${imageWidth}w" sizes="${sizes}" type="image/webp">` : ""}
-          <img class="journal-entry__image" src="${escapeHtml(image.image)}" alt="${escapeHtml(image.imageAlt || "")}" width="${imageWidth}" height="${imageHeight}" loading="lazy" decoding="async">
+          <img class="journal-entry__image${imageWidth / imageHeight > 2 ? ' journal-entry__image--panorama' : ''}" src="${escapeHtml(image.image)}" alt="${escapeHtml(image.imageAlt || "")}" width="${imageWidth}" height="${imageHeight}" loading="lazy" decoding="async">
         </picture>`;
     }
 
@@ -57,6 +57,7 @@
         <h2>${title}</h2>
         <div class="journal-entry__body"><p>${body}</p></div>
         ${image}
+        ${update.mediaCaption ? `<p class="journal-entry__caption">${escapeHtml(update.mediaCaption)}</p>` : ""}
       </article>`;
   }
 

@@ -38,8 +38,8 @@ async function check(name, fn) {
         const old = execFileSync('git', ['show', `HEAD:${file}`], { cwd: root, encoding: 'utf8' }).replace(/\r\n/g, '\n');
         const next = fs.readFileSync(path.join(root, file), 'utf8').replace(/\r\n/g, '\n');
         const seo = (s) => s.match(/<title>.*?<\/title>|<meta\b[^>]*>|<link\b[^>]*rel="canonical"[^>]*>|<script type="application\/ld\+json">[\s\S]*?<\/script>/g);
-        // Current construction photos are intentionally refreshed over time.
-        const stableSeo = (s) => seo(s).filter((tag) => !/(?:og:image|twitter:image)"/.test(tag));
+        // Current construction photos and their descriptions are refreshed over time.
+        const stableSeo = (s) => seo(s).filter((tag) => !/(?:og:image|twitter:image)(?::alt)?"/.test(tag));
         assert.deepEqual(stableSeo(next), stableSeo(old), `${file}: SEO changed`);
         if (file === 'index.html') {
           assert.equal(next.match(/<h1 class="home-hero__title"[\s\S]*?<\/h1>/)[0], old.match(/<h1 class="home-hero__title"[\s\S]*?<\/h1>/)[0]);

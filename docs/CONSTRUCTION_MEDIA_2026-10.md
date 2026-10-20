@@ -113,3 +113,49 @@ The current hero exports are 3,370,872 bytes at 1440 pixels and 1,727,707 bytes 
 960 pixels. Both contain one H.264 video stream, 30 fps, 11.3 seconds, and no audio
 stream. Matching WebP posters are 324,214 bytes at 1600 pixels and 137,042 bytes at
 960 pixels. Earlier published media assets are retained.
+
+
+## October 19 owner corrections
+
+The October 19 report from Jas confirms roofing is complete and concrete has
+been poured for floors 2 and 3. These are separate journal entries dated October
+19 (report date), with concrete first. Main-floor completion is still expected
+by the end of that week; it has not been reported complete.
+
+The former October 13 "Roofing nearing completion" entry is replaced by the
+corrected roofing entry, retaining both aerial photographs. Its visible caption
+states "Photographed October 13, 2026." September 27, October 5, and October 13
+originals in `D:/DCIM/DJI_001` were compared visually and October EXIF capture
+dates checked. September 27 shows installation in progress; October 13 shows
+the roof covered. The photographs do not establish an exact completion day.
+The earlier roof assessment above records the original editorial decision,
+which this owner confirmation supersedes. No roof material or certification
+is inferred from its appearance.
+
+Concrete uses supplied `3-Photo-3.jpg`, the wide front view with concrete trucks
+and a concrete pump. The responsive WebP exports are 1280 and 960 pixels wide,
+with metadata removed and the original composition retained at all viewports.
+October 19 is the confirmed concrete update date, not an inferred EXIF date.
+
+Construction wording is shortened while retaining older milestone meanings.
+The homepage shows "Roofing complete" and its 3D section keeps the image launch
+button as its primary action, removing the duplicate button above it. The
+secondary full-view link and the dedicated Explore introduction are simplified.
+An optional `mediaCaption` string renders the roof photograph date in both
+JavaScript and static fallback content. No services or dependencies are added.
+
+
+Validation for the owner corrections:
+
+- SEO checks passed for all eight canonical pages; site smoke passed all eight
+  routes at desktop and mobile widths.
+- The full 3D suite passed desktop, tablet, mobile, and small-mobile controls,
+  lazy loading, resource cleanup, keyboard behavior, and fallback scenarios.
+- Targeted journal checks passed at 1440, 390, and 320 pixels with normal loading,
+  failed data requests, and JavaScript disabled. Embedded JSON equals the data
+  file; entry order, roof-photo caption, load-more behavior, uncropped concrete
+  photography, and image enlargement were verified without overflow.
+- Home and journal screenshots were reviewed at desktop and phone widths. The
+  homepage has one primary launch action in its 3D section. WebP exports contain
+  no EXIF or GPS data. The updated journal script and stylesheet URLs are
+  versioned to avoid stale cached caption or image sizing behavior.
